@@ -1,0 +1,150 @@
+/* DTU Smart Library (Figma 30:193). Same structure and colors, a bit more polished. */
+.library .sub-header {
+  position: absolute;
+  min-height: 0;
+  padding: 0;
+}
+
+.library__title {
+  margin: 0;
+  padding-top: 68px; /* y73 */
+  text-align: center;
+  font-size: 35px;
+  font-weight: var(--font-bold);
+}
+
+.library__title span {
+  color: var(--eat-red);
+}
+
+.library__live {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 4px 0 14px;
+  font-size: 12px;
+  color: var(--color-placeholder);
+}
+
+.library__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-placeholder);
+}
+
+.library__live--on .library__dot {
+  background: #1fb35a;
+  box-shadow: 0 0 0 0 rgba(31, 179, 90, 0.6);
+  animation: library-pulse 2s infinite;
+}
+
+@keyframes library-pulse {
+  70% {
+    box-shadow: 0 0 0 6px rgba(31, 179, 90, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(31, 179, 90, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .library__live--on .library__dot {
+    animation: none;
+  }
+}
+
+.library__block {
+  width: 250px;
+  margin: 0 auto 18px;
+}
+
+.library__block h2 {
+  margin: 0 0 12px;
+  text-align: center;
+  font-size: 25px;
+  font-weight: var(--font-bold);
+  white-space: nowrap;
+}
+
+.library__boxes {
+  display: grid;
+  grid-template-columns: 97px 113px;
+  justify-content: space-between;
+}
+
+.library__box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 10px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.library__box strong {
+  font-size: 26px;
+  font-weight: var(--font-bold);
+  line-height: 1;
+}
+
+.library__box--free {
+  background: var(--seat-free);
+}
+
+.library__box--occupied {
+  background: var(--seat-occupied);
+}
+
+/* Occupancy bar: free (blue) -> occupied (orange) */
+.library__bar {
+  height: 8px;
+  margin-top: 10px;
+  border-radius: 4px;
+  background: var(--seat-free);
+  overflow: hidden;
+}
+
+.library__bar span {
+  display: block;
+  height: 100%;
+  margin-left: auto;
+  background: var(--seat-occupied);
+  transition: width 0.6s ease;
+}
+
+.library__pct {
+  margin: 4px 0 0;
+  text-align: right;
+  font-size: 12px;
+  color: var(--color-placeholder);
+}
+
+.library__people {
+  margin: 4px 0 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-placeholder);
+}
+
+.library__links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.library__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--touch-target);
+  font-size: 15px;
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  text-decoration: underline;
+}

@@ -31,6 +31,11 @@ export const LINKS = {
   mazemapEmbed:
     'https://use.mazemap.com/embed.html#v=1&campusid=89&zlevel=1&center=12.519825,55.786341&zoom=18.2&utm_medium=iframe',
   mazemap: 'https://www.mazemap.com/',
+  /** Base of the in-app MazeMap iframe; the hash (center, zoom...) is built in src/components/CampusMap.tsx. */
+  mazemapEmbedBase: 'https://use.mazemap.com/embed.html',
+
+  // Live library occupancy (public JSON API, proxied by Vite: see vite.config.ts)
+  smartLibrary: 'https://smartlibrary.ait.dtu.dk',
 
   // Exams (official timetable, copied into src/data/examDates.ts)
   examDates: 'https://student.dtu.dk/en/exam/exam-dates',
