@@ -104,9 +104,10 @@ FIGMA: <link>
   larger than `expected` (e.g. thesis 35 of 30), show the bar full and the number in the warning color, no error.
 - `studyplan.uncategorized` (ECTS not assigned to any category) is shown as a grey "Other" slice only if > 0.
 
-## My courses  (DRAFT)
-- Search box filters by code or name. Cards with banner, "code name". Show the courses of the CURRENT term first
-  (`term` derived from today: Sep-Jan = "e"+year, Feb-Aug = "f"+year); older terms under "Previous courses".
+## My courses  (SPECIFIED)
+FIGMA: node 116:377. Route `/courses`.
+- Search pill filters by course number or name (case-insensitive). All courses as CourseCard, newest `startDate`
+  first (so the current term comes first). No "Previous courses" heading (not in Figma). Empty: "No courses yet".
 - Banner: the real Learn course picture, from `localImage` (served from `/course-images/`). Fallback: colored gradient with the course code.
 
 ## Course page  (DRAFT)
