@@ -1,0 +1,153 @@
+/* "Grades and ECTS" (Figma 27:16). See docs/design-notes.md. */
+
+.grades .sub-header {
+  min-height: 0;
+  padding-top: 24px; /* "Progress" at y50 */
+}
+
+.grades .sub-header__title {
+  font-size: var(--text-lg);
+}
+
+/* Progress bar 345 x 32, track #d9d9d9, fill DTU red (Figma blue), text right-aligned inside */
+.grades__bar {
+  position: relative;
+  height: 32px;
+  margin: 15px 0 0 7px;
+  background: var(--bar-track);
+}
+
+.grades__bar-fill {
+  position: absolute;
+  top: 2px;
+  bottom: 3px;
+  left: 2px;
+  max-width: calc(100% - 4px);
+  background: var(--tabbar-red);
+}
+
+.grades__bar-text {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+}
+
+.grades__plan {
+  display: flex;
+  gap: 15px;
+  margin-top: 12px;
+}
+
+.grades__pie-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 13px;
+  padding-left: 3px;
+}
+
+.grades__dist-button {
+  min-height: var(--touch-target); /* Figma 34px */
+  padding: 0 10px;
+  margin-left: -5px;
+  border: none;
+  border-radius: 10px;
+  background: var(--seg-bg);
+  box-shadow: 0 4px 2px rgba(0, 0, 0, 0.25);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.grades__counts {
+  display: flex;
+  flex-direction: column;
+  padding-top: 22px;
+}
+
+.grades__counts p {
+  margin: 0 0 8px;
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+}
+
+.grades__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.grades__link--planner {
+  align-self: flex-end;
+  font-weight: var(--font-semibold);
+}
+
+.grades__link--center {
+  align-self: center;
+}
+
+.grades__link--small {
+  font-size: 15px;
+}
+
+/* Full-width divider (x4 → 384): bleed over the side padding */
+.grades__divider {
+  margin: 14px -16px 0;
+  border: none;
+  border-top: 1px solid var(--color-text);
+}
+
+.grades__insights {
+  display: flex;
+  flex-direction: column;
+  padding-top: 14px;
+}
+
+.grades__title {
+  margin: 0 0 18px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: var(--font-bold);
+}
+
+.grades__subtitle {
+  margin: 34px 0 8px;
+  text-align: center;
+  font-size: 25px;
+  font-weight: var(--font-bold);
+  color: var(--color-placeholder);
+}
+
+.grades__gpa-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.grades__gpa {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+}
+
+.grades__last {
+  margin: 8px 0 24px 7px;
+  padding: 10px;
+  border: 1px solid var(--color-text);
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: var(--font-bold);
+}
+
+.grades__muted {
+  color: var(--color-placeholder);
+}

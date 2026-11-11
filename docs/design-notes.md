@@ -75,3 +75,26 @@ Work from these notes; do not re-read the frames.
   white bottom strip 52 tall (rounded bottom 30), text Bold 15 "code name, term" padding 10. Gap 13 between cards.
 - "Studyplanner→" (y585) and "Exams Dates→" (y639) Bold 20 underlined, x18.
 - "Study Guidance" Bold 20 underlined + external-link icon 21 (`public/icons/external-link.svg`), centered at y721.
+
+## Grades and ECTS (27:16) → route `/grades`
+- Back arrow. "Progress" Bold 20 centered (y50).
+- Progress bar x28 y89, 345x32, track #d9d9d9, fill Figma blue #0088ff (inset 2px), text "65/120 ects" Bold 20 right-aligned inside.
+- Row y133: pie 112 (x24, Figma IMAGE, same as My studies) + "12 activities planned" / "8 activities completed" Bold 20 (x151).
+  "StudyPlanner→" SemiBold 20 underlined, right side (x197 y235).
+  Button "Show ECTS distribution" bg #dfdada radius 10, Medium 10, h34, drop shadow 0 4 2 .25, x19 y258 (under the pie).
+- Full-width divider y320.
+- "Grades" Bold 30 centered; "Your list of grades →" Bold 20 underlined centered; "Grades Insights" Bold 25 #808080 centered;
+  row "Current GPA: 8.3" Bold 20 left + "GPA calculator →" Bold 15 underlined right;
+  card "Last grade:\n<code> <title>: <grade> (<ects>ects)" Bold 15, 1px black border radius 10, padding 10;
+  chart area 338x214 (Figma IMAGE: blue grade line, orange GPA line, shaded period band "SPRING 2026"), horizontal scroll.
+
+## ECTS distribution (96:138) — modal over /grades
+- 351x501 white card radius 20, close button (ant-design close-square) top right. Content is a SCREENSHOT of the official
+  Studyplanner "Course type distribution": legend + big pie, then per-type small pies "Registered NN ECTS / Missing NN ECTS".
+  Colors from Studyplanner: green (polytechnic foundation), blue (programme specific), red (thesis), orange (electives).
+  White background (never black).
+
+## GPA calculator (44:40) → route `/grades/calculator`
+- Back arrow, title "GPA calculator" Bold 20 centered y50. Column x21 y112 gap 15, Bold 20: "Current GPA: x", "Current ECTS
+  passed: n", "Expected grade: _", "Ects expected: _". Button "Calculate" 255x34 radius 30 Figma teal #43cab4, white Bold 20,
+  drop shadow, centered y285. Result "Expected GPA: 9.12" Bold 20 at y369.

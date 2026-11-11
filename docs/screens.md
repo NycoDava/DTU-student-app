@@ -58,7 +58,9 @@ from Studyplanner) + "Ects completed: passed/required", "My Courses→" (/course
 FIGMA: <link>  (this is the "Grades / Progress" screen, with the chart)
 - Top: "Progress" bar with `summary.ectsPassed / summary.ectsRequired` and the text "55/120 ects".
 - Small donut of ECTS by category (see "ECTS distribution") and the button "Show ECTS distribution". Link "StudyPlanner ->"
-  opens the Study planner screen. (The old "12 activities planned / 8 completed" lines are REMOVED.)
+  opens the Study planner screen. "N activities planned / M activities completed" are KEPT (author's decision, may change):
+  courses + activities in `studyplan.semesters`, completed = course code has a passed grade (`src/lib/studyplan.ts`).
+- Progress bar fill is DTU red (Figma blue, approved deviation).
 - "Grades Insights": "Current GPA: x.xx" = `summary.gpa`. Link "GPA calculator ->".
 - Card "Last grade": course code, title, grade, ECTS of the most recent grade (latest period; inside a period use the
   order of the data, there is no exact exam date).
@@ -91,6 +93,9 @@ FIGMA: <link>  (2 variants: empty / result)
 
 ## ECTS distribution  (SPECIFIED)
 FIGMA: <link>
+- Modal sheet over /grades (white background, never black). Author's request: compare YOUR pie (completed + planned per
+  type) with the PROGRAMME pie (expected per type), they may differ (thesis 35 vs 30); then horizontal bars per type:
+  completed / planned (lighter) / missing (grey).
 - Data: `studyplan.ectsByType[]` = `{ typeId, name, color, expected, completed, planned }`. These are the author's own
   Studyplanner categories (Polytechnic foundation, Programme specific, Electives, Thesis...), with the same colors.
 - Donut: slices = `completed + planned` per category, colored with `color`. Center text: `summary.ectsPassed` / `ectsRequired`.

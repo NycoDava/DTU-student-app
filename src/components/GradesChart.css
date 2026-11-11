@@ -1,0 +1,73 @@
+.grades-chart {
+  width: 100%;
+}
+
+.grades-chart--empty {
+  height: 214px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--color-placeholder);
+  border-radius: 10px;
+  color: var(--color-placeholder);
+  font-size: 15px;
+}
+
+.grades-chart__legend {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  font-size: 12px;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.grades-chart__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.grades-chart__legend i {
+  width: 16px;
+  height: 2px;
+  border-radius: 1px;
+}
+
+.grades-chart__body {
+  display: flex;
+}
+
+.grades-chart__scroll {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Soft fade on the left edge while there is more to scroll to */
+.grades-chart__scroll--more {
+  mask-image: linear-gradient(to right, transparent 0, #000 28px);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 28px);
+}
+
+.grades-chart__hint {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--color-placeholder);
+  text-align: center;
+}
+
+.grades-chart__tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 200px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-placeholder);
+  border-radius: 8px;
+  background: var(--color-bg);
+  font-size: 12px;
+  color: var(--color-text);
+}
