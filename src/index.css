@@ -1,0 +1,39 @@
+@import './styles/tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-page-outside);
+  font-family: var(--font-family);
+  color: var(--color-text);
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+}
+
+/* Phone shell: the red rounded frame from Figma, centered on desktop. */
+.app-shell {
+  width: 100%;
+  max-width: var(--app-width);
+  height: 100dvh;
+  background: var(--color-bg);
+  border: var(--frame-border) solid var(--dtu-red);
+  border-radius: var(--frame-radius);
+  overflow: hidden;
+  position: relative;
+}
+
+.screen {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}

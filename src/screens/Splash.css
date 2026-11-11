@@ -1,0 +1,13 @@
+.splash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Figma: 370 x 263 */
+.splash__logo {
+  width: 370px;
+  max-width: calc(100% - 12px);
+  aspect-ratio: 370 / 263;
+  object-fit: cover;
+}

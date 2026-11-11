@@ -1,0 +1,25 @@
+/* Design tokens from Figma. Reuse these, never hard-code colors in components. */
+:root {
+  /* Colors */
+  --dtu-red: #9b0300;
+  --color-bg: #ffffff;
+  --color-text: #000000;
+  --color-placeholder: #808080;
+  --color-page-outside: #e9e9e9; /* desktop background around the phone column */
+
+  /* Type */
+  --font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-light: 300;
+  --font-regular: 400;
+  --font-bold: 700;
+  --text-xs: 12px;
+  --text-lg: 20px;
+
+  /* Frame chrome */
+  --app-width: 393px;
+  --frame-border: 5px;
+  --frame-radius: 30px;
+
+  /* Sizes */
+  --touch-target: 44px;
+}

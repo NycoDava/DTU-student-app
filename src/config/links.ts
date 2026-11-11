@@ -1,0 +1,36 @@
+// All external URLs of the app. Never write URLs inline in components.
+export const LINKS = {
+  // Core DTU systems
+  learn: 'https://learn.inside.dtu.dk',
+  studyplanner: 'https://studieplan.dtu.dk',
+  news: 'https://www.dtu.dk/english/news/all-news',
+  events: 'https://www.dtu.dk/english/calendar',
+
+  // Study support
+  studyGuidance: 'https://www.dtu.dk/english/education/guidance-and-counselling/study-guidance',
+  studentHelp: 'https://student.dtu.dk/en/help-and-guidance',
+  oss: 'https://www.dtu.dk/english/about/organization/supportfunctions/oss',
+  contactForm: 'https://www.dtu.dk/english/about/contact/contact-form',
+
+  // Library and printing
+  findit: 'https://findit.dtu.dk/',
+  freeSeats: 'https://www.bibliotek.dtu.dk/en/Free-seats',
+  libraryBooking: 'https://www.supersaas.com/schedule/DTU_Library/Study_Areas_-_Lyngby',
+  printing: 'https://databarprint.dtu.dk/end-user/ui/login?lang=en_US',
+
+  // Accounts
+  changePassword: 'https://password.dtu.dk/admin/change_password.aspx?lang=en',
+  guestLogin: 'https://guest.dtu.dk/Sites/GuestLogin/Default.aspx',
+
+  // Student life and career
+  careerHub: 'https://dtu.jobteaser.com/', // TODO verify: the pasted link had a one-time login token, this is the stable base
+  dtuSport: 'https://dtusport.dk/default.aspx',
+  pf: 'https://www.pf.dk/',
+
+  // Map
+  mazemapEmbed:
+    'https://use.mazemap.com/embed.html#v=1&campusid=89&zlevel=1&center=12.519825,55.786341&zoom=18.2&utm_medium=iframe',
+  mazemap: 'https://www.mazemap.com/',
+
+  // TODO: author to add: CampusNet grades URL, exam page, study abroad, student life
+} as const;

@@ -1,0 +1,88 @@
+/* Figma "log in" (217:1140): column, gap 33px, starts 33px from top. */
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 33px;
+  padding: 28px 0 24px; /* 33px in Figma minus the 5px frame border */
+}
+
+.login__photo {
+  width: 100%;
+  aspect-ratio: 1191 / 717;
+  object-fit: cover;
+  display: block;
+}
+
+/* Same logo as the splash, cropped to 370 x 142 */
+.login__logo {
+  width: 370px;
+  max-width: calc(100% - 12px);
+  height: 142px;
+  object-fit: cover;
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 319px;
+  max-width: calc(100% - 32px);
+}
+
+.login__input {
+  width: 100%;
+  height: var(--touch-target);
+  padding: 0 14px;
+  border: 1px solid var(--color-text);
+  border-radius: 0;
+  background: var(--color-bg);
+  font-family: var(--font-family);
+  font-weight: var(--font-light);
+  font-size: var(--text-lg);
+  color: var(--color-text);
+}
+
+.login__input::placeholder {
+  color: var(--color-placeholder);
+}
+
+.login__input:focus {
+  outline: 2px solid var(--dtu-red);
+  outline-offset: -1px;
+}
+
+.login__button {
+  margin-top: 21px; /* 33px column gap minus the 12px form gap */
+  width: 140px;
+  height: var(--touch-target);
+  border: none;
+  border-radius: 0;
+  background: var(--dtu-red); /* Figma uses blue #0988ff: changed to DTU red */
+  color: #fff;
+  font-family: var(--font-family);
+  font-weight: var(--font-bold);
+  font-size: var(--text-lg);
+  cursor: pointer;
+}
+
+.login__help {
+  width: 293px;
+  max-width: calc(100% - 32px);
+  font-size: var(--text-xs);
+  line-height: normal;
+}
+
+.login__help p {
+  margin: 0 0 14px;
+}
+
+.login__help a {
+  color: var(--dtu-red); /* Figma blue, changed to DTU red */
+  font-weight: var(--font-bold);
+}
+
+.login__format {
+  margin-top: 42px !important;
+}
