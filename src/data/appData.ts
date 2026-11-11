@@ -1,10 +1,10 @@
-import type { Course, Grade, Studyplan, Summary } from './types';
+import type { AgendaItem, Announcement, Course, Deadline, Grade, LocalizedName, Studyplan, Summary } from './types';
 
 /**
- * PLACEHOLDER app data: everything empty / zero until the real `public/data/app-data.json` is plugged in.
- * TODO: replace these constants with the loaded file. Screens only read from here, so nothing else changes.
+ * App data from `public/data/app-data.json`. main.tsx calls `initAppData()` with the loaded file BEFORE the first
+ * render, so screens can read these exports synchronously. Until then (or if the file is missing) they are empty.
  */
-export const summary: Summary = {
+export let summary: Summary = {
   gpa: 0,
   ectsPassed: 0,
   ectsPlanned: 0,
@@ -13,9 +13,9 @@ export const summary: Summary = {
   nextDeadline: null,
 };
 
-export const grades: Grade[] = [];
+export let grades: Grade[] = [];
 
-export const studyplan: Studyplan = {
+export let studyplan: Studyplan = {
   requiredEcts: 120,
   semesters: [],
   basket: [],
@@ -23,4 +23,36 @@ export const studyplan: Studyplan = {
   uncategorized: { completed: 0, planned: 0 },
 };
 
-export const courses: Course[] = [];
+export let courses: Course[] = [];
+export let announcements: Announcement[] = [];
+export let agenda: AgendaItem[] = [];
+
+type RawGrade = Omit<Grade, 'title'> & { title: string | LocalizedName };
+
+export function initAppData(file: Record<string, unknown>) {
+  const f = file as Partial<{
+    summary: Summary;
+    grades: RawGrade[];
+    studyplan: Studyplan;
+    courses: Course[];
+    announcements: Announcement[];
+    agenda: AgendaItem[];
+  }>;
+  if (f.summary) summary = { ...summary, ...f.summary };
+  if (f.studyplan) studyplan = { ...studyplan, ...f.studyplan };
+  // Grade titles come in both languages from CampusNet: the UI is English.
+  grades = (f.grades ?? []).map((g) => ({ ...g, title: typeof g.title === 'string' ? g.title : g.title.English }));
+  courses = f.courses ?? [];
+  announcements = [...(f.announcements ?? [])].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  agenda = [...(f.agenda ?? [])].sort((a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt));
+}
+
+/** "02830 Advanced project …, Fall 2026" for an agenda item / course code, from `courses`. */
+export function courseLabel(courseCode: string | null): string | undefined {
+  if (!courseCode) return undefined;
+  const matches = courses.filter((c) => c.code === courseCode);
+  // Prefer the newest run of the course.
+  return matches.sort((a, b) => (b.startDate ?? '').localeCompare(a.startDate ?? ''))[0]?.name;
+}
+
+export type { Deadline };

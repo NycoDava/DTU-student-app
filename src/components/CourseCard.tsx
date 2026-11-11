@@ -31,7 +31,8 @@ export default function CourseCard({ course }: { course?: Course }) {
         )}
       </div>
       <div className="course-card__label">
-        {course.code} {course.name}, {course.term}
+        {/* Learn names already read "02830 Course name, Fall 2026" */}
+        {course.name}
       </div>
     </Link>
   );

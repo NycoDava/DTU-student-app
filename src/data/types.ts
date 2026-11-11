@@ -57,7 +57,7 @@ export type Summary = {
   ectsPlanned: number;
   ectsRequired: number;
   coursesCount: number;
-  nextDeadline: string | null;
+  nextDeadline: Deadline | null;
 };
 
 export type Grade = {

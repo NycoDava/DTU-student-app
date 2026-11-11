@@ -1,14 +1,39 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { initials, useCurrentUser } from '../data/currentUser';
 import Calendar from '../components/calendar/Calendar';
+import { agenda, announcements, courseLabel } from '../data/appData';
+import { plainText } from '../data/courseData';
+import { formatDay, formatMonth, formatTime } from '../data/format';
 import './Home.css';
 
 /**
  * Home (Figma "homepage day/week/month/list": one screen, the calendar tabs switch the view).
  * Cards are empty containers for now; data is wired in later.
  */
+/** Next agenda item (still running or upcoming); if none, the latest one, so the card is never empty. */
+function nextAgendaItem() {
+  const now = Date.now();
+  return agenda.find((a) => Date.parse(a.endsAt ?? a.startsAt) >= now) ?? agenda[agenda.length - 1];
+}
+
+/** The whole agenda as FullCalendar events (kind → chip color). */
+const calendarEvents = () =>
+  agenda.map((a) => ({
+    id: a.id,
+    title: a.courseCode && !a.title.startsWith(a.courseCode) ? `${a.courseCode} ${a.title}` : a.title,
+    start: a.startsAt,
+    end: a.endsAt ?? undefined,
+    allDay: a.isAllDay,
+    url: a.url ?? undefined,
+    extendedProps: { kind: a.kind },
+  }));
+
 export default function Home() {
   const { user } = useCurrentUser();
+  const latest = announcements[0];
+  const next = nextAgendaItem();
+  const events = useMemo(calendarEvents, []);
 
   return (
     <div className="home">
@@ -29,29 +54,55 @@ export default function Home() {
           <Link to="/announcements" className="home__title">
             Study Announcements→
           </Link>
-          {/* Latest announcement goes here */}
-          <Link to="/announcements" className="home__card home__card--empty">
-            No announcements yet
-          </Link>
+          {latest ? (
+            <Link to="/announcements" className="home__card home__announcement">
+              <span className="home__announcement-title">
+                Study Announcement {latest.courseCode}: {latest.title}
+              </span>
+              <span className="home__announcement-preview">{plainText(latest.preview)}</span>
+            </Link>
+          ) : (
+            <Link to="/announcements" className="home__card home__card--empty">
+              No announcements yet
+            </Link>
+          )}
         </section>
 
         <section className="home__group">
           <Link to="/events" className="home__title">
             Upcoming Activities and Deadlines →
           </Link>
-          {/* Next agenda item goes here: date block left, time / title / course right.
-              Add class home__card--deadline for deadlines (red border). */}
-          <Link to="/events" className="home__card home__upcoming">
-            <span className="home__upcoming-date" aria-hidden="true">
-              –
-            </span>
-            <span className="home__upcoming-text home__card--empty">No upcoming activities</span>
-          </Link>
+          {next ? (
+            <Link
+              to="/events"
+              className={'home__card home__upcoming' + (next.kind === 'deadline' ? ' home__card--deadline' : '')}
+            >
+              <span className="home__upcoming-date">
+                {formatMonth(next.startsAt)}
+                <br />
+                {formatDay(next.startsAt)}
+              </span>
+              <span className="home__upcoming-text">
+                {!next.isAllDay && <span className="home__upcoming-line">{formatTime(next.startsAt)}</span>}
+                <span className="home__upcoming-line">{next.title}</span>
+                <span className="home__upcoming-line home__upcoming-course">
+                  {courseLabel(next.courseCode) ?? next.courseCode}
+                </span>
+              </span>
+            </Link>
+          ) : (
+            <Link to="/events" className="home__card home__upcoming">
+              <span className="home__upcoming-date" aria-hidden="true">
+                –
+              </span>
+              <span className="home__upcoming-text home__card--empty">No upcoming activities</span>
+            </Link>
+          )}
         </section>
 
         <section className="home__calendar">
           <h2 className="home__calendar-title">Your Calendar</h2>
-          <Calendar />
+          <Calendar events={events} />
         </section>
       </div>
     </div>

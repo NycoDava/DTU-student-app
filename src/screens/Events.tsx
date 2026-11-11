@@ -2,6 +2,7 @@ import { useState } from 'react';
 import SubHeader from '../components/SubHeader';
 import AgendaCard from '../components/AgendaCard';
 import type { AgendaItem } from '../data/types';
+import { agenda, courseLabel } from '../data/appData';
 
 type Tab = 'all' | 'deadline' | 'event';
 const TABS: { key: Tab; label: string }[] = [
@@ -10,20 +11,17 @@ const TABS: { key: Tab; label: string }[] = [
   { key: 'event', label: 'Activities' },
 ];
 
-// TODO: replace with `agenda` from app-data.json once the data is plugged in.
-const AGENDA: AgendaItem[] = [];
-
-/** Agenda items from now on, ascending, filtered by tab. */
+/** Agenda items from now on, ascending, filtered by tab. If none are left, the latest past ones (never empty). */
 function upcoming(items: AgendaItem[], tab: Tab): AgendaItem[] {
   const now = Date.now();
-  return items
-    .filter((i) => (tab === 'all' || i.kind === tab) && Date.parse(i.endsAt ?? i.startsAt) >= now)
-    .sort((a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt));
+  const ofTab = items.filter((i) => tab === 'all' || i.kind === tab);
+  const future = ofTab.filter((i) => Date.parse(i.endsAt ?? i.startsAt) >= now);
+  return future.length > 0 ? future : ofTab.slice(-5).reverse();
 }
 
 export default function Events() {
   const [tab, setTab] = useState<Tab>('all');
-  const items = upcoming(AGENDA, tab);
+  const items = upcoming(agenda, tab);
 
   return (
     <div className="sub-screen">
@@ -52,7 +50,7 @@ export default function Events() {
         ) : (
           items.map((item) => (
             <li key={item.id}>
-              <AgendaCard item={item} />
+              <AgendaCard item={item} courseLabel={courseLabel(item.courseCode)} />
             </li>
           ))
         )}

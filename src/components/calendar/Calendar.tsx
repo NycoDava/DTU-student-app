@@ -19,7 +19,7 @@ type ViewKey = (typeof VIEWS)[number]['key'];
 
 /**
  * Events are FullCalendar EventInput objects. Set `extendedProps.kind` to "event" or "deadline"
- * to get the green-grey or mauve chip. Empty for now: agenda data is wired in later.
+ * to get the green-grey or mauve chip. Home passes the whole `agenda`.
  */
 type Props = { events?: EventInput[] };
 
@@ -114,6 +114,12 @@ export default function Calendar({ events = [] }: Props) {
             firstDay={1}
             locale="en-gb"
             events={events}
+            eventClick={(info) => {
+              // Open DTU Learn in a new tab instead of leaving the app.
+              if (!info.event.url) return;
+              info.jsEvent.preventDefault();
+              window.open(info.event.url, '_blank', 'noopener,noreferrer');
+            }}
             eventClassNames={eventClassNames}
             datesSet={handleDatesSet}
             nowIndicator

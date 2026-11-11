@@ -1,20 +1,19 @@
 import type { Grade, Studyplan } from '../data/types';
 
 /**
- * "N activities planned / M activities completed": every course and activity placed in the study plan,
- * and how many of them already have a passed grade (matched by course code).
+ * "N activities planned / M activities completed".
+ * Completed = passed grades. Planned = courses and activities placed in the study plan that are not passed yet
+ * (the Studyplanner export only lists future placements; passed courses come from the grades).
  */
 export function activityCounts(plan: Studyplan, grades: Grade[]) {
   const passed = new Set(grades.filter((g) => g.passed).map((g) => g.code));
   let planned = 0;
-  let completed = 0;
   for (const semester of plan.semesters) {
     for (const period of semester.periods) {
-      planned += period.courses.length + period.activities.length;
-      completed += period.courses.filter((c) => passed.has(c.code)).length;
+      planned += period.courses.filter((c) => !passed.has(c.code)).length + period.activities.length;
     }
   }
-  return { planned, completed };
+  return { planned, completed: passed.size };
 }
 
 // ---------------------------------------------------------------------------------------------------------------

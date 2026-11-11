@@ -1,12 +1,9 @@
 import SubHeader from '../components/SubHeader';
 import AnnouncementCard from '../components/AnnouncementCard';
-import type { Announcement } from '../data/types';
-
-// TODO: replace with `announcements` from app-data.json once the data is plugged in.
-const ANNOUNCEMENTS: Announcement[] = [];
+import { announcements } from '../data/appData';
 
 export default function Announcements() {
-  const items = [...ANNOUNCEMENTS].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  const items = announcements; // newest first
 
   return (
     <div className="sub-screen">
