@@ -1,0 +1,19 @@
+/* Venue card 154 x 161, border 3 dark red, radius 20 (Figma 30:172). */
+.venue-card {
+  position: relative;
+  display: block;
+  aspect-ratio: 154 / 161;
+  border: 3px solid var(--dtu-red);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.venue-card__img {
+  position: absolute;
+  max-width: none;
+}
+
+.venue-card--link:active {
+  transform: scale(0.98);
+}

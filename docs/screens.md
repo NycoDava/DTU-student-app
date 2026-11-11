@@ -153,29 +153,33 @@ FIGMA: node 163:1493. Route `/exams`.
 - Link "Source: DTU exam dates" at the bottom.
 
 ## Campus page  (SPECIFIED)
-FIGMA: <link>
-- "Food and Drinks ->": two Food Court cards (static) that open the Food screen.
-- "Library ->": "available seats now", "in the library now", "visited today" (static placeholder numbers, clearly marked as
-  "example data" in a small note; no data source yet). Link opens the Library screen (seats free/occupied: whole library, first floor, second floor).
-- Map preview at the bottom: a small MazeMap embed that is NOT interactive (`pointer-events: none`) with an "expand"
-  button in the corner that opens the Map screen.
+FIGMA: node 7:55. Route `/campus`.
+- "Food and Drinks→" opens Food. Under it the 2 LAST VISITED venues (`src/data/venues.ts`, this browser only),
+  topped up with the first venues of the list. A venue card does what it does on Food (only B101 is clickable).
+- "Library→" opens Library. LIVE numbers (`src/data/library.ts`): "available seats now" = free seats with a sensor,
+  "in the library now" = door counter, "visited today" = entries today.
+- Map preview: MazeMap iframe, not touchable, centered on the user if the browser shares the position (our blue dot),
+  else DTU Lyngby. Expand button opens `/campus/map` (in the app). Offline: Figma map screenshot + message.
 
 ## Map  (SPECIFIED)
-FIGMA: <link>
-- Full-screen official MazeMap embed (iframe), with a "collapse" button that goes back to Campus.
-  Do not try to download or copy the map data: use the official embed.
-- Embed URL (campus 89 = DTU Lyngby):
-  `https://use.mazemap.com/embed.html#v=1&campusid=89&zlevel=1&center=12.519825,55.786341&zoom=18.2&utm_medium=iframe`
-  Preview: same URL with a lower zoom (about 16). Attributes: `allow="geolocation"`, `title="Map by MazeMap"`, no border.
-- Keep the visible credit "Map by MazeMap" (link to https://www.mazemap.com/) as the embed snippet requires.
-- The iframe needs internet. Geolocation (the blue dot) needs HTTPS: it will not work on `http://<LAN-IP>:5173`, only on the
-  deployed HTTPS version (or localhost).
+FIGMA: node 30:214. Route `/campus/map`, outside the tab layout (no tab bar).
+- Full MazeMap embed (`LINKS.mazemapEmbedBase`, config=DTU) inside the black rounded frame: search, routes and
+  MazeMap's own location button. "Reduce" button top right goes back. Do not download or copy map data.
+- Keep the visible credit "Map by MazeMap" (link to `LINKS.mazemap`).
+- Geolocation needs HTTPS or localhost: on a phone through `--host` (http://192.168...) the browser refuses it,
+  so the map falls back to DTU Lyngby.
 
-## Food / Library  (DRAFT)
-- Static screens. Food: grid of venue cards (logo + name + building). Library: free/occupied counters per area.
+## Food  (SPECIFIED)
+FIGMA: 30:172 (`/campus/food`) and 157:1132 (`/campus/food/101`). Author's request: IDENTICAL to the eat@DTU app,
+so each card is a crop of the real screenshot (crop values from Figma). Only "B101 - Food Court" is clickable (opens
+the building 101 venues); the others would open the order page, not built yet.
 
----------------------------------------------------------------------------------------------------
-
+## Library  (SPECIFIED)
+FIGMA: 30:193. Route `/campus/library`. Live data from the public Smart Library API (`LINKS.smartLibrary`), through the
+Vite proxy (no CORS on the API): works with `npm run dev` / `npm run preview`, refresh every 30 s and when the page
+comes back. Without the proxy (static hosting) the last real reading is shown with "Not live, last reading".
+- Seats boxes Free (blue) / Occupied (orange) for entire library, first floor, second floor = seats with a sensor,
+  plus an occupancy bar. Links: `findit`, `libraryBooking`, `printing`.
 ## DTU page, News, Events  (DRAFT)
 - DTU page: latest news (1 with image), upcoming events (1 with image), links "Services for students" and "Contact".
 - News: `news` list (image, title, date, `badge`). Tap opens `url`. Events: `events` list (image, title, date/time, location).

@@ -26,6 +26,9 @@
   --seg-bg: #dfdada;
   --planner-bg: #f1f1f1; /* Studyplanner year blocks */
   --exam-pill-bg: #d4d4d4; /* Exam dates period picker */
+  --eat-red: #ff0000; /* "DTU" in Eat@DTU and Smart Library titles */
+  --seat-free: #0000ff; /* Library free seats */
+  --seat-occupied: #ff5100; /* Library occupied seats */
   --seg-active: #8b8b8b;
 
   /* Calendar (DTU Learn look) */

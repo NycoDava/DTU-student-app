@@ -14,6 +14,11 @@ import GpaCalculator from './screens/GpaCalculator';
 import Studyplanner from './screens/Studyplanner';
 import MyCourses from './screens/MyCourses';
 import ExamDates from './screens/ExamDates';
+import Campus from './screens/Campus';
+import Food from './screens/Food';
+import Library from './screens/Library';
+import MapScreen from './screens/MapScreen';
+import { venues, venues101 } from './data/venues';
 
 export default function App() {
   return (
@@ -35,9 +40,13 @@ export default function App() {
             <Route path="/courses/:courseId" element={<Placeholder title="Course" back />} />
             <Route path="/studyplanner" element={<Studyplanner />} />
             <Route path="/exams" element={<ExamDates />} />
-            <Route path="/campus" element={<Placeholder title="Campus" />} />
+            <Route path="/campus" element={<Campus />} />
+            <Route path="/campus/food" element={<Food venues={venues} />} />
+            <Route path="/campus/food/101" element={<Food venues={venues101} compact />} />
+            <Route path="/campus/library" element={<Library />} />
             <Route path="/dtu" element={<Placeholder title="DTU" />} />
           </Route>
+          <Route path="/campus/map" element={<MapScreen />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

@@ -1,0 +1,45 @@
+/* Food and Drinks (Figma 30:172) and Food 101 (157:1132). */
+.food .sub-header {
+  position: absolute;
+  min-height: 0;
+  padding: 0;
+}
+
+.food__title {
+  margin: 0;
+  padding-top: 39px; /* y44 */
+  text-align: center;
+  font-size: 35px;
+  font-weight: var(--font-bold);
+}
+
+.food__title span {
+  color: var(--eat-red);
+}
+
+.food__subtitle {
+  margin: 10px 0 0;
+  text-align: center;
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--color-placeholder);
+}
+
+/* Grid x28 y157, 2 columns, gap 26 x 41 */
+.food__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 41px 26px;
+  max-width: 334px;
+  margin: 31px 0 0 7px;
+}
+
+/* Building 101: gap 23 x 37, slightly lower cards (Figma 336 x 336 for 2 rows) */
+.food__grid--compact {
+  gap: 37px 23px;
+  max-width: 336px;
+}
+
+.food__grid--compact .venue-card {
+  aspect-ratio: 156.5 / 149.5;
+}

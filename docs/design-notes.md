@@ -126,3 +126,27 @@ Work from these notes; do not re-read the frames.
 - Period dropdown pill x14 y147: bg #d4d4d4, r20, pad 5/20, gap 10, shadow 0 4 2 .25, "Fall 2026" Bold 15 + chevron-down 24.
 - List x11 y197 gap 14: card 342x94, 1px #808080, r10, pad 11/18, gap 13: date "DEC\n6" Bold 20 centered;
   text Bold 15: "Course Numbers:", the course numbers / schedule groups, "Grading Deadline: 12/1 2027" in #808080.
+
+## Campus (7:55) → route `/campus` (tab map)
+- DTU logo top right (x326 y29, 47x65, same as My studies). Column x21 y93 gap 16: "Food and Drinks→" Bold 25 underlined;
+  row gap 21 of 2 venue cards 154x161, border 3 #9b0300, r20 (IMAGE: crop of the eat@DTU screenshot, assets 92d39).
+- "Library→" Bold 25 underlined (x22 y339), then Bold 20 lines with blank line between: "avaible seats now: 376",
+  "in the library now:424", "visited today: 2500".
+- Map card x21 y538 352x213, border 3 black, r20 (IMAGE: MazeMap screenshot, blue location dot) + expand icon 42
+  (ant-design arrows-alt) top right (x316 y554) on a grey rounded square.
+
+## Food and Drinks (30:172) → `/campus/food`
+- Back arrow. "Eat@" black + "DTU" red (#ff0000), Bold 35, centered y44. "Select Venue" Bold 20 #808080 centered y99.
+- Grid x28 y157 334 wide, 2 cols, gap 26 x 41, rows ~161: 6 venue cards (border 3 #9b0300, r20), each a CROP of one
+  screenshot (asset 92d39): B101 Food Court, B101 Hav a Java Central, B101 Social, B101 Food Court, SkyLab,
+  Ballerup The Canteen. Only the first (B101) is clickable → `/campus/food/101`.
+
+## Food 101 (157:1132) → `/campus/food/101`
+- Same header. Grid 336x336, 2x2, gap 23 x 37: Wicked Rabbit, Folkekøkken, Street Food, Bazaar (crops of asset 68f37).
+  Not clickable (order page not built).
+
+## Library (30:193) → `/campus/library`
+- Back arrow. "DTU" red + " Smart Libray" Bold 35 (y73). Three blocks: "Seats - Entire library" / "First floor" /
+  "Second Floor" Bold 25, under each two boxes: "Free\n\nN" blue #0000ff, "Occupied\n\nN" orange #ff5100,
+  SemiBold 20 white, r10, pad 10, gap 39.
+- Links centered Bold 15 underlined + external icon 16: "DTU Findit", "Book Group Room/Booth", "Use the Printers".

@@ -1,0 +1,72 @@
+/* Campus (Figma 7:55). See docs/design-notes.md. */
+.campus {
+  position: relative;
+  padding: 88px 16px 16px; /* "Food and Drinks" at y93 */
+}
+
+.campus__logo {
+  position: absolute;
+  top: 24px;
+  right: 15px;
+  width: 47px;
+  height: 65px;
+  object-fit: cover;
+}
+
+.campus__heading {
+  display: inline-block;
+  font-size: 25px;
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.campus__food {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.campus__venues {
+  display: grid;
+  grid-template-columns: repeat(2, 154px);
+  gap: 21px;
+}
+
+.campus__library {
+  margin-top: 38px; /* "Library" at y339 */
+  padding-left: 1px;
+}
+
+.campus__library .campus__heading {
+  margin-bottom: 12px;
+}
+
+.campus__library p {
+  margin: 0 0 23px; /* Figma: blank line between the lines */
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+}
+
+/* Map card 352 x 213, border 3 black, radius 20 */
+.campus__map {
+  position: relative;
+  width: 352px;
+  max-width: 100%;
+  height: 213px;
+  margin-top: -4px;
+  border: 3px solid #000;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.campus__expand {
+  position: absolute;
+  top: 13px;
+  right: 12px;
+  display: flex;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  align-items: center;
+  justify-content: center;
+}
