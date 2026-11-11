@@ -28,3 +28,4 @@ dist-ssr
 dtu_data.json
 public/data/app-data.real.json
 public/files/
+.claude/settings.local.json
