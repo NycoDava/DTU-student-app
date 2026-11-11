@@ -12,6 +12,7 @@ import MyStudies from './screens/MyStudies';
 import Grades from './screens/Grades';
 import GpaCalculator from './screens/GpaCalculator';
 import Studyplanner from './screens/Studyplanner';
+import MyCourses from './screens/MyCourses';
 
 export default function App() {
   return (
@@ -29,7 +30,7 @@ export default function App() {
             <Route path="/grades" element={<Grades />} />
             <Route path="/grades/list" element={<Placeholder title="List of grades" back />} />
             <Route path="/grades/calculator" element={<GpaCalculator />} />
-            <Route path="/courses" element={<Placeholder title="My Courses" back />} />
+            <Route path="/courses" element={<MyCourses />} />
             <Route path="/courses/:courseId" element={<Placeholder title="Course" back />} />
             <Route path="/studyplanner" element={<Studyplanner />} />
             <Route path="/exams" element={<Placeholder title="Exam Dates" back />} />

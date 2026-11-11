@@ -114,3 +114,15 @@ Work from these notes; do not re-read the frames.
   Under each period a pill "Register/withdraw not open" rgba(190,43,49,.6), white Light 9, r5, pad 7/5, right side.
 - Basket (y955): IMAGE (screenshot of official Studyplanner basket: header "Basket" + trash, rows: move handle, color
   square, red code + name, schedule group, trash). Build as real list.
+
+## My Courses (116:377) → route `/courses`
+- Back arrow. Search pill x23 y76 350x53, r30, white, inset shadows (0 4 6 3 .2 / 0 -4 4 0 .25), search icon 24 (x59),
+  placeholder "Search for courses" Light Italic 20 (x90).
+- List from y155, x21, gap ~21: course card 344x115 r30 = banner image (top 63px) + white bottom 52px with
+  "code name, 2026 Fall" Bold 15 (2 lines). Same card as My studies (CourseCard). Card shadow as in screenshot.
+
+## Exam dates (163:1493) → route `/exams`
+- Back arrow, "Exams Dates" Bold 25 centered (y55).
+- Period dropdown pill x14 y147: bg #d4d4d4, r20, pad 5/20, gap 10, shadow 0 4 2 .25, "Fall 2026" Bold 15 + chevron-down 24.
+- List x11 y197 gap 14: card 342x94, 1px #808080, r10, pad 11/18, gap 13: date "DEC\n6" Bold 20 centered;
+  text Bold 15: "Course Numbers:", the course numbers / schedule groups, "Grading Deadline: 12/1 2027" in #808080.
