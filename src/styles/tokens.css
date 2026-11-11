@@ -11,6 +11,7 @@
   --font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-light: 300;
   --font-regular: 400;
+  --font-semibold: 600;
   --font-bold: 700;
   --text-xs: 12px;
   --text-lg: 20px;
@@ -19,6 +20,22 @@
   --app-width: 393px;
   --frame-border: 5px;
   --frame-radius: 30px;
+
+  /* Tab bar and segmented control */
+  --tabbar-red: #be2b31;
+  --seg-bg: #dfdada;
+  --seg-active: #8b8b8b;
+
+  /* Calendar (DTU Learn look) */
+  --cal-font: 'Lato', var(--font-family);
+  --cal-text: #494c4e;
+  --cal-border: #e3e5e8;
+  --cal-border-strong: #cdd0d4;
+  --cal-head-bg: #f6f7f8;
+  --cal-weekend-bg: #f6f7f8;
+  --cal-today-bg: rgba(155, 3, 0, 0.07);
+  --cal-activity: #d4ddd5; /* event chip, green-grey */
+  --cal-deadline: #cba4c3; /* deadline chip, mauve */
 
   /* Sizes */
   --touch-target: 44px;

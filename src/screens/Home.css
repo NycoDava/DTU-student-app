@@ -1,0 +1,136 @@
+.home {
+  padding: 0 15px 16px 15px; /* Figma content x = 20px minus the 5px frame border */
+}
+
+/* Header: avatar 67 + name (Inter Bold 30), DTU logo 47 x 65 top right */
+.home__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 23px 0 0 6px; /* avatar at x 26 / y 28 in the frame */
+  height: 130px;
+}
+
+.home__profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 9px;
+  color: var(--color-text);
+  text-decoration: none;
+  min-width: 0;
+}
+
+.home__avatar {
+  width: 67px;
+  height: 67px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.home__avatar--initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--dtu-red);
+  background: #f1e6e6;
+  font-weight: var(--font-bold);
+  font-size: var(--text-lg);
+}
+
+.home__name {
+  font-size: 30px;
+  font-weight: var(--font-bold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home__logo {
+  width: 47px;
+  height: 65px;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-right: 1px;
+}
+
+.home__sections {
+  display: flex;
+  flex-direction: column;
+}
+
+.home__group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px; /* 11px minus the title padding */
+  margin-bottom: 13px;
+}
+
+.home__title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  text-decoration: underline;
+  padding: 4px 0; /* bigger tap area without changing the look */
+  white-space: nowrap;
+  letter-spacing: -0.3px; /* "Deadlines" is one letter longer than the Figma text */
+}
+
+/* Card 342 x 94, 1px #808080, radius 10 */
+.home__card {
+  width: 342px;
+  max-width: 100%;
+  min-height: 94px;
+  border: 1px solid var(--color-placeholder);
+  border-radius: 10px;
+  background: var(--color-bg);
+  padding: 20px 16px;
+  font-size: 15px;
+  font-weight: var(--font-light);
+  color: var(--color-text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.home__card--deadline {
+  border-color: var(--dtu-red);
+}
+
+.home__card--empty {
+  color: var(--color-placeholder);
+}
+
+/* Upcoming card: date block (Bold 20, centered) at x 21, text column at x 73 */
+.home__upcoming {
+  padding: 11px 12px 11px 21px;
+  gap: 18px;
+}
+
+.home__upcoming-date {
+  width: 34px;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--color-placeholder);
+}
+
+.home__upcoming-text {
+  font-size: 15px;
+  font-weight: var(--font-bold);
+}
+
+/* "Your Calendar" group: gap 31 between title, segmented control and calendar */
+.home__calendar {
+  margin-top: 24px; /* 41px in Figma minus the 17px group margin */
+  display: flex;
+  flex-direction: column;
+  gap: 31px;
+}
+
+.home__calendar-title {
+  margin: 0;
+  font-size: 25px;
+  font-weight: var(--font-bold);
+}
