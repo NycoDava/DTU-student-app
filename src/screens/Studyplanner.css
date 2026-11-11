@@ -1,0 +1,217 @@
+/* Studyplanner (Figma 27:19). See docs/design-notes.md. */
+
+.planner__programme {
+  margin: 3px 1px 0; /* Figma y95 */
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+}
+
+.planner__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 20px 0 6px 1px;
+}
+
+.planner__planned {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+}
+
+/* Same button as on Grades */
+.planner__dist-button {
+  min-height: var(--touch-target); /* Figma 34px */
+  padding: 0 10px;
+  border: none;
+  border-radius: 10px;
+  background: var(--seg-bg);
+  box-shadow: 0 4px 2px rgba(0, 0, 0, 0.25);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+/* ---- Year block: #f1f1f1, padding 17/11/29, full scroll width (x10 w372) ---- */
+.planner__year,
+.planner__basket {
+  margin: 0 -10px 14px -11px; /* Figma x10, w372 */
+  padding: 17px 11px 29px;
+  background: var(--planner-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.planner__year-label {
+  align-self: flex-start;
+  margin: 0;
+  padding: 5px 100px 5px 10px;
+  max-width: 100%;
+  background: var(--seg-bg);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.planner__term {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.planner__term-bar {
+  margin: 0 0 0;
+  height: 20px;
+  padding: 4px 9px;
+  background: var(--tabbar-red);
+  color: #fff;
+  font-size: 9px;
+  font-weight: var(--font-semibold);
+}
+
+.planner__year-total {
+  align-self: flex-end;
+  margin: 0;
+  font-size: 9px;
+  font-weight: var(--font-bold);
+  text-decoration: underline;
+}
+
+/* ---- Period ---- */
+.planner__period {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 4px;
+}
+
+.planner__period-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 5px 0 0;
+  font-size: 9px;
+  font-weight: var(--font-semibold);
+}
+
+.planner__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.planner__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 22px;
+  padding: 3px 5px;
+  background: #fff;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  font-size: 9px;
+  font-weight: 500;
+}
+
+.planner__rows > li + li,
+.planner__rows > li + li > .planner__row {
+  margin-top: -1px; /* rows share their border, like Figma */
+}
+
+.planner__row-wrap {
+  touch-action: manipulation; /* one-finger scroll still works; drag starts after a long press */
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+.planner__row-wrap--ghost {
+  opacity: 0.3;
+}
+
+.planner__row--movable {
+  min-height: var(--touch-target);
+  cursor: grab;
+}
+
+.planner__row--lifted {
+  cursor: grabbing;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  border-color: var(--tabbar-red);
+}
+
+.planner__row--empty {
+  font-weight: var(--font-light);
+  font-style: italic;
+}
+
+.planner__name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* Course-type square. The data has no type per course yet, so it is drawn empty (like the official basket). */
+.planner__square {
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+  border: 1px solid rgba(128, 128, 128, 0.8);
+  background: #fff;
+}
+
+/* Columns on the right: Placement / Status / ECTS / grid icon */
+.planner__cols {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: 46px 32px 22px 12px;
+  align-items: center;
+  justify-items: center;
+}
+
+.planner__cols--past {
+  grid-template-columns: 40px 26px;
+}
+
+.planner__placement {
+  font-weight: var(--font-light);
+}
+
+.planner__status {
+  display: flex;
+}
+
+/* Pill under each open period */
+.planner__register {
+  align-self: flex-end;
+  margin: 0;
+  padding: 7px 5px;
+  border-radius: 5px;
+  background: rgba(190, 43, 49, 0.6);
+  color: #fff;
+  font-size: 9px;
+  font-weight: var(--font-light);
+}
+
+/* Drop targets */
+.planner__drop--over {
+  outline: 2px dashed var(--tabbar-red);
+  outline-offset: 3px;
+}
+
+/* ---- Basket ---- */
+.planner__basket {
+  margin-bottom: 24px;
+}
+
+.planner__basket-title {
+  margin: 0;
+  padding: 8px 10px;
+  background: var(--seg-bg);
+  font-size: 15px;
+  font-weight: var(--font-bold);
+}

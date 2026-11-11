@@ -124,9 +124,21 @@ FIGMA: <link>
   a `mailto:` link. NEVER load profile photos.
 - Real names of other people only in local `app-data.real.json`. Deployed data uses `ANON=1` (fictional names).
 
-## Study planner  (DRAFT)
-- Do NOT rebuild the official site. A list per semester (`studyplan.semesters`): course code, name, ECTS, schedule group;
-  below, the "basket" and a total ECTS bar (planned vs required). Link "Open Studyplanner" to the official site.
+## Study planner  (SPECIFIED)
+FIGMA: node 27:19 (see design-notes). Route `/studyplanner`. Logic in `src/lib/studyplan.ts` (`buildBoard`, `placeItems`).
+- Title = `user.programme.name` (currentUser, editable, not static). "N ECTS planned" = ECTS of everything placed in a
+  period (not the basket); updates while dragging. "Show ECTS distribution" opens the same sheet as Grades.
+- Years -> terms (semester number) -> 2 periods each: odd semester = "13 weeks autumn Y" + "January Y+1", even =
+  "13 weeks spring Y+1" + "June Y+1". Period `type` 3 = 13 weeks, 4 = 3 weeks. If `studyplan.semesters` is empty,
+  the semesters come from `user.programme` (start year, number of semesters), so all periods show up empty.
+- Period status from today: past (ended) -> VIEW 1 "Winter exam 2025/2026 ... Result ECTS", read only, filled with
+  passed grades (`v25` -> autumn 2025, `s26` -> spring 2026) + planned items. Current / future -> VIEW 2
+  "Placement Status ECTS", pill "Register/withdraw not open". Status column = check icon if the course is passed.
+- Empty period: "Nothing planned for this period". Basket: real list (`studyplan.basket`), empty: "Nothing in the basket yet".
+- Drag & drop (@dnd-kit/core): hold 250 ms on touch (5 px drag with mouse), drop into a current/future period or back
+  into the basket. Past periods and passed courses never move. Moves saved in localStorage (`studyplanner.moves.v1`),
+  this browser only (prototype, not sent to DTU).
+- Color square: the data has no course type per course, so it is drawn empty.
 
 ## Exam dates  (DRAFT)
 - `examDates` is empty in real data (no source). Do not invent dates. Empty state:

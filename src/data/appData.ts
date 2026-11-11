@@ -20,7 +20,7 @@ export const studyplan: Studyplan = {
   semesters: [],
   basket: [],
   ectsByType: [],
-  uncategorized: 0,
+  uncategorized: { completed: 0, planned: 0 },
 };
 
 export const courses: Course[] = [];

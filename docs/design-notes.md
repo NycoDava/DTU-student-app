@@ -98,3 +98,19 @@ Work from these notes; do not re-read the frames.
 - Back arrow, title "GPA calculator" Bold 20 centered y50. Column x21 y112 gap 15, Bold 20: "Current GPA: x", "Current ECTS
   passed: n", "Expected grade: _", "Ects expected: _". Button "Calculate" 255x34 radius 30 Figma teal #43cab4, white Bold 20,
   drop shadow, centered y285. Result "Expected GPA: 9.12" Bold 20 at y369.
+
+## Studyplanner (27:19) → route `/studyplanner`
+- Back arrow (x23 y26). Programme title Bold 20 (x17 y95, w359, wraps): "Msc in Human Centred Artificial Inteligence".
+  Row y164: "120 ECTS planned" Bold 20 left + button "Show ECTS distribution" (same as Grades: #dfdada, r10, Medium 10, h34, shadow).
+- Scroll area x10 w372 from y199. Each YEAR block: bg #f1f1f1, padding 17/11/29, gap 14.
+  Year header: bg #dfdada, Medium 10, pad 5/100/5/10: "Year of study 1 September 2025 - 31 August 2026".
+  Term bar: #be2b31 h20 w350, SemiBold 9 white "1. Term" (number = semester number).
+  Footer: "ECTS in this year of study: 55" Bold 9 underlined, right aligned.
+- VIEW 1 (completed): heading row SemiBold 9 "Winter exam 2025/2026 ... Result  ECTS"; rows w350 white, border 1px
+  rgba(128,128,128,.5), pad 3/5, stacked with no gap: 13px color square (course type color) + "code name" Medium 9, ECTS right.
+- VIEW 2 (ongoing/future): per PERIOD a heading row "13 weeks autumn 2026" / "January 2027" SemiBold 9 + right group
+  "Placement  Status  ECTS" + 12px 2x2 grid icon. Rows: square + name (w178), placement Light 9 ("E5B", "JAN"),
+  check icon 14px (status), ECTS Medium 9. Empty period: "Nothing was planned for this period" Light Italic 9.
+  Under each period a pill "Register/withdraw not open" rgba(190,43,49,.6), white Light 9, r5, pad 7/5, right side.
+- Basket (y955): IMAGE (screenshot of official Studyplanner basket: header "Basket" + trash, rows: move handle, color
+  square, red code + name, schedule group, trash). Build as real list.

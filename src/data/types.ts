@@ -71,17 +71,29 @@ export type Grade = {
   period: string;
 };
 
-export type StudyplanCourse = { code: string; name: string; ects: number; scheduleGroup: string | null };
-export type StudyplanActivity = { name: string; ects: number };
+/** Studyplanner names come in both languages. */
+export type LocalizedName = { English: string; Danish: string };
+
+export type StudyplanCourse = { code: string; name: LocalizedName; ects: number; scheduleGroup: string | null };
+export type StudyplanActivity = { name: LocalizedName; ects: number };
+
+/** One period of a semester. `type` 3 = 13-week period, 4 = 3-week period (January / June). */
+export type StudyplanPeriod = {
+  type: number;
+  year: number;
+  courses: StudyplanCourse[];
+  activities: StudyplanActivity[];
+};
+
+export type BasketItem =
+  | ({ kind: 'course' } & StudyplanCourse)
+  | ({ kind: 'activity'; scheduleGroup?: string | null } & StudyplanActivity);
 
 export type Studyplan = {
   requiredEcts: number;
-  semesters: {
-    number: number;
-    year: number;
-    periods: { type: string; year: number; courses: StudyplanCourse[]; activities: StudyplanActivity[] }[];
-  }[];
-  basket: StudyplanCourse[];
+  semesters: { number: number; year: number; periods: StudyplanPeriod[] }[];
+  basket: BasketItem[];
   ectsByType: EctsByType[];
-  uncategorized: number;
+  /** ECTS not assigned to any course type. */
+  uncategorized: { completed: number; planned: number };
 };

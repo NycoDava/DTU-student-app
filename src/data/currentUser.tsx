@@ -12,6 +12,8 @@ export type CurrentUser = {
   photoUrl: string | null;
   /** The default PNG already has the red ring drawn in; uploaded photos get it from CSS. */
   photoHasRing: boolean;
+  /** Degree programme, shown as the Studyplanner title. Used to draw the semesters while the study plan is empty. */
+  programme: { name: string; startYear: number; semesters: number };
 };
 
 const DEFAULT_USER: CurrentUser = {
@@ -19,6 +21,7 @@ const DEFAULT_USER: CurrentUser = {
   studentId: 's253463',
   photoUrl: '/images/profile-photo.png',
   photoHasRing: true,
+  programme: { name: 'MSc in Human Centred Artificial Intelligence', startYear: 2025, semesters: 4 },
 };
 
 type UserContextValue = { user: CurrentUser; setUser: (user: CurrentUser) => void };

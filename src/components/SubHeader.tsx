@@ -5,7 +5,7 @@ import './SubScreen.css';
  * Header of every sub-screen: red back arrow (top left) + title.
  * `stacked` puts the title on its own row under the arrow (long titles, e.g. Study Announcements).
  */
-export default function SubHeader({ title, stacked = false }: { title: string; stacked?: boolean }) {
+export default function SubHeader({ title, stacked = false }: { title?: string; stacked?: boolean }) {
   const navigate = useNavigate();
 
   function goBack() {
@@ -19,7 +19,7 @@ export default function SubHeader({ title, stacked = false }: { title: string; s
       <button type="button" className="sub-header__back" onClick={goBack} aria-label="Back">
         <img src="/icons/back.svg" width={36} height={36} alt="" />
       </button>
-      <h1 className="sub-header__title">{title}</h1>
+      {title && <h1 className="sub-header__title">{title}</h1>}
     </header>
   );
 }

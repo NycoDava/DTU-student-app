@@ -62,8 +62,9 @@ export default function EctsDistribution({ studyplan, onClose }: { studyplan: St
 
   const types = studyplan.ectsByType;
   const mine: Slice[] = types.map((t) => ({ key: t.typeId, name: t.name, color: t.color, value: t.completed + t.planned }));
-  if (studyplan.uncategorized > 0) {
-    mine.push({ key: 'other', name: 'Other', color: OTHER_COLOR, value: studyplan.uncategorized });
+  const other = studyplan.uncategorized.completed + studyplan.uncategorized.planned;
+  if (other > 0) {
+    mine.push({ key: 'other', name: 'Other', color: OTHER_COLOR, value: other });
   }
   const programme: Slice[] = types.map((t) => ({ key: t.typeId, name: t.name, color: t.color, value: t.expected }));
 
