@@ -25,3 +25,27 @@ export type Announcement = {
   isPinned: boolean;
   url: string | null;
 };
+
+export type Course = {
+  id: string;
+  code: string;
+  term: string;
+  name: string;
+  isActive: boolean;
+  startDate: string | null;
+  endDate: string | null;
+  imageUrl: string | null;
+  /** File name downloaded by the scraper; served from /course-images/<file name>. */
+  localImage: string | null;
+  url: string | null;
+};
+
+/** One slice of the ECTS pie (`studyplan.ectsByType`). */
+export type EctsByType = {
+  typeId: string;
+  name: string;
+  color: string;
+  expected: number;
+  completed: number;
+  planned: number;
+};

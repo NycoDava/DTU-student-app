@@ -8,6 +8,7 @@ import Placeholder from './screens/Placeholder';
 import Events from './screens/Events';
 import Announcements from './screens/Announcements';
 import Profile from './screens/Profile';
+import MyStudies from './screens/MyStudies';
 
 export default function App() {
   return (
@@ -21,7 +22,12 @@ export default function App() {
             <Route path="/announcements" element={<Announcements />} />
             <Route path="/events" element={<Events />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/student" element={<Placeholder title="Grades and progress" />} />
+            <Route path="/student" element={<MyStudies />} />
+            <Route path="/grades" element={<Placeholder title="Grades and ECTS" back />} />
+            <Route path="/courses" element={<Placeholder title="My Courses" back />} />
+            <Route path="/courses/:courseId" element={<Placeholder title="Course" back />} />
+            <Route path="/studyplanner" element={<Placeholder title="Studyplanner" back />} />
+            <Route path="/exams" element={<Placeholder title="Exam Dates" back />} />
             <Route path="/campus" element={<Placeholder title="Campus" />} />
             <Route path="/dtu" element={<Placeholder title="DTU" />} />
           </Route>

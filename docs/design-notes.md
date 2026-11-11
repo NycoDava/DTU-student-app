@@ -64,3 +64,14 @@ Work from these notes; do not re-read the frames.
 - Back arrow, then title "Study Announcements" Bold 25 centered at y71 (own row, below the arrow).
 - List x21 y127 w342, gap 26. Card 342x94, 1px #808080 radius 10, padding 20/16, text Light 15:
   "Study Announcement <code>:" line then title (wraps).
+
+## My studies — tab "school" (7:22) → route `/student`
+- DTU logo 47x65 top right (x326 y29), same as Home. No back arrow (main tab screen).
+- "Grades and ECTS→" Bold 25 underlined, x22 y64.
+- Row at y115: pie 112x112 (x25) — Figma shows an IMAGE (4 slices with "NN ECTS" labels, small green center circle);
+  reference only. Text "Ects completed:" / "65/120" Bold 20 at x167 y137.
+- Full-width 1px black divider at y244 (x3 → 388).
+- "My Courses→" Bold 25 underlined x23 y252. Two course cards 344x115, radius 30, drop shadow: banner image fills the top,
+  white bottom strip 52 tall (rounded bottom 30), text Bold 15 "code name, term" padding 10. Gap 13 between cards.
+- "Studyplanner→" (y585) and "Exams Dates→" (y639) Bold 20 underlined, x18.
+- "Study Guidance" Bold 20 underlined + external-link icon 21 (`public/icons/external-link.svg`), centered at y721.

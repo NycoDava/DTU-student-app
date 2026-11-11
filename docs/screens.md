@@ -48,7 +48,13 @@ FIGMA: <link>  (3 variants: All / Deadlines / Activities)
 
 ---------------------------------------------------------------------------------------------------
 
-## Student page: Grades and progress  (SPECIFIED)
+## My studies (tab "school", route `/student`)  (SPECIFIED)
+FIGMA: node 7:22. Hub: "Grades and ECTS→" (/grades), ECTS pie from `studyplan.ectsByType` (slice color = type color
+from Studyplanner) + "Ects completed: passed/required", "My Courses→" (/courses) with the 2 LAST VISITED courses
+(`src/data/recentCourses.ts`, fallback: first active courses), "Studyplanner→" (/studyplanner), "Exams Dates→" (/exams),
+"Study Guidance" external link. Until data is plugged in: grey pie, 0/120, two empty course slots.
+
+## Grades and progress (route `/grades`, behind "Grades and ECTS→")  (SPECIFIED)
 FIGMA: <link>  (this is the "Grades / Progress" screen, with the chart)
 - Top: "Progress" bar with `summary.ectsPassed / summary.ectsRequired` and the text "55/120 ects".
 - Small donut of ECTS by category (see "ECTS distribution") and the button "Show ECTS distribution". Link "StudyPlanner ->"

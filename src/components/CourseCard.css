@@ -1,0 +1,53 @@
+/* Course card 344 x 115, radius 30, drop shadow; white label strip 52 tall at the bottom. */
+.course-card {
+  position: relative;
+  display: block;
+  width: 344px;
+  max-width: 100%;
+  height: 115px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.course-card__banner {
+  height: 63px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--dtu-red), var(--tabbar-red) 60%, #e07a5f);
+}
+
+.course-card__banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.course-card__code {
+  color: #fff;
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+}
+
+.course-card__label {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  background: var(--color-bg);
+  font-size: 15px;
+  font-weight: var(--font-bold);
+  line-height: 1.2;
+  overflow: hidden;
+}
+
+.course-card--empty .course-card__banner {
+  background: var(--seg-bg);
+}
+
+.course-card--empty .course-card__label {
+  color: var(--color-placeholder);
+}
