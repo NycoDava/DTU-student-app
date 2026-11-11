@@ -1,0 +1,190 @@
+/* Sub-pages of the DTU tab: News, Events, Services, Contact, service info pages. See docs/design-notes.md. */
+
+/* ---- News / Events lists ---- */
+.dtu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 12px 0 12px; /* list at x33, frame content starts at x21 */
+}
+
+.dtu-list--news {
+  gap: 31px;
+}
+
+/* ---- Services: tiles 321 x 106, r10, gap 36 ---- */
+.services {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  padding: 0 14px; /* x35 */
+}
+
+.service-tile {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 106px;
+  padding: 0 11px 14px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+}
+
+.service-tile--abroad {
+  background: var(--service-abroad);
+}
+.service-tile--career {
+  background: var(--service-career);
+}
+.service-tile--life {
+  background: var(--service-life);
+}
+.service-tile--wellbeing {
+  background: var(--service-wellbeing);
+}
+
+/* ---- Contact: headings Bold 20, body 15 ---- */
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 0 0 0 13px; /* x34 */
+  font-size: 15px;
+}
+
+.contact h2 {
+  margin: 0 0 6px;
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+}
+
+.contact p,
+.contact ul {
+  margin: 0;
+}
+
+.contact ul {
+  padding-left: 22px;
+}
+
+.contact a {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.contact__hours {
+  font-size: var(--text-lg);
+  font-weight: 500;
+}
+
+.contact__medium {
+  font-weight: 500;
+}
+
+/* ---- Info pages (Career Hub, Study Abroad, Student Life, Wellbeing) ---- */
+.info-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0 2px;
+  font-size: 15px;
+  line-height: normal;
+}
+
+.info-page h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: var(--font-bold);
+}
+
+.info-page p,
+.info-page ul {
+  margin: 0;
+}
+
+.info-page ul {
+  padding-left: 22px;
+}
+
+.info-page a {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.info-page__gap {
+  margin-top: 18px !important;
+}
+
+.info-page__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Full-bleed images (Student Life, Wellbeing span almost the whole frame) */
+.info-page__img--bleed {
+  width: calc(100% + 28px);
+  max-width: none;
+  margin: 0 -14px;
+}
+
+/* Career Hub: logo right under the back arrow (y55) */
+.info-page--career {
+  margin-top: -40px;
+}
+
+.info-page__logo {
+  align-self: flex-start;
+  margin-left: 2px;
+  height: auto;
+  max-width: 100%;
+}
+
+.info-page__lead {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  font-style: italic;
+}
+
+.info-page--abroad {
+  gap: 22px;
+}
+
+.info-page__more {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--touch-target);
+  font-weight: var(--font-bold);
+}
+
+.info-page--life {
+  gap: 14px;
+}
+
+.info-page__link {
+  font-weight: var(--font-semibold);
+  font-style: italic;
+}
+
+.info-page--wellbeing {
+  gap: 26px;
+}
+
+.info-page__intro {
+  font-weight: 500;
+  color: var(--color-placeholder);
+}
+
+.info-page__semibold h2 {
+  font-weight: var(--font-semibold);
+}
+
+.info-page__center {
+  text-align: center;
+  font-weight: var(--font-semibold);
+}

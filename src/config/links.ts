@@ -40,5 +40,7 @@ export const LINKS = {
   // Exams (official timetable, copied into src/data/examDates.ts)
   examDates: 'https://student.dtu.dk/en/exam/exam-dates',
 
-  // TODO: author to add: CampusNet grades URL, study abroad, student life
+  studyAbroad: 'https://www.dtu.dk/english/education/study-abroad', // TODO verify
+
+  // TODO: author to add: CampusNet grades URL
 } as const;

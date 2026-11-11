@@ -30,6 +30,12 @@
   --seat-free: #0000ff; /* Library free seats */
   --seat-occupied: #ff5100; /* Library occupied seats */
   --seg-active: #8b8b8b;
+  /* DTU > Services for students tiles (Figma 45:154) */
+  --service-abroad: #ff6600;
+  --service-career: #008000;
+  --service-life: #00c0e8;
+  --service-wellbeing: #ffc0cb;
+  --shadow-card: 0 4px 4px rgba(0, 0, 0, 0.25);
 
   /* Calendar (DTU Learn look) */
   --cal-font: 'Lato', var(--font-family);

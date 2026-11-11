@@ -18,6 +18,11 @@ import Campus from './screens/Campus';
 import Food from './screens/Food';
 import Library from './screens/Library';
 import MapScreen from './screens/MapScreen';
+import Dtu from './screens/Dtu';
+import { DtuEvents, DtuNews } from './screens/DtuLists';
+import Services from './screens/Services';
+import Contact from './screens/Contact';
+import { CareerHub, StudentLife, StudyAbroad, Wellbeing } from './screens/ServicePages';
 import { venues, venues101 } from './data/venues';
 
 export default function App() {
@@ -44,7 +49,15 @@ export default function App() {
             <Route path="/campus/food" element={<Food venues={venues} />} />
             <Route path="/campus/food/101" element={<Food venues={venues101} compact />} />
             <Route path="/campus/library" element={<Library />} />
-            <Route path="/dtu" element={<Placeholder title="DTU" />} />
+            <Route path="/dtu" element={<Dtu />} />
+            <Route path="/dtu/news" element={<DtuNews />} />
+            <Route path="/dtu/events" element={<DtuEvents />} />
+            <Route path="/dtu/services" element={<Services />} />
+            <Route path="/dtu/services/abroad" element={<StudyAbroad />} />
+            <Route path="/dtu/services/career" element={<CareerHub />} />
+            <Route path="/dtu/services/life" element={<StudentLife />} />
+            <Route path="/dtu/services/wellbeing" element={<Wellbeing />} />
+            <Route path="/dtu/contact" element={<Contact />} />
           </Route>
           <Route path="/campus/map" element={<MapScreen />} />
           <Route path="*" element={<Navigate to="/" replace />} />

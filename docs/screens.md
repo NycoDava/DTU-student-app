@@ -180,7 +180,9 @@ Vite proxy (no CORS on the API): works with `npm run dev` / `npm run preview`, r
 comes back. Without the proxy (static hosting) the last real reading is shown with "Not live, last reading".
 - Seats boxes Free (blue) / Occupied (orange) for entire library, first floor, second floor = seats with a sensor,
   plus an occupancy bar. Links: `findit`, `libraryBooking`, `printing`.
-## DTU page, News, Events  (DRAFT)
+## DTU page, News, Events  (SPECIFIED, built)
+- Routes: `/dtu`, `/dtu/news`, `/dtu/events`, `/dtu/services` (tiles open in-app pages `/dtu/services/abroad|career|life|wellbeing`,
+  which link out), `/dtu/contact`. News/events are read at runtime from `/data/app-data.json` (`src/data/dtuFeed.ts`).
 - DTU page: latest news (1 with image), upcoming events (1 with image), links "Services for students" and "Contact".
 - News: `news` list (image, title, date, `badge`). Tap opens `url`. Events: `events` list (image, title, date/time, location).
   Tap opens `url`. Fallback gray block if `imageUrl` fails.

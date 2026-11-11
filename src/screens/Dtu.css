@@ -1,0 +1,50 @@
+/* DTU page (Figma 9:124). See docs/design-notes.md. */
+.dtu {
+  position: relative;
+  padding: 89px 16px 16px; /* "News→" at y94 */
+}
+
+.dtu__logo {
+  position: absolute;
+  top: 24px;
+  right: 15px;
+  width: 47px;
+  height: 65px;
+  object-fit: cover;
+}
+
+.dtu__block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding-left: 5px;
+}
+
+.dtu__block--events {
+  margin-top: 40px; /* events heading at y400 */
+  padding-left: 2px;
+  gap: 8px;
+}
+
+.dtu__heading {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  font-size: 25px;
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.dtu__heading--small {
+  font-size: var(--text-lg);
+}
+
+.dtu__links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 26px; /* "Services for students" at y663 */
+  padding-left: 5px;
+}

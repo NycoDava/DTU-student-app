@@ -97,3 +97,28 @@ export type Studyplan = {
   /** ECTS not assigned to any course type. */
   uncategorized: { completed: number; planned: number };
 };
+
+/** `news[]`: dtu.dk news. */
+export type NewsItem = {
+  id: string;
+  title: string;
+  url: string;
+  teaser: string;
+  publishedAt: string;
+  imageUrl: string | null;
+  badge: string | null;
+};
+
+/** `events[]`: dtu.dk calendar events. */
+export type DtuEvent = {
+  id: string;
+  title: string;
+  url: string;
+  teaser: string;
+  startsAt: string;
+  endsAt: string | null;
+  location: string | null;
+  organizers: string | null;
+  imageUrl: string | null;
+  subjects: string[];
+};

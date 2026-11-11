@@ -150,3 +150,41 @@ Work from these notes; do not re-read the frames.
   "Second Floor" Bold 25, under each two boxes: "Free\n\nN" blue #0000ff, "Occupied\n\nN" orange #ff5100,
   SemiBold 20 white, r10, pad 10, gap 39.
 - Links centered Bold 15 underlined + external icon 16: "DTU Findit", "Book Group Room/Booth", "Use the Printers".
+
+## DTU page (9:124) → route `/dtu` (tab DTU)
+- DTU logo top right (same as Campus). Column x26 y94: "News→" Bold 25 underlined, gap 16, news card 322x229 r15
+  shadow 0 4 4 .25: image cover; red #9b0300 badge (Medium 13 black, h26, pad 10, r top-right 15) sitting on the image
+  bottom-left at y151; white caption bar at y177 (SemiBold 13, pad 10, r bottom 15).
+- "Upcoming Events in DTU→" Bold 25 underlined (y400). Event card 333 wide: image h156 r-top 10, white caption h35
+  (SemiBold 15 centered, r-bottom 10, drop shadow 0 4 2 .25).
+- "Services for students→" Bold 20 underlined (y663), "Contacts→" Bold 20 underlined (y708).
+
+## News from DTU (116:336) → `/dtu/news`
+- Back arrow, title "News from DTU" Bold 25 centered y40. Scroll list x34 y89 w326, gap 31, same news card as DTU page
+  (caption Medium 13 here instead of SemiBold).
+
+## Events in DTU (116:351) → `/dtu/events`
+- Back arrow, title "Events in DTU" Bold 25 y44. List x33 y90 w326 gap 12: event card image h178 + caption Medium 15.
+
+## Services for students (45:154) → `/dtu/services`
+- Back arrow, title Bold 25 centered y90. Column x35 y145 w321 gap 36: four tiles 321x106 r10, label SemiBold 15 white
+  bottom-left (x~11, y74) + white icon 24 right of the label: Study Abroad #ff6600 (plane, public/images/dtu/icon-plane),
+  "DTU Careeh Hub" (typo) green #008000 (job search), Student Life #00c0e8 (party), Well being & Support pink #ffc0cb (heart).
+
+## Contact (45:127) → `/dtu/contact`
+- Back arrow, title "Contact" Bold 25 centered y65. Text block x34 y114 w339: headings Bold 20, body Regular/Medium 15,
+  bullets. Main address + tel + "Send e-mail (via contact form)" link; "Opening hours of the reception:" Bold 20 +
+  "Monday - Friday: 8 a.m. – 4 p.m." Medium 20; Information regarding Studies (OSS link + address, tel, fax);
+  Information regarding Finance and Accounting (address, tel, fax).
+
+## Career Hub (224:1162), Study Abroad (224:1270), Student Life (224:1324), Wellbeing (224:1216)
+- All: back arrow + scrolling content column, tab bar. Static images in public/images/dtu/.
+- Career Hub: logo image 253x69 (careerhub-logo.png) at x23 y55, gap 20; SemiBold Italic 20 intro; Regular 15 text with
+  "DTU Career Hub" underlined links, bullets, Bold 15 subheading.
+- Study Abroad: title "Why go on Exchange?" Bold 25 centered (screenshot shows a yellow glow, not in layers), image
+  344x206 full width, gap 22; 4 Bold 15 headings + Regular 15 paragraphs; "Find out more" Bold 15 underlined + external
+  icon 16 (centered).
+- Student Life: title "Student Life at DTU" Bold 25, image 407x229 full width, gap 14; Bold 15 headings + Regular 15
+  text; SemiBold Italic underlined links "Check out your options on DTU Sport" (dtuSport), "Check out PF" (pf).
+- Wellbeing: title "Wellbeing & Support" Bold 25, intro Medium 15 #808080, image 1466x829 full width, gap 26; 4 SemiBold
+  15 headings + Regular 15 text; centered SemiBold 15 underlined link "DTU Help and Guidance" (studentHelp).
