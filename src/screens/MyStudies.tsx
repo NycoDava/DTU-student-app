@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import EctsPie from '../components/EctsPie';
 import CourseCard from '../components/CourseCard';
-import { allCourses, studyProgress } from '../data/studyProgress';
+import { courses as allCourses, studyplan, summary } from '../data/appData';
 import { recentCourses } from '../data/recentCourses';
 import { LINKS } from '../config/links';
 import './MyStudies.css';
@@ -20,11 +20,11 @@ export default function MyStudies() {
       </Link>
 
       <div className="studies__ects">
-        <EctsPie data={studyProgress.byType} />
+        <EctsPie data={studyplan.ectsByType} />
         <p className="studies__ects-text">
           Ects completed:
           <br />
-          {studyProgress.completed}/{studyProgress.required}
+          {summary.ectsPassed}/{summary.ectsRequired}
         </p>
       </div>
 

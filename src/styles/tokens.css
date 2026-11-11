@@ -37,6 +37,14 @@
   --cal-activity: #d4ddd5; /* event chip, green-grey */
   --cal-deadline: #cba4c3; /* deadline chip, mauve */
 
+  /* Charts (grade trend: blue grade line, orange GPA line, as in the Figma image) */
+  --chart-grade: #2f6fdb;
+  --chart-gpa: #e07b2a;
+  --chart-band: #f1f4f9;
+  --chart-grid: #e6e6e6;
+  --bar-track: #d9d9d9; /* progress bar track */
+  --color-warning: #b35c00; /* e.g. more ECTS than the programme expects */
+
   /* Sizes */
   --touch-target: 44px;
 }

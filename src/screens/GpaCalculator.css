@@ -1,0 +1,122 @@
+/* "GPA calculator" (Figma 44:40). See docs/design-notes.md. */
+
+.gpa-calc .sub-header {
+  min-height: 0;
+  padding-top: 24px; /* title at y50 */
+}
+
+.gpa-calc .sub-header__title {
+  font-size: var(--text-lg);
+}
+
+.gpa-calc__form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 36px;
+}
+
+.gpa-calc__line {
+  margin: 0;
+  padding: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+}
+
+.gpa-calc__group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.gpa-calc__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.gpa-calc__chip {
+  min-width: var(--touch-target);
+  height: var(--touch-target);
+  padding: 0 8px;
+  border: none;
+  border-radius: 10px;
+  background: var(--seg-bg);
+  font: inherit;
+  font-size: 15px;
+  font-weight: var(--font-semibold);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.gpa-calc__chip--active {
+  background: var(--color-placeholder);
+  color: #fff;
+}
+
+.gpa-calc__stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gpa-calc__stepper button {
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border: none;
+  border-radius: 10px;
+  background: var(--seg-bg);
+  font: inherit;
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.gpa-calc__stepper input {
+  width: 70px;
+  height: var(--touch-target);
+  border: 1px solid var(--color-text);
+  border-radius: 5px;
+  text-align: center;
+  font: inherit;
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+}
+
+/* Button 255 x 34, radius 30, white Bold 20 (Figma teal → DTU red) */
+.gpa-calc__submit {
+  align-self: center;
+  width: 255px;
+  max-width: 100%;
+  height: var(--touch-target);
+  margin-top: 14px;
+  border: none;
+  border-radius: 30px;
+  background: var(--tabbar-red);
+  box-shadow: 0 4px 2px rgba(0, 0, 0, 0.25);
+  font: inherit;
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: #fff;
+  cursor: pointer;
+}
+
+.gpa-calc__result {
+  margin: 40px 0 0 11px;
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+}
+
+.gpa-calc__result strong {
+  font-size: 30px;
+}
+
+.gpa-calc__result--error {
+  font-size: 15px;
+  font-weight: var(--font-regular);
+  color: var(--dtu-red);
+}

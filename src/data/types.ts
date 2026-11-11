@@ -49,3 +49,39 @@ export type EctsByType = {
   completed: number;
   planned: number;
 };
+
+export type Summary = {
+  gpa: number;
+  ectsPassed: number;
+  /** Planned ECTS still to take (not a total). */
+  ectsPlanned: number;
+  ectsRequired: number;
+  coursesCount: number;
+  nextDeadline: string | null;
+};
+
+export type Grade = {
+  code: string;
+  title: string;
+  ects: number;
+  /** "12", "10", "7", "4", "02", "00", "-3", or "IB", "BE", ... */
+  grade: string;
+  passed: boolean;
+  /** Exam period, e.g. "v25" (winter 2025), "s26" (summer/spring 2026). */
+  period: string;
+};
+
+export type StudyplanCourse = { code: string; name: string; ects: number; scheduleGroup: string | null };
+export type StudyplanActivity = { name: string; ects: number };
+
+export type Studyplan = {
+  requiredEcts: number;
+  semesters: {
+    number: number;
+    year: number;
+    periods: { type: string; year: number; courses: StudyplanCourse[]; activities: StudyplanActivity[] }[];
+  }[];
+  basket: StudyplanCourse[];
+  ectsByType: EctsByType[];
+  uncategorized: number;
+};
