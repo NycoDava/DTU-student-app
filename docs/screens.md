@@ -140,11 +140,16 @@ FIGMA: node 27:19 (see design-notes). Route `/studyplanner`. Logic in `src/lib/s
   this browser only (prototype, not sent to DTU).
 - Color square: the data has no course type per course, so it is drawn empty.
 
-## Exam dates  (DRAFT)
-- `examDates` is empty in real data (no source). Do not invent dates. Empty state:
-  "Exam dates are not available in this prototype" + link to the official exam page.
-
----------------------------------------------------------------------------------------------------
+## Exam dates  (SPECIFIED)
+FIGMA: node 163:1493. Route `/exams`.
+- Author's decision: the official DTU timetable (`LINKS.examDates`) is static and the same for every student, so it
+  is copied into `src/data/examDates.ts` (10 periods, sorted by date). Not invented; re-copy when DTU updates it.
+  `app-data.json` `examDates[]` stays empty (no personal exam data).
+- Period picker (pill, grows with the text): the DTU period names ("Winter exam December 2026 – January 2027",
+  "Ordinary summer exam and re-exam May – June 2027", ...). Only periods not over yet; the first is selected.
+- Card exactly as Figma (342x94): "DEC / 6", "Course Numbers:" + the cell text, "Grading Deadline: 12/1 2027" grey.
+  Long course lists are cut at 2 lines; tapping such a card expands it. Days already past are faded.
+- Link "Source: DTU exam dates" at the bottom.
 
 ## Campus page  (SPECIFIED)
 FIGMA: <link>

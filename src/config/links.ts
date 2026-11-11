@@ -32,5 +32,8 @@ export const LINKS = {
     'https://use.mazemap.com/embed.html#v=1&campusid=89&zlevel=1&center=12.519825,55.786341&zoom=18.2&utm_medium=iframe',
   mazemap: 'https://www.mazemap.com/',
 
-  // TODO: author to add: CampusNet grades URL, exam page, study abroad, student life
+  // Exams (official timetable, copied into src/data/examDates.ts)
+  examDates: 'https://student.dtu.dk/en/exam/exam-dates',
+
+  // TODO: author to add: CampusNet grades URL, study abroad, student life
 } as const;

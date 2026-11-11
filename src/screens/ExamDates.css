@@ -1,0 +1,138 @@
+/* Exam dates (Figma 163:1493). See docs/design-notes.md. */
+
+/* ---- Period picker: pill #d4d4d4, r20, shadow, Bold 15 + chevron. Grows with the period name. ---- */
+.exams__picker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  max-width: calc(100% + 7px);
+  min-height: var(--touch-target);
+  margin: 46px 0 16px -7px; /* Figma x14 y147 */
+  padding: 6px 8px 6px 20px;
+  border-radius: 22px;
+  background: var(--exam-pill-bg);
+  box-shadow: 0 4px 2px rgba(0, 0, 0, 0.25);
+  font-size: 15px;
+  font-weight: var(--font-bold);
+  cursor: pointer;
+}
+
+.exams__picker:focus-within {
+  outline: 2px solid var(--tabbar-red);
+  outline-offset: 2px;
+}
+
+.exams__picker-text {
+  line-height: 1.25;
+}
+
+.exams__picker-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* The real <select> covers the pill, invisible: native list on phones, keyboard friendly. */
+.exams__picker select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  font-size: 16px; /* no zoom on iOS */
+  cursor: pointer;
+}
+
+/* ---- Cards 342 x 94, 1px #808080, r10, pad 11/18, gap 13 ---- */
+.exams__list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.exam-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 342px;
+  max-width: 100%;
+  height: 94px;
+  padding: 11px 18px;
+  border: 1px solid var(--color-placeholder);
+  border-radius: 10px;
+  background: var(--color-bg);
+  font: inherit;
+  font-size: 15px;
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  text-align: left;
+}
+
+button.exam-card {
+  cursor: pointer;
+}
+
+.exam-card--open {
+  height: auto;
+  min-height: 94px;
+}
+
+.exam-card--past {
+  opacity: 0.5;
+}
+
+.exam-card__date {
+  flex-shrink: 0;
+  min-width: 44px;
+  font-size: var(--text-lg);
+  text-align: center;
+}
+
+.exam-card__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.exam-card__courses {
+  white-space: pre-line;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.exam-card__courses--open {
+  display: block;
+}
+
+.exam-card__deadline {
+  color: var(--color-placeholder);
+}
+
+.exams__empty {
+  margin: 46px 4px 0;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--color-placeholder);
+}
+
+.exams__source {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--touch-target);
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--color-placeholder);
+}
