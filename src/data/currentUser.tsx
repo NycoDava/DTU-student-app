@@ -6,13 +6,19 @@ import { createContext, useContext, useState, type ReactNode } from 'react';
  */
 export type CurrentUser = {
   name: string;
+  /** Student number, shown next to the name on the profile page. */
+  studentId: string;
   /** Round profile photo. null = show initials instead. */
   photoUrl: string | null;
+  /** The default PNG already has the red ring drawn in; uploaded photos get it from CSS. */
+  photoHasRing: boolean;
 };
 
 const DEFAULT_USER: CurrentUser = {
   name: 'Nicola Davalli',
+  studentId: 's253463',
   photoUrl: '/images/profile-photo.png',
+  photoHasRing: true,
 };
 
 type UserContextValue = { user: CurrentUser; setUser: (user: CurrentUser) => void };

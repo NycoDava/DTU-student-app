@@ -26,6 +26,12 @@
   height: 67px;
   flex-shrink: 0;
   border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Uploaded photo (Profile > Change Picture): draw the red ring the default PNG has built in */
+.home__avatar--ring {
+  border: 3px solid var(--dtu-red);
 }
 
 .home__avatar--initials {

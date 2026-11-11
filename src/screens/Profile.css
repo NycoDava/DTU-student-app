@@ -1,0 +1,168 @@
+/* "Edit My User Profile" (Figma 40:131). See docs/design-notes.md. */
+
+.profile {
+  padding-left: 14px; /* fields at x19 in the frame */
+}
+
+/* Title sits right of the arrow (x101), not centered on the whole width */
+.profile .sub-header {
+  min-height: 0;
+  padding: 10px 0 0 44px;
+}
+
+.profile__name {
+  margin: 22px 0 6px 11px;
+  font-size: var(--text-lg);
+  font-weight: var(--font-regular);
+}
+
+.profile__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  margin-bottom: 10px;
+}
+
+.profile__photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  width: 93px;
+  flex-shrink: 0;
+}
+
+.profile__avatar {
+  width: 67px;
+  height: 67px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile__avatar--ring {
+  border: 3px solid var(--dtu-red);
+}
+
+.profile__avatar--initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1e6e6;
+  font-weight: var(--font-bold);
+  font-size: var(--text-lg);
+}
+
+/* Field: label SemiBold 10 above an input 211 wide, 1px black, radius 5 */
+.profile__field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 211px;
+  max-width: 100%;
+  margin-bottom: 8px;
+}
+
+.profile__field--wide {
+  width: 345px;
+  margin-top: 16px;
+}
+
+.profile__label {
+  font-size: 10px;
+  font-weight: var(--font-semibold);
+  padding-left: 1px;
+}
+
+.profile__input {
+  width: 100%;
+  height: var(--touch-target); /* Figma 29px */
+  padding: 0 5px;
+  border: 1px solid var(--color-text);
+  border-radius: 5px;
+  background: var(--color-bg);
+  font: inherit;
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.profile__input:focus-visible {
+  outline: 2px solid var(--dtu-red);
+  outline-offset: 0;
+}
+
+.profile__textarea {
+  height: 56px;
+  min-height: 56px;
+  padding: 5px;
+  resize: vertical;
+}
+
+/* Grey pill buttons (Change Picture / Change PIN): 93 x 27, #e5e5e5, radius 10, Regular 10 */
+.profile__button {
+  min-width: 93px;
+  height: var(--touch-target);
+  padding: 0 10px;
+  border: none;
+  border-radius: 10px;
+  background: #e5e5e5;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  font: inherit;
+  font-size: 10px;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+/* ---- PIN ---- */
+.profile__pin-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 15px;
+  margin-top: 16px;
+}
+
+.profile__pin-row .profile__field {
+  margin-bottom: 0;
+}
+
+.profile__pin-box {
+  position: relative;
+  display: block;
+}
+
+.profile__pin-box .profile__input {
+  padding-right: var(--touch-target);
+}
+
+.profile__eye {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  padding: 0;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.profile__pin-form {
+  margin-top: 14px;
+}
+
+.profile__pin-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.profile__message {
+  margin: 10px 0 0;
+  font-size: 13px;
+}
+
+.profile__message--error {
+  color: var(--dtu-red);
+}

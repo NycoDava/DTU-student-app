@@ -155,7 +155,11 @@ FIGMA: <link>
 - Contact: static text.
 
 ## Profile  (DRAFT)
-- Mock "Edit My User Profile": fields pre-filled from the real student (name from the data), editing only changes local state, nothing is sent.
+- Mock "Edit My User Profile": header "Name (s-number)" from `currentUser`; all fields start EMPTY (author's decision),
+  editable, local state only, nothing is sent.
+- Change Picture: file picker (camera on phones), replaces the avatar app-wide for the session (lost on reload).
+- Change PIN: inline form (new + confirm, 4-6 digits); on match updates the PIN field and says
+  "prototype only, not sent to DTU". Eye icon shows/hides the PIN.
 - Fake login: any input goes to Home, no network call.
 
 ## External links (fill `src/config/links.ts`)
