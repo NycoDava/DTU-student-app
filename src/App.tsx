@@ -24,6 +24,10 @@ import Services from './screens/Services';
 import Contact from './screens/Contact';
 import { CareerHub, StudentLife, StudyAbroad, Wellbeing } from './screens/ServicePages';
 import { venues, venues101 } from './data/venues';
+import CourseLayout from './screens/course/CourseLayout';
+import { ClasslistTab, MyCourseTab } from './screens/course/MyCourseTab';
+import { ContentTab, ModuleView } from './screens/course/ContentTab';
+import { AssignmentsTab } from './screens/course/AssignmentsTab';
 
 export default function App() {
   return (
@@ -42,7 +46,13 @@ export default function App() {
             <Route path="/grades/list" element={<Placeholder title="List of grades" back />} />
             <Route path="/grades/calculator" element={<GpaCalculator />} />
             <Route path="/courses" element={<MyCourses />} />
-            <Route path="/courses/:courseId" element={<Placeholder title="Course" back />} />
+            <Route path="/courses/:courseId" element={<CourseLayout />}>
+              <Route index element={<MyCourseTab />} />
+              <Route path="classlist" element={<ClasslistTab />} />
+              <Route path="content" element={<ContentTab />} />
+              <Route path="content/:path" element={<ModuleView />} />
+              <Route path="assignments" element={<AssignmentsTab />} />
+            </Route>
             <Route path="/studyplanner" element={<Studyplanner />} />
             <Route path="/exams" element={<ExamDates />} />
             <Route path="/campus" element={<Campus />} />

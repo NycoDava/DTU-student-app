@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import SubHeader from '../components/SubHeader';
 import CourseCard from '../components/CourseCard';
-import { courses } from '../data/appData';
+import { useCourseData } from '../data/courseData';
 import './MyCourses.css';
 
 /** My Courses (Figma 116:377): search by course number or name, all courses, newest term first. */
 export default function MyCourses() {
   const [query, setQuery] = useState('');
+  const { courses, loading } = useCourseData();
 
   const q = query.trim().toLowerCase();
   const list = courses
@@ -34,7 +35,7 @@ export default function MyCourses() {
           </li>
         ))}
       </ul>
-      {list.length === 0 && (
+      {!loading && list.length === 0 && (
         <p className="my-courses__empty">{q ? `No course matches “${query.trim()}”` : 'No courses yet'}</p>
       )}
     </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { Course } from '../data/types';
+import { courseImageSrc } from '../data/courseData';
 import './CourseCard.css';
 
 /**
@@ -19,12 +20,12 @@ export default function CourseCard({ course }: { course?: Course }) {
     );
   }
 
-  const showImage = course.localImage && !imageFailed;
+  const imageSrc = imageFailed ? null : courseImageSrc(course);
   return (
     <Link to={`/courses/${course.id}`} className="course-card">
       <div className="course-card__banner">
-        {showImage ? (
-          <img src={`/course-images/${course.localImage}`} alt="" onError={() => setImageFailed(true)} />
+        {imageSrc ? (
+          <img src={imageSrc} alt="" onError={() => setImageFailed(true)} />
         ) : (
           <span className="course-card__code">{course.code}</span>
         )}

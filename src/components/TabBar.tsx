@@ -1,15 +1,19 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import './TabBar.css';
 
 /** Figma "navigation bar" (157:274): red pill, icons only. */
 const TABS = [
   { to: '/home', label: 'Home', icon: '/images/tabbar/home.svg' },
-  { to: '/student', label: 'Grades and study', icon: '/images/tabbar/school.svg' },
+  // Sub-pages of "My studies" keep the school tab active (Figma course page frames).
+  { to: '/student', label: 'Grades and study', icon: '/images/tabbar/school.svg', also: ['/grades', '/courses', '/studyplanner', '/exams'] },
   { to: '/campus', label: 'Campus', icon: '/images/tabbar/map.svg' },
   { to: '/dtu', label: 'DTU', icon: null },
 ];
 
 export default function TabBar() {
+  const { pathname } = useLocation();
+  const inSection = (prefixes: string[] = []) => prefixes.some((p) => pathname === p || pathname.startsWith(p + '/'));
+
   return (
     <nav className="tabbar" aria-label="Main">
       {TABS.map((tab) => (
@@ -17,7 +21,9 @@ export default function TabBar() {
           key={tab.to}
           to={tab.to}
           aria-label={tab.label}
-          className={({ isActive }) => 'tabbar__tab' + (isActive ? ' tabbar__tab--active' : '')}
+          className={({ isActive }) =>
+            'tabbar__tab' + (isActive || inSection('also' in tab ? tab.also : undefined) ? ' tabbar__tab--active' : '')
+          }
         >
           {tab.icon ? (
             <img src={tab.icon} alt="" />

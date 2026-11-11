@@ -122,3 +122,44 @@ export type DtuEvent = {
   imageUrl: string | null;
   subjects: string[];
 };
+
+/** One file / link inside a Learn content module (`courseContent[courseId]`). */
+export type ContentTopic = {
+  id: number;
+  title: string;
+  kind: 'File' | 'Link' | 'ContentService';
+  url: string | null;
+  /** Relative to the scraper folder ("files/02830/…"); served from /files/… when the author copies it. */
+  localPath: string | null;
+  bytes: number | null;
+};
+
+export type ContentModule = { title: string; topics: ContentTopic[]; modules: ContentModule[] };
+
+export type Deadline = {
+  id: string;
+  courseId: string;
+  courseCode: string;
+  courseName: string;
+  title: string;
+  dueAt: string; // ISO, UTC
+  isGroup: boolean;
+  url: string | null;
+};
+
+export type Person = {
+  id: string;
+  name: string;
+  email: string | null;
+  username: string | null;
+  role: string;
+  isMe: boolean;
+};
+
+export type Classlist = {
+  ok: boolean;
+  myId: string | null;
+  myRoleId: string | null;
+  people: Person[];
+  group: { category: string; name: string; members: number; maxMembers: number } | null;
+};

@@ -188,3 +188,34 @@ Work from these notes; do not re-read the frames.
   text; SemiBold Italic underlined links "Check out your options on DTU Sport" (dtuSport), "Check out PF" (pf).
 - Wellbeing: title "Wellbeing & Support" Bold 25, intro Medium 15 #808080, image 1466x829 full width, gap 26; 4 SemiBold
   15 headings + Regular 15 text; centered SemiBold 15 underlined link "DTU Help and Guidance" (studentHelp).
+
+## Course page — shared chrome (42:205, 40:112, 42:174, 227:460, 93:2) → `/courses/:courseId`
+- Banner 383x207 at x5 y7, r30, 5px border `#9b0300`, course picture `object-fit: cover` + black overlay 30%.
+  Course title over it: Bold 20 white, x16 y~127, width 352 (2 lines). Back arrow (red) x23 y26 on top of the image.
+- Tab row y183, h37, white, 3 equal cells (~125px): "My Course" / "Content" / "Assignments", Semi Bold Italic 20 black.
+  Active tab = 3px underline under the cell (Figma cyan `#00C0E8`). Row has a soft shadow below (0 4 2 .25).
+- Tab bar as everywhere (school tab active).
+
+## Course — My Course (42:205)
+- Scroll area from y244. "Classlist →" Semi Bold 20 underlined (link). Divider: 2px black line full width + shadow.
+- "Groups" Semi Bold 20; "My Group" Light 20; "Number: 20" / "Members: 1/4" / "Assigments: 2" Light 20, values blue `#0988ff`.
+- Divider. "Announcements" Bold 20. Each: title Light 20 underlined blue `#0988ff` (link), "<author> posted on 03 November,
+  2026 09:00" Light 20, then full body text Light 20, x16.
+
+## Course — Classlist (227:460) (inside My Course tab, tabs stay visible)
+- "Classlist" Semi Bold 25 at x11; filter pill right (x281): bg `#d4d4d4`, r20, pad 5/20, "All" Bold 15 + chevron-down 24, shadow.
+- Rows full width 384, 1px border `#808080`, pad 10, gap 46: [photo 32x36 + name Regular 15, gap 12] [ "email: …" / "role: …"
+  Regular 15, labels Medium]. Row height ~58. (Photo → initials avatar per privacy rule.)
+
+## Course — Content (40:112)
+- Under tabs (y226), module rows 383x42, 1px border rgba(0,0,0,.5), 6px gap, title Medium 18 x12, cyan check (bi:check-lg 28)
+  at right on visited modules; unvisited has no check.
+
+## Course — module open (93:2) (e.g. "Lecture 2")
+- Tabs replaced by a white bar at y182: module title Semi Bold Italic 15, shadow 0 4 2 .25.
+- Topic rows same style as module rows (file name Medium 18 + cyan check when opened).
+
+## Course — Assignments (42:174)
+- Cards from y245, 383x181, gap 11, rounded ~10, 1px grey border + drop shadow. Pad 16/17:
+  title Medium 18 blue `#0988ff` ("Group 20: Premortem"), blank line, "Due on 23 september, 2026, 23:59" Bold 12 `#808080`,
+  "Completation status: 1 Submission, 1 File", "Evaluation Status:" same style.

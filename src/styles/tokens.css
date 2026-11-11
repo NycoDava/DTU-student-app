@@ -11,6 +11,7 @@
   --font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-light: 300;
   --font-regular: 400;
+  --font-medium: 500;
   --font-semibold: 600;
   --font-bold: 700;
   --text-xs: 12px;
@@ -36,6 +37,20 @@
   --service-life: #00c0e8;
   --service-wellbeing: #ffc0cb;
   --shadow-card: 0 4px 4px rgba(0, 0, 0, 0.25);
+
+  /* Course page (Figma 42:205 ff.). Figma's Learn blues are replaced by DTU red (author's decision). */
+  --course-row-border: rgba(0, 0, 0, 0.5);
+  --classlist-border: #808080;
+  --filter-pill-bg: #d4d4d4;
+  --shadow-bar: 0 4px 2px rgba(0, 0, 0, 0.25);
+  --banner-overlay: rgba(0, 0, 0, 0.3);
+  /* Initials avatars in the classlist (no photos) */
+  --avatar-1: #9b0300;
+  --avatar-2: #be2b31;
+  --avatar-3: #6b6b6b;
+  --avatar-4: #990066;
+  --avatar-5: #1f3a5f;
+  --avatar-6: #2f6b3a;
 
   /* Calendar (DTU Learn look) */
   --cal-font: 'Lato', var(--font-family);

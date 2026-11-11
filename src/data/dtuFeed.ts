@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { loadAppFile } from './appFile';
 import type { DtuEvent, NewsItem } from './types';
 
 /**
@@ -10,10 +11,7 @@ type Feed = { news: NewsItem[]; events: DtuEvent[] };
 let feedPromise: Promise<Feed> | null = null;
 
 function loadFeed(): Promise<Feed> {
-  feedPromise ??= fetch('/data/app-data.json')
-    .then((res) => (res.ok ? res.json() : {}))
-    .then((data: Partial<Feed>) => prepare(data.news ?? [], data.events ?? []))
-    .catch(() => ({ news: [], events: [] }));
+  feedPromise ??= loadAppFile().then((data: Partial<Feed>) => prepare(data.news ?? [], data.events ?? []));
   return feedPromise;
 }
 

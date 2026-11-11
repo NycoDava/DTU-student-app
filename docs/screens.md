@@ -110,19 +110,22 @@ FIGMA: node 116:377. Route `/courses`.
   first (so the current term comes first). No "Previous courses" heading (not in Figma). Empty: "No courses yet".
 - Banner: the real Learn course picture, from `localImage` (served from `/course-images/`). Fallback: colored gradient with the course code.
 
-## Course page  (DRAFT)
-- Tabs: My Course / Content / Assignments.
-- Content: `courseContent[courseId]` as collapsible modules. A topic opens `localPath` if present, otherwise `url`.
-  Show a small icon by `kind` (file, link).
-- Assignments: `deadlines` of this course: title, due date, "group" badge when `isGroup`, past ones greyed.
-- My Course tab (SPECIFIED): blocks in this order:
-  1. Course announcements of this course (latest 3, "see all").
-  2. "Classlist ->" card with the number of people. Opens the Classlist screen.
-  3. "Groups" card: from `classlists[courseId].group` -> category, group name, "n of max members". If null: "You are not in a
-     group in this course". Under it: number of group assignments (`deadlines` of this course with `isGroup`).
-- Classlist screen: search box, filter chips All / Students / Instructors (role from `people[].role`), instructors first,
-  your own row marked "You". Row: initials avatar (colored circle), name, role. Tap on a person shows the email with
-  a `mailto:` link. NEVER load profile photos.
+## Course page  (SPECIFIED, built)
+FIGMA: 42:205 (My Course), 227:460 (Classlist), 40:112 (Content), 93:2 (module open), 42:174 (Assignments).
+Routes: `/courses/:id` (My Course), `/courses/:id/classlist`, `/courses/:id/content`, `/courses/:id/content/:path`
+(path "3" or "3.1" for nested modules), `/courses/:id/assignments`. Tabs are routes, so Back works between them.
+- Header: banner with the course picture + 30% overlay, course name without the term, back arrow. Tabs overlap the banner.
+- Colors: Figma's Learn blue/cyan (links, values, active tab, checks) replaced by DTU red (author's decision).
+- My Course: "Classlist ->" + number of people; Groups: category, group number, members n/max, number of group
+  assignments (if no group: "You are not in a group in this course"); Announcements: latest 3 with full text
+  (HTML entities decoded, shown as plain text), "See all (n)" expands in place. Author is not in the data: "Posted on <date>".
+- Classlist: dropdown All / Students / Instructors (Figma) + search by name/email (author's choice), instructors first,
+  "Last, First" shown as "First Last", own row "(You)", initials avatar (no photos), email as `mailto:`.
+- Content: one row per module; module view lists sub-modules and topics with a file/link icon. A topic opens
+  `/files/<localPath>` if that file really exists (HEAD, not HTML), otherwise `url` (DTU Learn).
+  Check = opened in this app (localStorage per course), because Learn completion is not in the data.
+- Assignments: deadlines of the course in date order, "<group name>: <title>" for group work, "Due on 02 December 2026,
+  23:59", past ones greyed ("Was due on"). Submission/evaluation status is not in the data: link to DTU Learn instead.
 - Real names of other people only in local `app-data.real.json`. Deployed data uses `ANON=1` (fictional names).
 
 ## Study planner  (SPECIFIED)
