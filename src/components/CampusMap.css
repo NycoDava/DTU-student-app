@@ -1,0 +1,67 @@
+.campus-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #f4eedd;
+}
+
+.campus-map iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Preview: the map cannot be touched (scrolling the page must keep working), the expand button opens the full map. */
+.campus-map--mini iframe {
+  pointer-events: none;
+}
+
+/* "You are here" dot like in the Figma screenshot */
+.campus-map__me {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #2f80ed;
+  box-shadow: 0 0 0 22px rgba(47, 128, 237, 0.2);
+  pointer-events: none;
+}
+
+.campus-map--offline img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.6);
+}
+
+.campus-map--offline p {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 15px;
+  font-weight: var(--font-semibold);
+  white-space: nowrap;
+}
+
+/* Credit required by the MazeMap embed snippet */
+.campus-map__credit {
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 10px;
+  color: var(--color-text);
+}
