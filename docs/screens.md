@@ -165,7 +165,7 @@ FIGMA: node 163:1493. Route `/exams`.
 - Card exactly as Figma (342x94): "DEC / 6", "Course Numbers:" + the cell text, "Grading Deadline: 12/1 2027" grey.
   Long course lists are cut at 2 lines; tapping such a card expands it. Days already past are faded.
 - Link "Source: DTU exam dates" at the bottom.
-- "My exams" on top (author's request, 12 Nov 2026): courses placed in the study plan and not passed, matched to the
+- "My exams" on top (author's request, 12 Nov 2026; same exam-card as the timetable, the author's Figma design): courses placed in the study plan and not passed, matched to the
   timetable (`myExams` in `src/lib/schedule.ts`: course number first, then schedule group E1B -> "E1-B"; odd semester =
   winter exam, even = summer exam). 3-week courses (January/June) are listed with their period, no date (not in the
   table). Days with one of my exams are highlighted in the timetable ("Your exam: 38110").

@@ -1,34 +1,29 @@
-/* "Edit My User Profile" (Figma 40:131). See docs/design-notes.md. */
-
-.profile {
-  padding-left: 14px; /* fields at x19 in the frame */
-}
-
-/* Title sits right of the arrow (x101), not centered on the whole width */
-.profile .sub-header {
-  min-height: 0;
-  padding: 10px 0 0 44px;
-}
+/* "Edit My User Profile" (Figma 40:131), tidied up (author's request): same layout, aligned columns, one field width,
+   readable labels, even spacing. */
 
 .profile__name {
-  margin: 22px 0 6px 11px;
-  font-size: var(--text-lg);
-  font-weight: var(--font-regular);
+  margin: 0 0 14px;
+  font-size: 17px;
+  font-weight: var(--font-semibold);
 }
 
 .profile__top {
   display: flex;
   align-items: flex-start;
-  gap: 13px;
-  margin-bottom: 10px;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.profile__top .profile__field {
+  flex: 1;
+  margin-bottom: 0;
 }
 
 .profile__photo {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 7px;
-  width: 93px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
@@ -52,36 +47,30 @@
   font-size: var(--text-lg);
 }
 
-/* Field: label SemiBold 10 above an input 211 wide, 1px black, radius 5 */
+/* Field: label above a full-width input (one width for all fields) */
 .profile__field {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  width: 211px;
-  max-width: 100%;
-  margin-bottom: 8px;
-}
-
-.profile__field--wide {
-  width: 345px;
-  margin-top: 16px;
+  gap: 4px;
+  width: 100%;
+  margin-bottom: 12px;
 }
 
 .profile__label {
-  font-size: 10px;
+  font-size: var(--text-xs);
   font-weight: var(--font-semibold);
-  padding-left: 1px;
+  text-transform: capitalize;
 }
 
 .profile__input {
   width: 100%;
   height: var(--touch-target); /* Figma 29px */
-  padding: 0 5px;
+  padding: 0 10px;
   border: 1px solid var(--color-text);
-  border-radius: 5px;
+  border-radius: 8px;
   background: var(--color-bg);
   font: inherit;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--color-text);
 }
 
@@ -91,9 +80,9 @@
 }
 
 .profile__textarea {
-  height: 56px;
+  height: 80px;
   min-height: 56px;
-  padding: 5px;
+  padding: 8px 10px;
   resize: vertical;
 }
 
@@ -107,7 +96,9 @@
   background: #e5e5e5;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   font: inherit;
-  font-size: 10px;
+  font-size: 13px;
+  font-weight: var(--font-medium);
+  white-space: nowrap;
   color: var(--color-text);
   cursor: pointer;
 }
@@ -116,11 +107,12 @@
 .profile__pin-row {
   display: flex;
   align-items: flex-end;
-  gap: 15px;
-  margin-top: 16px;
+  gap: 12px;
+  margin-top: 4px;
 }
 
 .profile__pin-row .profile__field {
+  flex: 1;
   margin-bottom: 0;
 }
 

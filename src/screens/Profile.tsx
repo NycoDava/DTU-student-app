@@ -94,7 +94,7 @@ export default function Profile() {
       <Field label="phone number" type="tel" value={fields.phone} onChange={update('phone')} />
       <Field label="linkedIn" value={fields.linkedin} onChange={update('linkedin')} />
 
-      <label className="profile__field profile__field--wide">
+      <label className="profile__field">
         <span className="profile__label">personal information</span>
         <textarea className="profile__input profile__textarea" value={fields.info} onChange={update('info')} />
       </label>

@@ -94,3 +94,24 @@ html.is-standalone body {
     background: var(--color-bg);
   }
 }
+
+/* Small links: a larger INVISIBLE tap area (about 44 px), without changing how they look or the layout. */
+.login__help a,
+.classlist__details a,
+.my-course__ann-title,
+.assignment__title,
+.my-course__value-btn,
+.venue__map-link {
+  position: relative;
+}
+
+.login__help a::after,
+.classlist__details a::after,
+.my-course__ann-title::after,
+.assignment__title::after,
+.my-course__value-btn::after,
+.venue__map-link::after {
+  content: '';
+  position: absolute;
+  inset: -12px -10px;
+}

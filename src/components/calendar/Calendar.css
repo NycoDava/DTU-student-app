@@ -78,11 +78,15 @@
   position: relative;
 }
 
-/* Bigger invisible tap area around the small buttons */
+/* Bigger invisible tap area around the small buttons (outwards, so the two do not overlap) */
 .cal-toolbar__btn::after {
   content: '';
   position: absolute;
-  inset: -11px -4px;
+  inset: -11px 0 -11px -12px;
+}
+
+.cal-toolbar__btn:last-child::after {
+  inset: -11px -12px -11px 0;
 }
 
 .cal-toolbar__btn:first-child {

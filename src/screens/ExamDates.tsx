@@ -37,7 +37,7 @@ export default function ExamDates() {
       {myExams.length > 0 && (
         <section className="exams__mine">
           <h2 className="exams__heading">My exams</h2>
-          <ul className="exams__mine-list">
+          <ul className="exams__list">
             {myExams.map((e) => (
               <MyExamRow key={e.code} exam={e} />
             ))}
@@ -87,27 +87,32 @@ export default function ExamDates() {
 }
 
 /** Card 342 x 94 as in Figma. Very long course lists are cut at 2 lines; tapping the card shows them all. */
-/** One of my exams: date block (or the 3-week period), course, how it was matched. */
+/** One of my exams, in the same card as the DTU timetable (author's design, Figma 163:1493). */
 function MyExamRow({ exam }: { exam: MyExam }) {
   const [, m, d] = exam.date ? exam.date.split('-').map(Number) : [0, 0, 0];
   return (
-    <li className={'my-exam' + (exam.date ? '' : ' my-exam--nodate')}>
-      <span className="my-exam__date">
-        {exam.date ? (
-          <>
-            <span className="my-exam__month">{MONTHS[m - 1]}</span>
-            <span className="my-exam__day">{d}</span>
-          </>
-        ) : (
-          <span className="my-exam__month">{exam.period.slice(0, 3).toUpperCase()}</span>
-        )}
-      </span>
-      <span className="my-exam__text">
-        <span className="my-exam__course">
-          {exam.code} {exam.name}
+    <li>
+      <div className="exam-card">
+        <span className="exam-card__date">
+          {exam.date ? (
+            <>
+              {MONTHS[m - 1]}
+              <br />
+              {d}
+            </>
+          ) : (
+            exam.period.slice(0, 3).toUpperCase()
+          )}
         </span>
-        <span className="my-exam__meta">{exam.date ? `${exam.period}${exam.via ? ` · ${exam.via}` : ''}` : `${exam.period} · 3-week course`}</span>
-      </span>
+        <span className="exam-card__text">
+          <span>
+            {exam.code} {exam.name}
+          </span>
+          <span className="exam-card__deadline">
+            {exam.date ? `${exam.period}${exam.via ? ` · ${exam.via}` : ''}` : `${exam.period} · 3-week course`}
+          </span>
+        </span>
+      </div>
     </li>
   );
 }
