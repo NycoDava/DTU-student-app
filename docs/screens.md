@@ -14,14 +14,15 @@ Common rules
 
 ---------------------------------------------------------------------------------------------------
 
-## Home  (SPECIFIED, except the first card, see note)
-FIGMA: <link>
-- Header: student name + DTU logo.
-- "Study Announcements ->": card with the newest DTU study announcement (`studyAnnouncements[0]`: title, teaser).
-  Tap opens the Study announcements screen.
-- "Upcoming Activities and Deadlines ->": the NEXT upcoming `agenda` item (event or deadline): date block (Oct 28),
-  time, title, course code + course name. Deadlines have the red border. Tap opens Upcoming events.
-- "Your Calendar": segmented control Day / Week / Month / List. Default view: Week. See Calendar.
+## Home  (SPECIFIED, cleaned up 12 Nov 2026 on the author's request)
+- Compact header: avatar 44 + name (17 semibold, opens Profile), small DTU logo right. Live mode: sync line under it
+  ("Updated Thu 12 Nov, 14:56" + refresh icon, "Sign in" when the session is gone).
+- "Study announcements" (section row with chevron) → one light card: newest study announcement title + 2-line teaser.
+- "Upcoming" (section row) → one card: next activity or deadline, date block (red for deadlines), title, "time · course".
+  One card each on purpose (author's choice, to be revisited after testing).
+- "Calendar": unchanged (see Calendar).
+- Agenda: a Learn calendar event with the same course + title as a deadline, within a day of it, is dropped (only the
+  deadline stays), in `appData.ts` `withoutDeadlineCopies` — applies to Home, calendar and Upcoming events.
 
 ## Calendar  (SPECIFIED)
 - Use FullCalendar (`@fullcalendar/react`, `daygrid`, `timegrid`, `list`, `interaction`; core is MIT). It provides all four
@@ -62,8 +63,7 @@ from Studyplanner) + "Ects completed: passed/required", "My Courses→" (/course
 Author's request: clearer, coherent progress section (deviation from Figma 27:16).
 - Progress = `EctsProgress` (same component on My studies, compact): "55 of 120 ECTS passed", one bar passed | planned |
   missing (`summary.ectsPassed`, `summary.ectsPlanned`, `ectsRequired - passed - planned`), legend, and a status line:
-  "Your plan covers all 120 ECTS · last period ends June 2027" (end of the last Studyplanner period holding an item,
-  `planEnd`) or "N ECTS still missing in your plan" (red). No "activities" count, no pie here.
+  no explanatory status line (author's request: minimal). No "activities" count, no pie here.
 - Rows: "ECTS by course type" (opens the ECTS distribution sheet), "Studyplanner".
 - Grades: tiles "8.55 Current GPA" + "Last grade: IB 42501 Innovation in engineering · 5 ECTS"; rows "All grades" (count)
   and "GPA calculator"; "Grade trend" chart (per exam period, see data limit).
@@ -183,9 +183,9 @@ the building 101 venues); the others would open the order page, not built yet.
 FIGMA: 30:193. Route `/campus/library`. Live data from the public Smart Library API (`LINKS.smartLibrary`), through the
 Vite proxy (no CORS on the API): works with `npm run dev` / `npm run preview`, refresh every 30 s and when the page
 comes back. Without the proxy (static hosting) the last real reading is shown with "Not live, last reading".
-- Seats boxes Free (blue) / Occupied (orange) for entire library, first floor, second floor = seats with a sensor
-  (the API only knows these: 168 = 80 + 88), plus an occupancy bar and "n of N sensor seats free". A line above says
-  so explicitly; 800 is the max number of PEOPLE in the building (door counter), not seats. Links: `findit`, `libraryBooking`, `printing`.
+- Minimal (author's request): title "Library", live dot + time, then per area "N free / N occupied" (blue / orange, Figma
+  colors) and one bar. Entire library = door counter vs building capacity (e.g. 514 occupied of 800). First / second floor =
+  seats with a sensor. No explanatory text. Links as rows: DTU Findit, group rooms, printers. Links: `findit`, `libraryBooking`, `printing`.
 ## DTU page, News, Events  (SPECIFIED, built)
 - Routes: `/dtu`, `/dtu/news`, `/dtu/events`, `/dtu/services` (tiles open in-app pages `/dtu/services/abroad|career|life|wellbeing`,
   which link out), `/dtu/contact`. News/events are read at runtime from `/data/app-data.json` (`src/data/dtuFeed.ts`).

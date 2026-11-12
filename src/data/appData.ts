@@ -48,7 +48,20 @@ export function initAppData(file: Record<string, unknown>) {
   courses = f.courses ?? [];
   announcements = [...(f.announcements ?? [])].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
   studyAnnouncements = [...(f.studyAnnouncements ?? [])].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
-  agenda = [...(f.agenda ?? [])].sort((a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt));
+  agenda = withoutDeadlineCopies(f.agenda ?? []).sort((a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt));
+}
+
+/**
+ * The Learn calendar also lists every assignment due date as an event. When an event has the same course and title as a
+ * deadline and starts within a day of it, keep only the deadline (author's decision: no grey duplicate).
+ */
+function withoutDeadlineCopies(items: AgendaItem[]): AgendaItem[] {
+  const key = (a: AgendaItem) => `${a.courseCode ?? ''}|${a.title.trim().toLowerCase()}`;
+  const deadlines = new Map<string, number[]>();
+  for (const d of items) if (d.kind === 'deadline') deadlines.set(key(d), [...(deadlines.get(key(d)) ?? []), Date.parse(d.startsAt)]);
+  return items.filter(
+    (a) => a.kind !== 'event' || !(deadlines.get(key(a)) ?? []).some((t) => Math.abs(t - Date.parse(a.startsAt)) <= 86_400_000),
+  );
 }
 
 /** "02830 Advanced project …, Fall 2026" for an agenda item / course code, from `courses`. */

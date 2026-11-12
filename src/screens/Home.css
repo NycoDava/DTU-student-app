@@ -1,172 +1,169 @@
+/* Home (cleaned up): compact header, section rows, light cards. The calendar component is unchanged. */
 .home {
-  padding: 0 15px 16px 15px; /* Figma content x = 20px minus the 5px frame border */
+  padding: 0 16px 16px;
 }
 
-/* Header: avatar 67 + name (Inter Bold 30), DTU logo 47 x 65 top right */
+/* Header: small avatar + name, DTU logo right (same size as on the other tabs) */
 .home__header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  padding: 23px 0 0 6px; /* avatar at x 26 / y 28 in the frame */
-  height: 130px;
+  gap: 12px;
+  padding: 16px 0 8px;
 }
 
 .home__profile {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-top: 9px;
+  gap: 12px;
+  min-width: 0;
+  min-height: var(--touch-target);
   color: var(--color-text);
   text-decoration: none;
-  min-width: 0;
 }
 
 .home__avatar {
-  width: 67px;
-  height: 67px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
   border-radius: 50%;
   object-fit: cover;
 }
 
-/* Uploaded photo (Profile > Change Picture): draw the red ring the default PNG has built in */
+/* Uploaded photo (Profile > Change Picture): the default PNG has its red ring built in */
 .home__avatar--ring {
-  border: 3px solid var(--dtu-red);
+  border: 2px solid var(--dtu-red);
 }
 
 .home__avatar--initials {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid var(--dtu-red);
+  border: 2px solid var(--dtu-red);
   background: #f1e6e6;
+  font-size: 15px;
   font-weight: var(--font-bold);
-  font-size: var(--text-lg);
 }
 
 .home__name {
-  font-size: 30px;
-  font-weight: var(--font-bold);
+  font-size: 17px;
+  font-weight: var(--font-semibold);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .home__logo {
-  width: 47px;
-  height: 65px;
+  width: 36px;
+  height: 50px;
   object-fit: cover;
   flex-shrink: 0;
-  margin-right: 1px;
-}
-
-.home__sections {
-  display: flex;
-  flex-direction: column;
 }
 
 .home__group {
   display: flex;
   flex-direction: column;
-  gap: 7px; /* 11px minus the title padding */
-  margin-bottom: 13px;
+  gap: 6px;
+  padding-bottom: 14px;
 }
 
-.home__title {
-  font-size: var(--text-lg);
-  font-weight: var(--font-bold);
-  color: var(--color-text);
-  text-decoration: underline;
-  padding: 4px 0; /* bigger tap area without changing the look */
-  white-space: nowrap;
-  letter-spacing: -0.3px; /* "Deadlines" is one letter longer than the Figma text */
-}
-
-/* Card 342 x 94, 1px #808080, radius 10 */
+/* Light card: hairline border, no heavy outline */
 .home__card {
-  width: 342px;
-  max-width: 100%;
-  min-height: 94px;
-  border: 1px solid var(--color-placeholder);
-  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--color-hairline);
+  border-radius: 14px;
   background: var(--color-bg);
-  padding: 20px 16px;
-  font-size: 15px;
-  font-weight: var(--font-light);
   color: var(--color-text);
   text-decoration: none;
-  display: flex;
-  align-items: center;
 }
 
-.home__card--deadline {
-  border-color: var(--dtu-red);
+.home__card:active {
+  background: var(--planner-bg);
 }
 
-.home__card--empty {
-  color: var(--color-placeholder);
+.home__card-title {
+  font-size: var(--text-body);
+  font-weight: var(--font-semibold);
+  line-height: 1.3;
 }
 
-/* Upcoming card: date block (Bold 20, centered) at x 21, text column at x 73 */
-.home__upcoming {
-  padding: 11px 12px 11px 21px;
-  gap: 18px;
-}
-
-.home__upcoming-date {
-  width: 34px;
-  flex-shrink: 0;
-  text-align: center;
-  font-size: var(--text-lg);
-  font-weight: var(--font-bold);
-  color: var(--color-placeholder);
-}
-
-.home__upcoming-text {
-  font-size: 15px;
-  font-weight: var(--font-bold);
-}
-
-/* "Your Calendar" group: gap 31 between title, segmented control and calendar */
-.home__calendar {
-  margin-top: 24px; /* 41px in Figma minus the 17px group margin */
-  display: flex;
-  flex-direction: column;
-  gap: 31px;
-}
-
-.home__calendar-title {
-  margin: 0;
-  font-size: 25px;
-  font-weight: var(--font-bold);
-}
-
-/* Latest announcement card: "Study Announcement <code>: title" + 2-line preview */
-.home__announcement {
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 4px;
-  padding: 12px 16px;
-}
-
-.home__announcement-title {
-  font-weight: var(--font-bold);
-}
-
-.home__announcement-preview,
-.home__upcoming-course {
+.home__card-text {
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--color-muted);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.home__upcoming-line {
-  display: block;
+.home__empty {
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-muted);
 }
 
-.home__upcoming-course {
-  font-weight: var(--font-light);
-  color: var(--color-placeholder);
+/* Next activity / deadline: date block left */
+.home__next {
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+}
+
+.home__date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 44px;
+  flex-shrink: 0;
+  padding: 6px 0;
+  border-radius: 10px;
+  background: var(--planner-bg);
+}
+
+.home__date-month {
+  font-size: 11px;
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.home__date-day {
+  font-size: 20px;
+  font-weight: var(--font-bold);
+  line-height: 1.1;
+}
+
+/* Deadlines: the date block turns red */
+.home__next--deadline .home__date {
+  background: var(--tabbar-red);
+}
+
+.home__next--deadline .home__date-month,
+.home__next--deadline .home__date-day {
+  color: var(--color-bg);
+}
+
+.home__next-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* Calendar section (the calendar component itself is unchanged) */
+.home__calendar {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.home__calendar-title {
+  margin: 0;
+  font-size: var(--text-section);
+  font-weight: var(--font-bold);
 }

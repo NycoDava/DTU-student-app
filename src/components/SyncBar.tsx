@@ -80,13 +80,20 @@ export default function SyncBar() {
   return (
     <section className="sync-bar" aria-live="polite">
       <div className="sync-bar__row">
-        <span className="sync-bar__updated">
-          {dataFetchedAt ? `Updated: ${fmt.format(new Date(dataFetchedAt))}` : 'No saved data yet'}
-        </span>
-        {/* Hidden until the session state is known, so it never flashes "Sign in to refresh" by mistake */}
+        <span className="sync-bar__updated">{dataFetchedAt ? `Updated ${fmt.format(new Date(dataFetchedAt))}` : 'No data yet'}</span>
+        {/* Hidden until the session state is known, so it never shows "Sign in" by mistake */}
         {session && (
-          <button type="button" className="sync-bar__button" onClick={onRefresh} disabled={running}>
-            {running ? 'Refreshing…' : session.loggedIn ? 'Refresh' : 'Sign in to refresh'}
+          <button
+            type="button"
+            className={'sync-bar__button' + (running ? ' is-running' : '')}
+            onClick={onRefresh}
+            disabled={running}
+            aria-label={running ? 'Refreshing' : session.loggedIn ? 'Refresh' : 'Sign in to refresh'}
+          >
+            {!session.loggedIn && !running && <span>Sign in</span>}
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
         )}
       </div>
@@ -95,12 +102,11 @@ export default function SyncBar() {
           {shown.map(([name, s]) => (
             <li key={name} className={`sync-bar__source sync-bar__source--${s.state}`} title={s.error ?? undefined}>
               {SOURCE_LABELS[name]} {ICON[s.state]}
-              {s.state === 'kept' && <span className="sync-bar__note"> saved data</span>}
             </li>
           ))}
         </ul>
       )}
-      {session?.sync.error && !running && <p className="sync-bar__error">Refresh failed: {session.sync.error}. Showing saved data.</p>}
+      {session?.sync.error && !running && <p className="sync-bar__error">Refresh failed</p>}
     </section>
   );
 }

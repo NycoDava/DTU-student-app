@@ -178,9 +178,3 @@ export function placeItems(board: PlanBoard, moves: Record<string, string>): Rec
   return place;
 }
 
-/** End of the last period that holds something (passed or planned): when the current plan finishes. */
-export function planEnd(board: PlanBoard): Date | null {
-  const used = new Set(Object.values(placeItems(board, {})));
-  const ends = board.periods.filter((p) => used.has(p.key)).map((p) => p.end.getTime());
-  return ends.length ? new Date(Math.max(...ends)) : null;
-}

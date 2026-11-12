@@ -35,8 +35,8 @@ export default function Campus() {
         </LinkRow>
         <dl className="campus__stats">
           <div>
-            <dt>Free sensor seats</dt>
-            <dd>{status.seats.total.free}</dd>
+            <dt>Free seats</dt>
+            <dd>{Math.max(status.capacity - status.peopleNow, 0)}</dd>
           </div>
           <div>
             <dt>People inside</dt>

@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import { initials, useCurrentUser } from '../data/currentUser';
 import Calendar from '../components/calendar/Calendar';
 import SyncBar from '../components/SyncBar';
+import LinkRow from '../components/LinkRow';
 import { agenda, courseLabel, studyAnnouncements } from '../data/appData';
 import { formatDay, formatMonth, formatTime } from '../data/format';
 import './Home.css';
 
 /**
- * Home (Figma "homepage day/week/month/list": one screen, the calendar tabs switch the view).
- * Cards are empty containers for now; data is wired in later.
+ * Home (Figma "homepage day/week/month/list", cleaned up on the author's request): compact profile header, section rows
+ * with a chevron, the newest study announcement, the next activity/deadline, and the calendar (unchanged).
  */
 /** Next agenda item (still running or upcoming); if none, the latest one, so the card is never empty. */
 function nextAgendaItem() {
@@ -39,12 +40,12 @@ export default function Home() {
   const { user } = useCurrentUser();
   const latest = studyAnnouncements[0];
   const next = nextAgendaItem();
-  const events = useMemo(calendarEvents, []);
+  const events = useMemo(() => calendarEvents(), []);
 
   return (
     <div className="home">
       <header className="home__header">
-        <Link to="/profile" className="home__profile">
+        <Link to="/profile" className="home__profile" aria-label="Profile">
           {user.photoUrl ? (
             <img className={'home__avatar' + (user.photoHasRing ? '' : ' home__avatar--ring')} src={user.photoUrl} alt="" />
           ) : (
@@ -57,60 +58,47 @@ export default function Home() {
 
       <SyncBar />
 
-      <div className="home__sections">
-        <section className="home__group">
-          <Link to="/announcements" className="home__title">
-            Study Announcements→
+      <section className="home__group">
+        <LinkRow variant="section" to="/announcements">
+          Study announcements
+        </LinkRow>
+        {latest ? (
+          <Link to="/announcements" className="home__card">
+            <span className="home__card-title">{latest.title.replace(/^study announcement\s+\S+:\s*/i, '')}</span>
+            <span className="home__card-text">{latest.teaser}</span>
           </Link>
-          {latest ? (
-            <Link to="/announcements" className="home__card home__announcement">
-              <span className="home__announcement-title">{latest.title.replace(/^study announcement/i, 'Study Announcement')}</span>
-              <span className="home__announcement-preview">{latest.teaser}</span>
-            </Link>
-          ) : (
-            <Link to="/announcements" className="home__card home__card--empty">
-              No announcements yet
-            </Link>
-          )}
-        </section>
+        ) : (
+          <p className="home__empty">No announcements yet</p>
+        )}
+      </section>
 
-        <section className="home__group">
-          <Link to="/events" className="home__title">
-            Upcoming Activities and Deadlines →
+      <section className="home__group">
+        <LinkRow variant="section" to="/events">
+          Upcoming
+        </LinkRow>
+        {next ? (
+          <Link to="/events" className={'home__card home__next' + (next.kind === 'deadline' ? ' home__next--deadline' : '')}>
+            <span className="home__date">
+              <span className="home__date-month">{formatMonth(next.startsAt)}</span>
+              <span className="home__date-day">{formatDay(next.startsAt)}</span>
+            </span>
+            <span className="home__next-text">
+              <span className="home__card-title">{next.title}</span>
+              <span className="home__card-text">
+                {!next.isAllDay && `${formatTime(next.startsAt)} · `}
+                {courseLabel(next.courseCode) ?? next.courseCode}
+              </span>
+            </span>
           </Link>
-          {next ? (
-            <Link
-              to="/events"
-              className={'home__card home__upcoming' + (next.kind === 'deadline' ? ' home__card--deadline' : '')}
-            >
-              <span className="home__upcoming-date">
-                {formatMonth(next.startsAt)}
-                <br />
-                {formatDay(next.startsAt)}
-              </span>
-              <span className="home__upcoming-text">
-                {!next.isAllDay && <span className="home__upcoming-line">{formatTime(next.startsAt)}</span>}
-                <span className="home__upcoming-line">{next.title}</span>
-                <span className="home__upcoming-line home__upcoming-course">
-                  {courseLabel(next.courseCode) ?? next.courseCode}
-                </span>
-              </span>
-            </Link>
-          ) : (
-            <Link to="/events" className="home__card home__upcoming">
-              <span className="home__upcoming-date" aria-hidden="true">
-                –
-              </span>
-              <span className="home__upcoming-text home__card--empty">No upcoming activities</span>
-            </Link>
-          )}
-        </section>
+        ) : (
+          <p className="home__empty">Nothing coming up</p>
+        )}
+      </section>
 
-        <section className="home__calendar">
-          <h2 className="home__calendar-title">Your Calendar</h2>
-          <Calendar events={events} />
-        </section>
-      </div>
+      <section className="home__calendar">
+        <h2 className="home__calendar-title">Calendar</h2>
+        <Calendar events={events} />
+      </section>
     </div>
   );
 }

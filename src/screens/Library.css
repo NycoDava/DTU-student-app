@@ -1,28 +1,9 @@
-/* DTU Smart Library (Figma 30:193). Same structure and colors, a bit more polished. */
-.library .sub-header {
-  position: absolute;
-  min-height: 0;
-  padding: 0;
-}
-
-.library__title {
-  margin: 0;
-  padding-top: 68px; /* y73 */
-  text-align: center;
-  font-size: 35px;
-  font-weight: var(--font-bold);
-}
-
-.library__title span {
-  color: var(--eat-red);
-}
-
+/* DTU Smart Library (Figma 30:193), minimal: numbers + one bar per area, Figma colors for free / occupied. */
 .library__live {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 6px;
-  margin: 4px 0 14px;
+  margin: 0 0 8px;
   font-size: 12px;
   color: var(--color-placeholder);
 }
@@ -49,110 +30,58 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .library__live--on .library__dot {
-    animation: none;
-  }
-}
-
 .library__block {
-  width: 250px;
-  margin: 0 auto 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 0 18px;
+  border-top: 1px solid var(--color-hairline);
 }
 
 .library__block h2 {
-  margin: 0 0 12px;
-  text-align: center;
-  font-size: 25px;
-  font-weight: var(--font-bold);
-  white-space: nowrap;
-}
-
-.library__boxes {
-  display: grid;
-  grid-template-columns: 97px 113px;
-  justify-content: space-between;
-}
-
-.library__box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
-  padding: 10px;
-  border-radius: 10px;
-  color: #fff;
-  font-size: var(--text-lg);
+  margin: 0;
+  font-size: var(--text-body);
   font-weight: var(--font-semibold);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.library__box strong {
-  font-size: 26px;
+.library__numbers {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.library__num strong {
+  font-size: 28px;
   font-weight: var(--font-bold);
-  line-height: 1;
+  margin-right: 4px;
 }
 
-.library__box--free {
-  background: var(--seat-free);
+.library__num--free strong {
+  color: var(--seat-free);
 }
 
-.library__box--occupied {
-  background: var(--seat-occupied);
+.library__num--occupied strong {
+  color: var(--seat-occupied);
 }
 
-/* Occupancy bar: free (blue) -> occupied (orange) */
+/* Bar in the same order as the numbers: free (blue) on the left, occupied (orange) on the right */
 .library__bar {
   height: 8px;
-  margin-top: 10px;
   border-radius: 4px;
-  background: var(--seat-free);
   overflow: hidden;
+  background: var(--seat-occupied);
 }
 
 .library__bar span {
   display: block;
   height: 100%;
-  margin-left: auto;
-  background: var(--seat-occupied);
-  transition: width 0.6s ease;
-}
-
-.library__pct {
-  margin: 4px 0 0;
-  text-align: right;
-  font-size: 12px;
-  color: var(--color-placeholder);
-}
-
-.library__people {
-  margin: 4px 0 12px;
-  text-align: center;
-  font-size: 13px;
-  color: var(--color-placeholder);
+  background: var(--seat-free);
 }
 
 .library__links {
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-.library__links a {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: var(--touch-target);
-  font-size: 15px;
-  font-weight: var(--font-bold);
-  color: var(--color-text);
-  text-decoration: underline;
-}
-
-/* What the numbers mean: only seats with a sensor are counted (the API knows nothing about the others). */
-.library__explain {
-  margin: 0 0 8px;
-  font-size: 13px;
-  color: var(--color-placeholder);
-  text-align: center;
+  border-top: 1px solid var(--color-hairline);
 }

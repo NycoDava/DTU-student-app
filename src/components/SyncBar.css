@@ -1,6 +1,6 @@
 /* Live-data bar on Home (not in Figma, only when the local server runs). */
 .sync-bar {
-  margin: 0 0 8px;
+  margin: 0 0 4px;
   font-size: 13px;
 }
 
@@ -16,21 +16,33 @@
 }
 
 .sync-bar__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: var(--touch-target);
   min-height: var(--touch-target);
-  padding: 0 4px;
+  justify-content: flex-end;
+  padding: 0;
   border: none;
   background: none;
   font: inherit;
   font-weight: var(--font-semibold);
   color: var(--dtu-red);
-  text-decoration: underline;
   cursor: pointer;
 }
 
 .sync-bar__button:disabled {
-  color: var(--color-placeholder);
-  text-decoration: none;
   cursor: progress;
+}
+
+.sync-bar__button.is-running svg {
+  animation: sync-spin 0.9s linear infinite;
+}
+
+@keyframes sync-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .sync-bar__sources {
@@ -55,10 +67,6 @@
 .sync-bar__source--failed,
 .sync-bar__source--kept {
   color: var(--dtu-red);
-}
-
-.sync-bar__note {
-  color: var(--color-placeholder);
 }
 
 .sync-bar__error {

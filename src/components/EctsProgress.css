@@ -84,17 +84,6 @@
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
 }
 
-.ects-progress__status {
-  margin: 0;
-  font-size: var(--text-meta);
-  color: var(--color-muted);
-}
-
-.ects-progress__status--warn {
-  color: var(--dtu-red);
-  font-weight: var(--font-semibold);
-}
-
 /* Compact (My studies) */
 .ects-progress--compact .ects-progress__headline strong {
   font-size: 28px;
