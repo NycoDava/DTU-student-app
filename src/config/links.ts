@@ -15,6 +15,11 @@ export const LINKS = {
   // Library and printing
   findit: 'https://findit.dtu.dk/',
   freeSeats: 'https://www.bibliotek.dtu.dk/en/Free-seats',
+
+  // eat@DTU (ordering happens in the official app, by PubQ / Food & Co)
+  eatDtuIos: 'https://apps.apple.com/app/eat-dtu/id6529534162',
+  eatDtuAndroid: 'https://play.google.com/store/search?q=Eat%40DTU&c=apps', // TODO: replace with the app page (package id) when known
+  canteenHours: 'https://www.inside.dtu.dk/en/campus/canteens-and-catering-for-meetings/kontaktinfo-og-aabningstider',
   libraryBooking: 'https://www.supersaas.com/schedule/DTU_Library/Study_Areas_-_Lyngby',
   printing: 'https://databarprint.dtu.dk/end-user/ui/login?lang=en_US',
 

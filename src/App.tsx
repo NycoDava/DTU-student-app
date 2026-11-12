@@ -17,6 +17,7 @@ import ExamDates from './screens/ExamDates';
 import Campus from './screens/Campus';
 import Food from './screens/Food';
 import Library from './screens/Library';
+import VenuePage from './screens/VenuePage';
 import MapScreen from './screens/MapScreen';
 import Dtu from './screens/Dtu';
 import { DtuEvents, DtuNews } from './screens/DtuLists';
@@ -60,6 +61,7 @@ export default function App() {
             <Route path="/campus" element={<Campus />} />
             <Route path="/campus/food" element={<Food venues={venues} />} />
             <Route path="/campus/food/101" element={<Food venues={venues101} compact />} />
+            <Route path="/campus/food/venue/:venueId" element={<VenuePage />} />
             <Route path="/campus/library" element={<Library />} />
             <Route path="/dtu" element={<Dtu />} />
             <Route path="/dtu/news" element={<DtuNews />} />

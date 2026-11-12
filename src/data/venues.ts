@@ -10,7 +10,7 @@ export type Venue = {
   name: string;
   image: string;
   crop: Crop;
-  /** In-app page that opens on tap. Venues without it open the order page (not built yet), so they are not clickable. */
+  /** In-app page that opens on tap: building 101 list for Food Court, the venue page for all others. */
   to?: string;
 };
 
@@ -28,19 +28,19 @@ const foodCourt: Venue = {
 /** "Select Venue" on Food and Drinks, in the order of the Figma frame (Food Court appears twice there). */
 export const venues: Venue[] = [
   foodCourt,
-  { id: 'b101-hav-a-java', name: 'B101 - Hav a Java Central', image: MAIN, crop: { w: 217.2, h: 432.58, left: -110.14, top: -56.29 } },
-  { id: 'b101-social', name: 'B101 Social', image: MAIN, crop: { w: 216.9, h: 480.03, left: -5.63, top: -185.79 } },
+  { id: 'b101-hav-a-java', name: 'B101 - Hav a Java Central', image: MAIN, to: '/campus/food/venue/b101-hav-a-java', crop: { w: 217.2, h: 432.58, left: -110.14, top: -56.29 } },
+  { id: 'b101-social', name: 'B101 Social', image: MAIN, to: '/campus/food/venue/b101-social', crop: { w: 216.9, h: 480.03, left: -5.63, top: -185.79 } },
   { ...foodCourt, id: 'b101-food-court-2' },
-  { id: 'skylab', name: 'SkyLab', image: MAIN, crop: { w: 208.77, h: 431.76, left: -3.55, top: -266.55 } },
-  { id: 'ballerup-canteen', name: 'Ballerup - The Canteen', image: MAIN, crop: { w: 216.9, h: 424.64, left: -110.83, top: -262.7 } },
+  { id: 'skylab', name: 'SkyLab', image: MAIN, to: '/campus/food/venue/skylab', crop: { w: 208.77, h: 431.76, left: -3.55, top: -266.55 } },
+  { id: 'ballerup-canteen', name: 'Ballerup - The Canteen', image: MAIN, to: '/campus/food/venue/ballerup-canteen', crop: { w: 216.9, h: 424.64, left: -110.83, top: -262.7 } },
 ];
 
 /** Venues inside building 101 (Figma 157:1132). */
 export const venues101: Venue[] = [
-  { id: 'wicked-rabbit', name: 'Wicked Rabbit', image: B101, crop: { w: 216.9, h: 470.55, left: -5.63, top: -61.23 } },
-  { id: 'folkekokken', name: 'Folkekøkken', image: B101, crop: { w: 214.12, h: 470.55, left: -108.77, top: -61.23 } },
-  { id: 'street-food', name: 'Street Food', image: B101, crop: { w: 210.08, h: 464.27, left: -3.57, top: -167.08 } },
-  { id: 'bazaar', name: 'Bazaar', image: B101, crop: { w: 214.12, h: 461.2, left: -108.77, top: -165.31 } },
+  { id: 'wicked-rabbit', name: 'Wicked Rabbit', image: B101, to: '/campus/food/venue/wicked-rabbit', crop: { w: 216.9, h: 470.55, left: -5.63, top: -61.23 } },
+  { id: 'folkekokken', name: 'Folkekøkken', image: B101, to: '/campus/food/venue/folkekokken', crop: { w: 214.12, h: 470.55, left: -108.77, top: -61.23 } },
+  { id: 'street-food', name: 'Street Food', image: B101, to: '/campus/food/venue/street-food', crop: { w: 210.08, h: 464.27, left: -3.57, top: -167.08 } },
+  { id: 'bazaar', name: 'Bazaar', image: B101, to: '/campus/food/venue/bazaar', crop: { w: 214.12, h: 461.2, left: -108.77, top: -165.31 } },
 ];
 
 // ---- Last visited venues (this browser only), shown on the Campus page ----

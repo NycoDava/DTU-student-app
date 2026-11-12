@@ -191,8 +191,15 @@ FIGMA: node 30:214. Route `/campus/map`, outside the tab layout (no tab bar).
 
 ## Food  (SPECIFIED)
 FIGMA: 30:172 (`/campus/food`) and 157:1132 (`/campus/food/101`). Author's request: IDENTICAL to the eat@DTU app,
-so each card is a crop of the real screenshot (crop values from Figma). Only "B101 - Food Court" is clickable (opens
-the building 101 venues); the others would open the order page, not built yet.
+so each card is a crop of the real screenshot (crop values from Figma). Every card is clickable (12 Nov 2026):
+"B101 - Food Court" opens the building 101 venues, every other card opens its venue page.
+- Venue page `/campus/food/venue/:id` (Figma 275:425, eat@DTU Android app): DTU logo, name, red "Order here" button
+  (opens the eat@DTU app: App Store on iPhone, Google Play otherwise; `LINKS.eatDtuIos` / `eatDtuAndroid`),
+  "Weekly menu" (Mon-Fri chips, today selected; cafés: fixed list), grey box "WHEN & WHERE" + "View map of canteens &
+  cafées" (opens the campus map). No ordering, bonus, news or E-Smiley in the prototype.
+- Data `src/data/venueInfo.ts`: opening hours REAL (DTU Inside "Contact Information and Opening Hours", copied
+  2026-11-12, `LINKS.canteenHours`); menus are SAMPLE data (only published inside the eat@DTU app; CLAUDE.md allows mock
+  data for food). The kantine.cas.dtu.dk site is staff/department catering, not the student venues.
 
 ## Library  (SPECIFIED)
 FIGMA: 30:193. Route `/campus/library`. Live data from the public Smart Library API (`LINKS.smartLibrary`), through the

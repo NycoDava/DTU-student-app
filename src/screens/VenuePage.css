@@ -1,0 +1,167 @@
+/* eat@DTU venue page (Figma 275:425, Android app look): centered logo, red order button, grey info box. */
+.venue__top {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 64px;
+}
+
+.venue__top .sub-header {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-height: 0;
+  padding: 0;
+}
+
+.venue__top .sub-header__back {
+  top: 10px;
+}
+
+.venue__logo {
+  width: 26px;
+  height: 36px;
+  object-fit: cover;
+  margin-top: 8px;
+}
+
+.venue__name {
+  margin: 10px 0 16px;
+  text-align: center;
+  font-size: var(--text-title);
+  font-weight: var(--font-bold);
+}
+
+/* Full-width DTU-red button with icon left and chevron right */
+.venue__order {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 8px;
+  background: var(--dtu-red);
+  color: var(--color-bg);
+  font-size: 16px;
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+}
+
+.venue__order span {
+  flex: 1;
+}
+
+.venue__order:active {
+  opacity: 0.85;
+}
+
+.venue__section {
+  padding: 22px 0 8px;
+}
+
+.venue__heading {
+  margin: 0 0 12px;
+  font-size: var(--text-section);
+  font-weight: var(--font-bold);
+}
+
+.venue__subheading {
+  margin: 14px 0 6px;
+  font-size: var(--text-body);
+  font-weight: var(--font-semibold);
+}
+
+/* Day chips Mon..Fri */
+.venue__days {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.venue__day {
+  flex: 1;
+  min-height: 40px;
+  border: 1px solid var(--color-hairline);
+  border-radius: 20px;
+  background: var(--color-bg);
+  font: inherit;
+  font-size: 14px;
+  font-weight: var(--font-semibold);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.venue__day.is-active {
+  border-color: var(--dtu-red);
+  background: var(--dtu-red);
+  color: var(--color-bg);
+}
+
+.venue__dishes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.venue__dish {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-hairline);
+  font-size: var(--text-body);
+}
+
+.venue__dish-name {
+  min-width: 0;
+}
+
+.venue__veg {
+  margin-left: 8px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: #e6f4ea;
+  color: #1e7a3c;
+  font-size: 11px;
+  font-weight: var(--font-semibold);
+  vertical-align: 1px;
+}
+
+.venue__price {
+  flex-shrink: 0;
+  font-weight: var(--font-semibold);
+}
+
+/* Grey info box as in the app */
+.venue__info {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--planner-bg);
+  border-top: 1px solid var(--dtu-red);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.venue__info p {
+  margin: 0 0 10px;
+}
+
+.venue__caps {
+  margin: 4px 0 8px;
+  font-size: 14px;
+  font-weight: var(--font-bold);
+  text-transform: uppercase;
+}
+
+.venue__map-link {
+  color: var(--dtu-red);
+  text-transform: uppercase;
+  text-decoration: underline;
+}
+
+.venue__empty {
+  color: var(--color-muted);
+  text-align: center;
+}

@@ -234,3 +234,13 @@ Work from these notes; do not re-read the frames.
 - Period header "Placement Status ECTS" + 2x2 grid icon (tooltip "Show schedule"). Opens under the period rows:
   table Monday-Friday x 8-12 / 13-17 / 18-22, black slot tags (E1A E3A E5A E2B E4B / E2A E4A E5B E1B E3B / E7 on Tuesday
   evening), course codes inside their slot; below: "02830  The course is in schedule E5B for project presentations ..."
+
+## eat@DTU venue page (275:425) — Figma IMAGE (screenshots of the eat@DTU Android app, "Bazaar")
+- Top: back arrow, DTU logo centered, (bell, profile). Row of round DTU-red buttons with label under: "Weekly menu", "E-Smiley".
+- Venue name Bold centered. Full-width DTU-red rounded buttons: "Order here >" (cutlery icon), "Bonus 0".
+- "Ongoing orders", "Current" (news carousel). Grey info box: "BAZAAR" bold caps, "🍛 Bazaar", description
+  ("A modern Indian kitchen, where stews and curries are allowed to simmer ..."), "WHEN & WHERE" bold caps,
+  "B101 Monday to Friday 11.00 - 14.00", "FIND FOOD & DRINKS ON CAMPUS", red underlined link "VIEW MAP OF CANTEENS & CAFÉES",
+  help line food-app@foodandco.dk. "Follow us" + Instagram icon.
+- Built (author's scope): name, Weekly menu (sample data), WHEN & WHERE (real DTU opening hours), map link,
+  "Order here" opens the eat@DTU app / store. No bonus, orders, news, E-Smiley.
