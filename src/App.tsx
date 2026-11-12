@@ -4,13 +4,13 @@ import MainLayout from './components/MainLayout';
 import Splash from './screens/Splash';
 import Login from './screens/Login';
 import Home from './screens/Home';
-import Placeholder from './screens/Placeholder';
 import Events from './screens/Events';
 import Announcements from './screens/Announcements';
 import Profile from './screens/Profile';
 import MyStudies from './screens/MyStudies';
 import Grades from './screens/Grades';
 import GpaCalculator from './screens/GpaCalculator';
+import GradesList from './screens/GradesList';
 import Studyplanner from './screens/Studyplanner';
 import MyCourses from './screens/MyCourses';
 import ExamDates from './screens/ExamDates';
@@ -43,7 +43,7 @@ export default function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/student" element={<MyStudies />} />
             <Route path="/grades" element={<Grades />} />
-            <Route path="/grades/list" element={<Placeholder title="List of grades" back />} />
+            <Route path="/grades/list" element={<GradesList />} />
             <Route path="/grades/calculator" element={<GpaCalculator />} />
             <Route path="/courses" element={<MyCourses />} />
             <Route path="/courses/:courseId" element={<CourseLayout />}>

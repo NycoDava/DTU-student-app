@@ -1,0 +1,56 @@
+/* List of grades (Figma 38:24). Header Bold 15 at y94, rows from y124 every 59px. */
+
+.grades-list__row {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) 72px 40px;
+  column-gap: 12px;
+  align-items: start;
+  padding: 5px;
+  font-size: 15px;
+  font-weight: var(--font-bold);
+}
+
+.grades-list__row > span:nth-child(3),
+.grades-list__row > span:nth-child(4) {
+  text-align: center;
+}
+
+.grades-list__row--head {
+  margin-top: -8px; /* header sits right under the title (y94) */
+  padding-bottom: 8px;
+}
+
+.grades-list__row--head .grades-list__title {
+  text-align: center;
+}
+
+.grades-list__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.grades-list__list .grades-list__row {
+  min-height: 42px;
+  border: 1px solid var(--color-text);
+  border-radius: 10px;
+}
+
+.grades-list__list .grades-list__title {
+  font-size: var(--text-xs);
+  padding-top: 2px;
+}
+
+.grades-list__note {
+  display: block;
+  font-size: 10px;
+  color: var(--dtu-red);
+}
+
+.grades-list__empty {
+  color: var(--color-placeholder);
+  text-align: center;
+}

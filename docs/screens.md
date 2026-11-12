@@ -79,8 +79,11 @@ FIGMA: <link>  (this is the "Grades / Progress" screen, with the chart)
     fade on the scrolling edge, and a small hint "swipe to see earlier grades" that disappears after the first scroll.
   - Tap a point: tooltip with course code and title, grade, ECTS, period, GPA at that point. Add a small legend for the two lines.
 
-## List of grades  (DRAFT)
-- Table: Number, Title, Grade, ECTS from `grades`, latest period first, then course code. "IB" is shown as "IB (not passed)".
+## List of grades  (SPECIFIED, built)
+FIGMA: 38:24. Route `/grades/list`.
+- Table: Number, Title, Grade, ECTS from `grades`, latest period first, then course code. No period headings (not in Figma).
+- Grade with ECTS letter as in Figma: "10 (B)" (12 A, 10 B, 7 C, 4 D, 02 E, 00 Fx, -3 F). Not passed (e.g. "IB"):
+  grade + small red "not passed" under it.
 
 ## GPA calculator  (SPECIFIED)
 FIGMA: <link>  (2 variants: empty / result)

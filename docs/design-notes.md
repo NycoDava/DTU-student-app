@@ -219,3 +219,8 @@ Work from these notes; do not re-read the frames.
 - Cards from y245, 383x181, gap 11, rounded ~10, 1px grey border + drop shadow. Pad 16/17:
   title Medium 18 blue `#0988ff` ("Group 20: Premortem"), blank line, "Due on 23 september, 2026, 23:59" Bold 12 `#808080`,
   "Completation status: 1 Submission, 1 File", "Evaluation Status:" same style.
+
+## List of Grades (38:24) → `/grades/list`
+- Back arrow; "List of Grades" Bold 20 centered (y50). Header row y94 Bold 15: Number (x27) / Title (x135) / Grade (x246) / ECTS (x315).
+- Rows from y124, pitch 59, 342 wide, 1px black border, r10, pad 5: code Bold 15, title Bold 12 (w93, wraps),
+  grade "10 (B)" Bold 15, ECTS Bold 15.
