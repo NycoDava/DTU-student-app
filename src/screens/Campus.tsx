@@ -53,12 +53,17 @@ export default function Campus() {
         </dl>
       </section>
 
-      <div className="campus__map">
-        <CampusMap mini />
-        <Link to="/campus/map" className="campus__expand" aria-label="Open the full map">
-          <img src="/icons/expand.svg" width={42} height={42} alt="" />
-        </Link>
-      </div>
+      <section className="campus__mapsection">
+        <LinkRow variant="section" to="/campus/map">
+          Campus map
+        </LinkRow>
+        <div className="campus__map">
+          <CampusMap mini />
+          <Link to="/campus/map" className="campus__expand" aria-label="Open the full map">
+            <img src="/icons/expand.svg" width={42} height={42} alt="" />
+          </Link>
+        </div>
+      </section>
 
       <section className="campus__parking">
         <LinkRow variant="section" to="/campus/parking">

@@ -193,6 +193,7 @@ FIGMA: node 30:214. Route `/campus/map`, outside the tab layout (no tab bar).
   so the map falls back to DTU Lyngby.
 
 ## Parking  (SPECIFIED, built 12 Nov 2026)
+Campus page order: Food and drinks | Library | Campus map | Parking, each a section with a hairline + section row.
 Idea and sources from the DTU campus web app (dashboard-a0e2c.web.app). Route `/campus/parking`; Campus page: section
 "Parking" under the map with two red tiles (free car spaces now at Lyngby, EV charging spaces).
 - Tabs Car / Bike, campus chips Lyngby / Ballerup / Risø.

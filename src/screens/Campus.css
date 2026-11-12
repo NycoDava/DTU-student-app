@@ -84,13 +84,13 @@
   justify-content: center;
 }
 
-/* Parking under the map: same red tiles as the library */
+/* Map and Parking: own sections, same separator + section row as Library */
+.campus__mapsection,
 .campus__parking {
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 8px 0 22px;
-  margin-top: 22px;
   border-top: 1px solid var(--color-hairline);
 }
 
