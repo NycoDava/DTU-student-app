@@ -118,11 +118,55 @@ function eventClassNames(arg: EventContentArg): string[] {
   return [kind === 'deadline' ? 'cal-event--deadline' : kind === 'exam' ? 'cal-event--exam' : 'cal-event--activity'];
 }
 
+const hourFmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Copenhagen', hour: '2-digit', minute: '2-digit', hour12: false });
+/** Copenhagen time of a date as hours with decimals (13:30 -> 13.5). */
+function localHours(d: Date): number {
+  const [h, m] = hourFmt.format(d).split(':').map(Number);
+  return (h % 24) + m / 60;
+}
+const pad = (h: number) => `${String(h).padStart(2, '0')}:00:00`;
+
+/**
+ * Day / Week views (author's request, keep it compact): deadlines (mostly 23:59) go to the all-day row with their time
+ * in the title, so they do not stretch the grid to midnight; exams are all-day already.
+ */
+function forTimeGrid(events: EventInput[]): EventInput[] {
+  return events.map((e) =>
+    e.extendedProps?.kind === 'deadline' && e.start
+      ? { ...e, allDay: true, end: undefined, title: `${hourFmt.format(new Date(e.start as string))} ${e.title}` }
+      : e,
+  );
+}
+
+/** Hours shown in Day / Week: only the span of the timed events in the visible range (default 08-16), at least 4 h. */
+function hourWindow(events: EventInput[], range: { start: Date; end: Date } | null) {
+  let min = 24;
+  let max = 0;
+  for (const e of events) {
+    if (e.allDay || !e.start || !range) continue;
+    const start = new Date(e.start as string);
+    const end = e.end ? new Date(e.end as string) : new Date(start.getTime() + 30 * 60_000);
+    if (end <= range.start || start >= range.end) continue;
+    min = Math.min(min, Math.floor(localHours(start)));
+    max = Math.max(max, Math.ceil(localHours(end) || 24));
+  }
+  if (min >= max) return { min: 8, max: 16 };
+  while (max - min < 4) {
+    if (min > 0) min--;
+    if (max - min < 4 && max < 24) max++;
+  }
+  return { min, max };
+}
+
 export default function Calendar({ events = [] }: Props) {
   const calendarRef = useRef<FullCalendar>(null);
   const [view, setView] = useState<ViewKey>('week');
   const [title, setTitle] = useState('');
   const [preview, setPreview] = useState<Preview | null>(null);
+  const [range, setRange] = useState<{ start: Date; end: Date } | null>(null);
+  const timeGrid = view === 'day' || view === 'week';
+  const shown = timeGrid ? forTimeGrid(events) : events;
+  const hours = hourWindow(shown, range);
 
   function handleEventClick(info: EventClickArg) {
     info.jsEvent.preventDefault();
@@ -151,6 +195,7 @@ export default function Calendar({ events = [] }: Props) {
   function handleDatesSet(arg: DatesSetArg) {
     const key = VIEWS.find((v) => v.fcView === arg.view.type)?.key ?? 'week';
     setTitle(titleFor(key, arg.start, arg.end));
+    setRange({ start: arg.start, end: arg.end });
   }
 
   return (
@@ -191,16 +236,18 @@ export default function Calendar({ events = [] }: Props) {
             plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
             initialView="timeGridWeek"
             headerToolbar={false}
-            height="100%"
+            height="auto"
             firstDay={1}
             locale="en-gb"
-            events={events}
+            events={shown}
+            slotMinTime={pad(hours.min)}
+            slotMaxTime={pad(hours.max)}
+            slotDuration="01:00:00"
             eventClick={handleEventClick}
             eventClassNames={eventClassNames}
             datesSet={handleDatesSet}
             nowIndicator
             allDayText="all day"
-            scrollTime="07:00:00"
             slotLabelFormat={{ hour: '2-digit', minute: '2-digit', hour12: false }}
             eventTimeFormat={{ hour: '2-digit', minute: '2-digit', hour12: false }}
             dayHeaderFormat={{ weekday: 'short' }}

@@ -48,18 +48,19 @@
   gap: 2px;
   padding: 10px 12px;
   border-radius: 12px;
-  background: var(--planner-bg);
+  background: var(--tabbar-red);
 }
 
 .campus__stats dt {
   font-size: var(--text-meta);
-  color: var(--color-muted);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .campus__stats dd {
   margin: 0;
   font-size: 24px;
   font-weight: var(--font-bold);
+  color: var(--color-bg);
 }
 
 /* Map card: full width, soft border */

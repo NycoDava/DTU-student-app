@@ -18,7 +18,8 @@ Common rules
 - Compact header: avatar 44 + name (17 semibold, opens Profile), small DTU logo right. Live mode: sync line under it
   ("Updated Thu 12 Nov, 14:56" + refresh icon, "Sign in" when the session is gone).
 - "Study announcements" (section row with chevron) → one light card: newest study announcement title + 2-line teaser.
-- "Upcoming" (section row) → one card: next activity or deadline, date block (red for deadlines), title, "time · course".
+- "Upcoming" (section row) → one card: next activity or deadline, the SAME AgendaCard as Upcoming events (author's
+  design: red border + red glow for deadlines, dark border for exams).
   One card each on purpose (author's choice, to be revisited after testing).
 - "Calendar": unchanged (see Calendar).
 - Agenda: a Learn calendar event with the same course + title as a deadline, within a day of it, is dropped (only the
@@ -36,7 +37,9 @@ Common rules
   ellipsis) and `dayMaxEvents: 2` with the "+n more" popover. Tapping an event opens the preview card of Figma 157:1094
   (centered over the calendar, author's choice): title, course, location, date and time (deadlines: "Due …"), ✕, and
   "Open in DTU Learn" only when the item has a `url`. The URL is NOT passed to FullCalendar (it would become a real link).
-- Week view: show 08:00-18:00 by default and scroll for the rest. Highlight today.
+- Day / Week views, compact (author's request 12 Nov 2026): only the hours with timed events in the visible range
+  (default 08-16, at least 4 h), one row per hour, height fits the content (no inner scroll). Deadlines go to the
+  all-day row with their time in the title ("23:59 Report …") so 23:59 does not stretch the grid. Highlight today.
 - Style with CSS variables so it matches the app (DTU red for today and buttons, system font). No FullCalendar default blue.
 
 ## Upcoming events  (DRAFT)

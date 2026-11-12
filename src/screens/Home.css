@@ -106,62 +106,15 @@
   color: var(--color-muted);
 }
 
-/* Next activity / deadline: date block left */
-.home__next {
-  flex-direction: row;
-  align-items: center;
-  gap: 14px;
+/* Next activity / deadline: the same card as Upcoming events (red glow for deadlines) */
+.home__agenda-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
 }
 
-.home__date {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 44px;
-  flex-shrink: 0;
-  padding: 6px 0;
-  border-radius: 10px;
-  background: var(--planner-bg);
-}
-
-.home__date-month {
-  font-size: 11px;
-  font-weight: var(--font-semibold);
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-
-.home__date-day {
-  font-size: 20px;
-  font-weight: var(--font-bold);
-  line-height: 1.1;
-}
-
-/* Deadlines: the date block turns red */
-.home__next--deadline .home__date {
-  background: var(--tabbar-red);
-}
-
-.home__next--deadline .home__date-month,
-.home__next--deadline .home__date-day {
-  color: var(--color-bg);
-}
-
-/* Exams: the date block turns black */
-.home__next--exam .home__date {
-  background: var(--color-text);
-}
-
-.home__next--exam .home__date-month,
-.home__next--exam .home__date-day {
-  color: var(--color-bg);
-}
-
-.home__next-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
+.home__agenda-link .agenda-card {
+  width: 100%;
 }
 
 /* Calendar section (the calendar component itself is unchanged) */

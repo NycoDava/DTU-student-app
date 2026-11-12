@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { initials, useCurrentUser } from '../data/currentUser';
 import Calendar from '../components/calendar/Calendar';
 import SyncBar from '../components/SyncBar';
+import AgendaCard from '../components/AgendaCard';
 import LinkRow from '../components/LinkRow';
 import { agenda, courseLabel, studyAnnouncements } from '../data/appData';
-import { formatDay, formatMonth, formatTime } from '../data/format';
 import './Home.css';
 
 /**
@@ -77,18 +77,8 @@ export default function Home() {
           Upcoming
         </LinkRow>
         {next ? (
-          <Link to="/events" className={'home__card home__next' + (next.kind !== 'event' ? ` home__next--${next.kind}` : '')}>
-            <span className="home__date">
-              <span className="home__date-month">{formatMonth(next.startsAt)}</span>
-              <span className="home__date-day">{formatDay(next.startsAt)}</span>
-            </span>
-            <span className="home__next-text">
-              <span className="home__card-title">{next.title}</span>
-              <span className="home__card-text">
-                {!next.isAllDay && `${formatTime(next.startsAt)} · `}
-                {courseLabel(next.courseCode) ?? next.courseCode}
-              </span>
-            </span>
+          <Link to="/events" className="home__agenda-link" aria-label="Upcoming activities and deadlines">
+            <AgendaCard item={next} courseLabel={courseLabel(next.courseCode)} plain />
           </Link>
         ) : (
           <p className="home__empty">Nothing coming up</p>
