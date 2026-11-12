@@ -190,8 +190,10 @@ FIGMA: node 30:214. Route `/campus/map`, outside the tab layout (no tab bar).
   so the map falls back to DTU Lyngby.
 
 ## Food  (SPECIFIED)
-FIGMA: 30:172 (`/campus/food`) and 157:1132 (`/campus/food/101`). Author's request: IDENTICAL to the eat@DTU app,
-so each card is a crop of the real screenshot (crop values from Figma). Every card is clickable (12 Nov 2026):
+FIGMA: 30:172 (`/campus/food`) and 157:1132 (`/campus/food/101`). Same grid, order and red rounded cards as the eat@DTU
+app, but the cards are real components (author's request 12 Nov 2026, the screenshot crops looked like screenshots):
+venue name in a serif (`--font-display`, Playfair Display) like the app's logos, building, and the live status
+"Open · until 14:00" / "Opens 11:00" / "Closed" from the real DTU opening hours (`src/lib/openingHours.ts`, tested). Every card is clickable (12 Nov 2026):
 "B101 - Food Court" opens the building 101 venues, every other card opens its venue page.
 - Venue page `/campus/food/venue/:id` (Figma 275:425, eat@DTU Android app): DTU logo, name, red "Order here" button
   (opens the eat@DTU app: App Store on iPhone, Google Play otherwise; `LINKS.eatDtuIos` / `eatDtuAndroid`),

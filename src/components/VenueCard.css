@@ -1,17 +1,71 @@
-/* Venue card 154 x 161, border 3 dark red, radius 20 (Figma 30:172). */
+/* Venue card: eat@DTU grid layout (154 x 161, red border, radius 20) with a typeset name instead of a screenshot. */
 .venue-card {
   position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
   aspect-ratio: 154 / 161;
   border: 3px solid var(--dtu-red);
   border-radius: 20px;
   overflow: hidden;
   background: var(--color-bg);
+  color: var(--color-text);
+  text-decoration: none;
 }
 
-.venue-card__img {
-  position: absolute;
-  max-width: none;
+/* Upper part: the venue name like a logo */
+.venue-card__logo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.venue-card__name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0.2px;
+}
+
+/* Lower strip, light grey as in the app */
+.venue-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 12px 10px;
+  background: var(--planner-bg);
+}
+
+.venue-card__building {
+  font-size: 13px;
+  font-weight: var(--font-bold);
+}
+
+.venue-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.venue-card__status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #b0b0b0;
+}
+
+.venue-card__status.is-open {
+  color: #1e7a3c;
+  font-weight: var(--font-semibold);
+}
+
+.venue-card__status.is-open i {
+  background: #1fb35a;
 }
 
 .venue-card--link:active {

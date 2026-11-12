@@ -9,6 +9,7 @@
 
   /* Type */
   --font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif; /* eat@DTU venue names */
   --font-light: 300;
   --font-regular: 400;
   --font-medium: 500;

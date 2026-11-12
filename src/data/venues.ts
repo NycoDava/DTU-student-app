@@ -1,46 +1,34 @@
 /**
- * eat@DTU venues. The cards are kept IDENTICAL to the eat@DTU app: each card shows a crop of a real screenshot
- * (public/images/campus), with the crop values copied from the Figma frames (30:172 and 157:1132).
- * `crop` = size and offset of the screenshot inside the card, in % of the card (Figma "h, w, left, top").
+ * eat@DTU venues, in the order of the eat@DTU app (Figma 30:172 and 157:1132). The cards are real components
+ * (VenueCard): name, building and opening status come from `venueInfo.ts`.
  */
-export type Crop = { w: number; h: number; left: number; top: number };
-
 export type Venue = {
   id: string;
   name: string;
-  image: string;
-  crop: Crop;
+  /** Key in venueInfo when it differs from `id` (Food Court appears twice in the app grid). */
+  infoId?: string;
   /** In-app page that opens on tap: building 101 list for Food Court, the venue page for all others. */
   to?: string;
 };
 
-const MAIN = '/images/campus/eat-venues.jpg';
-const B101 = '/images/campus/eat-101.jpg';
-
-const foodCourt: Venue = {
-  id: 'b101-food-court',
-  name: 'B101 - Food Court',
-  image: MAIN,
-  crop: { w: 216.9, h: 432.55, left: -5.63, top: -56.29 },
-  to: '/campus/food/101',
-};
+const foodCourt: Venue = { id: 'b101-food-court', name: 'B101 - Food Court', to: '/campus/food/101' };
 
 /** "Select Venue" on Food and Drinks, in the order of the Figma frame (Food Court appears twice there). */
 export const venues: Venue[] = [
   foodCourt,
-  { id: 'b101-hav-a-java', name: 'B101 - Hav a Java Central', image: MAIN, to: '/campus/food/venue/b101-hav-a-java', crop: { w: 217.2, h: 432.58, left: -110.14, top: -56.29 } },
-  { id: 'b101-social', name: 'B101 Social', image: MAIN, to: '/campus/food/venue/b101-social', crop: { w: 216.9, h: 480.03, left: -5.63, top: -185.79 } },
-  { ...foodCourt, id: 'b101-food-court-2' },
-  { id: 'skylab', name: 'SkyLab', image: MAIN, to: '/campus/food/venue/skylab', crop: { w: 208.77, h: 431.76, left: -3.55, top: -266.55 } },
-  { id: 'ballerup-canteen', name: 'Ballerup - The Canteen', image: MAIN, to: '/campus/food/venue/ballerup-canteen', crop: { w: 216.9, h: 424.64, left: -110.83, top: -262.7 } },
+  { id: 'b101-hav-a-java', name: 'B101 - Hav a Java Central', to: '/campus/food/venue/b101-hav-a-java' },
+  { id: 'b101-social', name: 'B101 Social', to: '/campus/food/venue/b101-social' },
+  { ...foodCourt, id: 'b101-food-court-2', infoId: 'b101-food-court' },
+  { id: 'skylab', name: 'SkyLab', to: '/campus/food/venue/skylab' },
+  { id: 'ballerup-canteen', name: 'Ballerup - The Canteen', to: '/campus/food/venue/ballerup-canteen' },
 ];
 
 /** Venues inside building 101 (Figma 157:1132). */
 export const venues101: Venue[] = [
-  { id: 'wicked-rabbit', name: 'Wicked Rabbit', image: B101, to: '/campus/food/venue/wicked-rabbit', crop: { w: 216.9, h: 470.55, left: -5.63, top: -61.23 } },
-  { id: 'folkekokken', name: 'Folkekøkken', image: B101, to: '/campus/food/venue/folkekokken', crop: { w: 214.12, h: 470.55, left: -108.77, top: -61.23 } },
-  { id: 'street-food', name: 'Street Food', image: B101, to: '/campus/food/venue/street-food', crop: { w: 210.08, h: 464.27, left: -3.57, top: -167.08 } },
-  { id: 'bazaar', name: 'Bazaar', image: B101, to: '/campus/food/venue/bazaar', crop: { w: 214.12, h: 461.2, left: -108.77, top: -165.31 } },
+  { id: 'wicked-rabbit', name: 'Wicked Rabbit', to: '/campus/food/venue/wicked-rabbit' },
+  { id: 'folkekokken', name: 'Folkekøkken', to: '/campus/food/venue/folkekokken' },
+  { id: 'street-food', name: 'Street Food', to: '/campus/food/venue/street-food' },
+  { id: 'bazaar', name: 'Bazaar', to: '/campus/food/venue/bazaar' },
 ];
 
 // ---- Last visited venues (this browser only), shown on the Campus page ----
