@@ -10,8 +10,8 @@ const ERRORS: Record<LoginError, string> = {
   mfa_required: 'DTU asks for an extra confirmation (MFA). This prototype cannot do that: use the saved data.',
   rate_limited: 'Too many attempts. Wait 15 minutes and try again.',
   login_in_progress: 'A login is already in progress.',
-  login_failed: 'Could not reach DTU Learn. Try again later.',
-  server_down: 'The local server is not running (npm run server).',
+  login_failed: 'The DTU login did not complete.',
+  server_down: 'The local server did not answer. Is "npm run server" still running? Check its terminal.',
 };
 
 /**
@@ -46,7 +46,8 @@ export default function Login() {
     setPassword(''); // never keep the password in the page longer than needed
     if (!result.ok) {
       setBusy(false);
-      setError(ERRORS[result.error] ?? ERRORS.login_failed);
+      // Show the server's exact reason too (never contains the password).
+      setError(`${ERRORS[result.error] ?? ERRORS.login_failed}${result.detail ? ` (${result.detail})` : ''}`);
       return;
     }
     await refresh();

@@ -47,8 +47,9 @@ async function post(path: string, body?: unknown) {
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(body ?? {}),
   });
-  const data = await res.json().catch(() => ({}));
-  return { status: res.status, ok: res.ok, data };
+  const isJson = (res.headers.get('content-type') ?? '').includes('application/json');
+  const data = isJson ? await res.json().catch(() => ({})) : {};
+  return { status: res.status, ok: res.ok, data, isJson };
 }
 
 export type LoginError = 'invalid_credentials' | 'mfa_required' | 'rate_limited' | 'login_in_progress' | 'login_failed' | 'server_down';
@@ -58,6 +59,8 @@ export async function login(username: string, password: string): Promise<{ ok: t
   try {
     const r = await post('/login', { username, password });
     if (r.ok) return { ok: true };
+    // Not JSON = the Vite proxy answered (502/504): the local server stopped or crashed during the login.
+    if (!r.isJson) return { ok: false, error: 'server_down', detail: `HTTP ${r.status} from the proxy` };
     return { ok: false, error: (r.data.error as LoginError) ?? 'login_failed', detail: r.data.detail };
   } catch {
     return { ok: false, error: 'server_down' };

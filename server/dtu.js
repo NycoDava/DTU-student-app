@@ -90,9 +90,9 @@ export async function login(username, password) {
   }
 
   const outcome = await Promise.race([
-    page.waitForURL('**/learn.inside.dtu.dk/**', { timeout: 30000 }).then(() => 'ok'),
+    page.waitForURL('**/learn.inside.dtu.dk/**', { timeout: 45000 }).then(() => 'ok'),
     page
-      .waitForFunction(() => (document.querySelector('#errorText')?.textContent || '').trim().length > 0, null, { timeout: 30000 })
+      .waitForFunction(() => (document.querySelector('#errorText')?.textContent || '').trim().length > 0, null, { timeout: 45000 })
       .then(() => 'invalid'),
   ]).catch(() => 'timeout');
 

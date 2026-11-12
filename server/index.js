@@ -102,6 +102,7 @@ const routes = {
     loginBusy = true;
     try {
       const result = await login(username, password);
+      console.log(`[login] ${result.ok ? 'ok' : `${result.error}: ${result.detail}`}`); // never the credentials
       if (!result.ok) {
         const status = { invalid_credentials: 401, mfa_required: 409 }[result.error] ?? 502;
         return send(res, status, { error: result.error, detail: result.detail });
@@ -197,6 +198,17 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, HOST, () => console.log(`DTU local server on http://${HOST}:${PORT} (localhost only)`));
+
+// An unexpected error must not kill the server (the app would only see a proxy error).
+process.on('unhandledRejection', (e) => console.error('[error] unhandled rejection:', String(e?.message || e).split('
+')[0]));
+process.on('uncaughtException', (e) => console.error('[error] uncaught exception:', String(e?.message || e).split('
+')[0]));
+server.on('error', (e) => {
+  if (e.code === 'EADDRINUSE') console.error(`Port ${PORT} is already in use: another "npm run server" is running.`);
+  else console.error('[error]', e.message);
+  process.exit(1);
+});
 
 for (const sig of ['SIGINT', 'SIGTERM']) {
   process.on(sig, async () => {
