@@ -12,23 +12,33 @@ import './EctsDistribution.css';
 const OTHER_COLOR = '#9e9e9e';
 const PIE = 132;
 
-type Slice = { key: string; name: string; color: string; value: number };
+export type Slice = { key: string; name: string; color: string; value: number };
 
-function MiniPie({ title, slices }: { title: string; slices: Slice[] }) {
+/** "Your plan": completed + planned ECTS per course type, plus "Other" for ECTS without a type. */
+export function planSlices(studyplan: Studyplan): Slice[] {
+  const mine: Slice[] = studyplan.ectsByType.map((t) => ({ key: String(t.typeId), name: t.name, color: t.color, value: t.completed + t.planned }));
+  const other = studyplan.uncategorized.completed + studyplan.uncategorized.planned;
+  if (other > 0) mine.push({ key: 'other', name: 'Other', color: OTHER_COLOR, value: other });
+  return mine;
+}
+
+/** Donut with the total in the middle. Used by this sheet and, smaller, by the Grades / My studies preview. */
+export function MiniPie({ title, slices, size = PIE }: { title?: string; slices: Slice[]; size?: number }) {
   const data = slices.filter((s) => s.value > 0);
   const total = data.reduce((n, s) => n + s.value, 0);
+  const ring = Math.round((26 * size) / PIE);
   return (
-    <figure className="ects-dist__pie">
+    <figure className="ects-dist__pie" style={{ width: size }}>
       {data.length === 0 ? (
-        <div className="ects-dist__pie-empty" />
+        <div className="ects-dist__pie-empty" style={{ width: size, height: size }} />
       ) : (
-        <PieChart width={PIE} height={PIE}>
+        <PieChart width={size} height={size}>
           <Pie
             data={data}
             dataKey="value"
             nameKey="name"
-            outerRadius={PIE / 2 - 2}
-            innerRadius={PIE / 2 - 26}
+            outerRadius={size / 2 - 2}
+            innerRadius={size / 2 - ring}
             stroke="#fff"
             strokeWidth={2}
             startAngle={90}
@@ -40,12 +50,12 @@ function MiniPie({ title, slices }: { title: string; slices: Slice[] }) {
             ))}
           </Pie>
           <Tooltip formatter={(v) => [`${v} ECTS`, '']} separator="" />
-          <text x={PIE / 2} y={PIE / 2} textAnchor="middle" dominantBaseline="central" fontSize={15} fontWeight={700}>
+          <text x={size / 2} y={size / 2} textAnchor="middle" dominantBaseline="central" fontSize={Math.round((15 * size) / PIE)} fontWeight={700}>
             {total} ECTS
           </text>
         </PieChart>
       )}
-      <figcaption>{title}</figcaption>
+      {title && <figcaption>{title}</figcaption>}
     </figure>
   );
 }
@@ -61,12 +71,8 @@ export default function EctsDistribution({ studyplan, onClose }: { studyplan: St
   }, [onClose]);
 
   const types = studyplan.ectsByType;
-  const mine: Slice[] = types.map((t) => ({ key: t.typeId, name: t.name, color: t.color, value: t.completed + t.planned }));
-  const other = studyplan.uncategorized.completed + studyplan.uncategorized.planned;
-  if (other > 0) {
-    mine.push({ key: 'other', name: 'Other', color: OTHER_COLOR, value: other });
-  }
-  const programme: Slice[] = types.map((t) => ({ key: t.typeId, name: t.name, color: t.color, value: t.expected }));
+  const mine = planSlices(studyplan);
+  const programme: Slice[] = types.map((t) => ({ key: String(t.typeId), name: t.name, color: t.color, value: t.expected }));
 
   const sheet = (
     <div className="ects-dist__backdrop" onClick={onClose}>

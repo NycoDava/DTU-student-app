@@ -18,6 +18,10 @@ export default function Library() {
         {live ? 'Live' : 'Not live, last reading'} · Updated {formatTime(status.updatedAt)}
       </p>
 
+      <p className="library__explain">
+        Seats with a sensor: {status.seats.total.free + status.seats.total.occupied} in the whole library. The building
+        holds up to {status.capacity} people.
+      </p>
       <SeatBlock title="Seats - Entire library" seats={status.seats.total} />
       <SeatBlock title="Seats - First floor" seats={status.seats.first} />
       <SeatBlock title="Seats - Second Floor" seats={status.seats.second} />
@@ -60,7 +64,9 @@ function SeatBlock({ title, seats }: { title: string; seats: SeatCount }) {
       <div className="library__bar" role="img" aria-label={`${pct}% of seats occupied`}>
         <span style={{ width: `${pct}%` }} />
       </div>
-      <p className="library__pct">{pct}% occupied</p>
+      <p className="library__pct">
+        {pct}% occupied · {seats.free} of {total} sensor seats free
+      </p>
     </section>
   );
 }

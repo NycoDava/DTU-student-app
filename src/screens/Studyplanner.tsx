@@ -40,13 +40,20 @@ function saveColors(colors: Record<string, string>) {
   }
 }
 
-type ColorApi = { colorOf: (code: string | null) => string | null; pick: (item: PlanItem) => void };
+type ColorApi = { colorOf: (item: PlanItem) => string | null; pick: (item: PlanItem) => void };
 const ColorContext = createContext<ColorApi>({ colorOf: () => null, pick: () => {} });
 
 const courseInfo = (code: string | null) => (code ? studyplan.courseInfo?.[code] : undefined);
-/** Type ids are numbers in the Studyplanner data and strings in ectsByType: compare them as strings. */
-const dtuTypeOf = (code: string | null) => {
-  const id = courseInfo(code)?.typeId;
+/**
+ * DTU course type of a board item (as a string: ids are numbers in the Studyplanner data, strings in ectsByType).
+ * Courses: by code. Activities (thesis): by name. Projects (special course): from the project itself.
+ */
+const dtuTypeOf = (item: PlanItem) => {
+  const id = item.code
+    ? courseInfo(item.code)?.typeId
+    : item.id.startsWith('project-')
+      ? studyplan.projects?.find((p) => `project-${p.id}` === item.id)?.typeId
+      : studyplan.activityTypes?.[item.name];
   return id == null ? undefined : String(id);
 };
 
@@ -84,9 +91,10 @@ export default function Studyplanner() {
   const [colors, setColors] = useState(loadColors);
   const [picking, setPicking] = useState<PlanItem | null>(null);
 
-  const typeOf = (code: string | null) => (code ? colors[code] ?? dtuTypeOf(code) : undefined);
+  // Local choices are keyed by item id (course code, activity name or project id).
+  const typeOf = (item: PlanItem) => colors[item.id] ?? dtuTypeOf(item);
   const colorApi: ColorApi = {
-    colorOf: (code) => studyplan.ectsByType.find((t) => String(t.typeId) === typeOf(code))?.color ?? null,
+    colorOf: (item) => studyplan.ectsByType.find((t) => String(t.typeId) === typeOf(item))?.color ?? null,
     pick: (item) => setPicking(item),
   };
 
@@ -171,12 +179,12 @@ export default function Studyplanner() {
       </DndContext>
       </ColorContext.Provider>
 
-      {picking?.code && (
+      {picking && (
         <ColorPicker
           item={picking}
-          current={typeOf(picking.code)}
-          dtuType={dtuTypeOf(picking.code)}
-          onPick={(typeId) => chooseType(picking.code!, typeId)}
+          current={typeOf(picking)}
+          dtuType={dtuTypeOf(picking)}
+          onPick={(typeId) => chooseType(picking.id, typeId)}
           onClose={() => setPicking(null)}
         />
       )}
@@ -300,22 +308,18 @@ function ItemRow({ item, lifted = false }: { item: PlanItem; lifted?: boolean })
 
 function ItemName({ item }: { item: PlanItem }) {
   const { colorOf, pick } = useContext(ColorContext);
-  const color = colorOf(item.code);
+  const color = colorOf(item);
   return (
     <span className="planner__name">
-      {item.code ? (
-        <button
-          type="button"
-          className="planner__square-btn"
-          aria-label={`Course type color of ${item.code}`}
-          onPointerDown={(e) => e.stopPropagation()} // a tap on the square never starts a drag
-          onClick={() => pick(item)}
-        >
-          <span className="planner__square" style={color ? { background: color, borderColor: color } : undefined} />
-        </button>
-      ) : (
-        <span className="planner__square" aria-hidden="true" />
-      )}
+      <button
+        type="button"
+        className="planner__square-btn"
+        aria-label={`Course type color of ${item.code ?? item.name}`}
+        onPointerDown={(e) => e.stopPropagation()} // a tap on the square never starts a drag
+        onClick={() => pick(item)}
+      >
+        <span className="planner__square" style={color ? { background: color, borderColor: color } : undefined} />
+      </button>
       <span>{item.code ? `${item.code} ${item.name}` : item.name}</span>
     </span>
   );
@@ -440,7 +444,7 @@ function ColorPicker({
         onClick={(e) => e.stopPropagation()}
       >
         <h2 id="picker-title" className="planner__picker-title">
-          {item.code} {item.name}
+          {item.code ? `${item.code} ${item.name}` : item.name}
         </h2>
         <p className="planner__picker-hint">Course type (demo, saved in this browser only)</p>
         <ul className="planner__picker-list">

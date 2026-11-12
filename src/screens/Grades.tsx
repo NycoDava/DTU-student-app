@@ -37,7 +37,7 @@ export default function Grades() {
 
       <div className="grades__plan">
         <div className="grades__pie-col">
-          <EctsPie data={studyplan.ectsByType} />
+          <EctsPie studyplan={studyplan} />
           <button type="button" className="grades__dist-button" onClick={() => setShowDistribution(true)}>
             Show ECTS distribution
           </button>

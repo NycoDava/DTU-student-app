@@ -20,7 +20,7 @@ export default function MyStudies() {
       </Link>
 
       <div className="studies__ects">
-        <EctsPie data={studyplan.ectsByType} />
+        <EctsPie studyplan={studyplan} />
         <p className="studies__ects-text">
           Ects completed:
           <br />

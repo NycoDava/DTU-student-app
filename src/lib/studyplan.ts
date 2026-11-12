@@ -159,6 +159,13 @@ export function buildBoard(
     });
   }
 
+  // Projects of an exam period (e.g. a 10 ECTS special course): in the 13-week period of their semester.
+  for (const pr of plan.projects ?? []) {
+    const period = periods.find((x) => x.key === `s${pr.semester}-13w`);
+    if (!period) continue;
+    add({ id: `project-${pr.id}`, code: null, name: pr.name, ects: pr.ects, placement: 'Project', grade: null, locked: period.status === 'past' }, period.key);
+  }
+
   // Passed courses that the plan does not place: put them in the period of their exam.
   for (const g of passed.values()) {
     if (items[g.code]) continue;

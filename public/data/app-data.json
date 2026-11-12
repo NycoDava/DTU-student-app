@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "collectedAt": "2026-11-12T10:21:56.163Z",
+  "collectedAt": "2026-11-12T10:40:30.856Z",
   "timezone": "Europe/Copenhagen",
   "summary": {
     "gpa": 8.55,
@@ -13737,6 +13737,18 @@
         ],
         "scheduleText": null
       }
+    },
+    "projects": [
+      {
+        "id": "111829",
+        "semester": 3,
+        "name": "Special course (project)",
+        "ects": 10,
+        "typeId": 14
+      }
+    ],
+    "activityTypes": {
+      "thesis": 13
     }
   },
   "agenda": [
@@ -15234,7 +15246,7 @@
       "text": "Please be aware that DTU has introduced a new application deadline for Master’s programmes starting in autumn 2026.\nThere will now be a single deadline: 1 March 2026.\nAfter this date, the application portal will close, and no extended application deadline will be offered.\nWe strongly encourage you to prepare early and submit your application on time.\nAdditionally, DTU has implemented a new admission process. Applying for an MSc at DTU - admission process\nFor any questions, feel free to contact the Study Guidance team at studvejl@adm.dtu.dk.\nFor application related questions, you can write to the Admissions Team kandidatopt@adm.dtu.dk.\n\nList settings\n\nGo to messages.dtu.dk"
     }
   ],
-  "fetchedAt": "2026-11-12T10:21:56.163Z",
+  "fetchedAt": "2026-11-12T10:40:30.856Z",
   "sources": {
     "learn": {
       "ok": true,

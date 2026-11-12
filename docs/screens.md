@@ -98,6 +98,7 @@ FIGMA: <link>  (2 variants: empty / result)
 - Empty/invalid input: inline message, no calculation.
 
 ## ECTS distribution  (SPECIFIED)
+- The small pie on Grades / My studies is the same "Your plan" donut (completed + planned per type), `EctsPie` -> `MiniPie`.
 FIGMA: <link>
 - Modal sheet over /grades (white background, never black). Author's request: compare YOUR pie (completed + planned per
   type) with the PROGRAMME pie (expected per type), they may differ (thesis 35 vs 30); then horizontal bars per type:
@@ -150,7 +151,10 @@ FIGMA: node 27:19 (see design-notes). Route `/studyplanner`. Logic in `src/lib/s
   this browser only (prototype, not sent to DTU).
 - Color square = course type color: `studyplan.courseInfo[code].typeId` (Studyplanner `CourseTypeSpecificationRelations`,
   added by the server sync) -> `ectsByType[].color`. Tap the square: choose one of the 4 types (demo, localStorage
-  `studyplanner.colors.v1`, "Reset" back to the DTU type). Courses without a DTU type (e.g. basket) start empty.
+  `studyplanner.colors.v1`, keyed by item id, "Reset" back to the DTU type). Every row can be colored: courses by code,
+  activities (thesis) by `studyplan.activityTypes`, projects by their own type. Items without a DTU type start empty.
+- Projects of an exam period (`studyplan.projects`, e.g. "Special course (project)" 10 ECTS, Studyplanner
+  `ExamPeriod.Projects`) are shown in the 13-week period of their semester, placement "Project", and count as planned.
 - Grid icon in a current/future period header = "Show schedule" (Figma 273:425): week grid Mon-Fri x 8-12 / 13-17 / 18-22
   with the slot codes (autumn E1A...E7, spring F1A...F7) and the course codes in their slot; under it per course DTU's
   schedule note (`courseInfo.scheduleText`), the schedule group and "Exam: Fri, 18 Dec 2026 (E5-B)" from the DTU exam
@@ -193,8 +197,9 @@ the building 101 venues); the others would open the order page, not built yet.
 FIGMA: 30:193. Route `/campus/library`. Live data from the public Smart Library API (`LINKS.smartLibrary`), through the
 Vite proxy (no CORS on the API): works with `npm run dev` / `npm run preview`, refresh every 30 s and when the page
 comes back. Without the proxy (static hosting) the last real reading is shown with "Not live, last reading".
-- Seats boxes Free (blue) / Occupied (orange) for entire library, first floor, second floor = seats with a sensor,
-  plus an occupancy bar. Links: `findit`, `libraryBooking`, `printing`.
+- Seats boxes Free (blue) / Occupied (orange) for entire library, first floor, second floor = seats with a sensor
+  (the API only knows these: 168 = 80 + 88), plus an occupancy bar and "n of N sensor seats free". A line above says
+  so explicitly; 800 is the max number of PEOPLE in the building (door counter), not seats. Links: `findit`, `libraryBooking`, `printing`.
 ## DTU page, News, Events  (SPECIFIED, built)
 - Routes: `/dtu`, `/dtu/news`, `/dtu/events`, `/dtu/services` (tiles open in-app pages `/dtu/services/abroad|career|life|wellbeing`,
   which link out), `/dtu/contact`. News/events are read at runtime from `/data/app-data.json` (`src/data/dtuFeed.ts`).

@@ -98,7 +98,13 @@ export type Studyplan = {
   uncategorized: { completed: number; planned: number };
   /** Per course code (from the raw Studyplanner data, added by the local server sync). */
   courseInfo?: Record<string, CourseInfo>;
+  /** Projects of an exam period, e.g. a special course (added by the server sync). */
+  projects?: StudyplanProject[];
+  /** Course type of placed activities by English name, e.g. { thesis: 13 } (added by the server sync). */
+  activityTypes?: Record<string, number>;
 };
+
+export type StudyplanProject = { id: string; semester: number; name: string; ects: number; typeId: number | null };
 
 /** Course type (→ color in `ectsByType`), schedule groups ("E5B", "January") and DTU's schedule note. */
 export type CourseInfo = { typeId?: number; schedule?: string[]; scheduleText?: string | null };

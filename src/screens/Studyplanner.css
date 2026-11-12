@@ -168,7 +168,7 @@
 .planner__cols {
   flex-shrink: 0;
   display: grid;
-  grid-template-columns: 46px 32px 22px 12px;
+  grid-template-columns: 46px 32px 26px 12px; /* ECTS 26px: the grid icon must not cover the label */
   align-items: center;
   justify-items: center;
 }

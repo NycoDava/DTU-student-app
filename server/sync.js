@@ -97,6 +97,32 @@ function courseInfoFrom(sp) {
   return info;
 }
 
+/** Project names in the Studyplanner are Danish ("Specialkursus"): English names for the app. */
+const PROJECT_NAMES = { specialkursus: 'Special course (project)', bachelorprojekt: 'Bachelor project', kandidatspeciale: "Master's thesis" };
+
+/**
+ * Things normalize.cjs drops: projects of an exam period (e.g. a 10 ECTS special course) and the course type of
+ * placed activities (e.g. the thesis). Without them the Studyplanner misses items and colors.
+ */
+function planExtrasFrom(sp) {
+  if (!sp) return null;
+  const projectType = Object.fromEntries((sp.ProjectTypeSpecificationRelations || []).map((r) => [r.ProjectId, r.TypeId]));
+  const projects = [];
+  const activityTypes = {};
+  for (const rp of sp.ReportingPeriods || []) {
+    for (const sem of rp.Semesters || []) {
+      for (const pr of sem.ExamPeriod?.Projects || []) {
+        const raw = typeof pr.Name === 'string' ? pr.Name : pr.Name?.English || pr.Name?.Danish || 'Project';
+        projects.push({ id: String(pr.ProjectId), semester: sem.Number, name: PROJECT_NAMES[raw.toLowerCase()] ?? raw, ects: pr.Ects, typeId: projectType[pr.ProjectId] ?? null });
+      }
+      for (const period of sem.Periods || []) {
+        for (const a of period.Activities || []) if (a.TypeId != null) activityTypes[a.Name?.English ?? ''] = a.TypeId;
+      }
+    }
+  }
+  return { projects, activityTypes };
+}
+
 /** For every failed source, copy its part of the app data from the previous saved file. */
 function keepPrevious(out, prev, failed, seed) {
   if (!prev) return out;
@@ -199,9 +225,11 @@ async function doSync() {
     const [live, demo] = await Promise.all([normalize(raw, false), normalize(raw, true)]);
     // Fields normalize.cjs does not know about (public study announcements: same in both files).
     const courseInfo = courseInfoFrom(results.studyplan?.studyplan);
+    const extras = planExtrasFrom(results.studyplan?.studyplan);
     for (const out of [live, demo]) {
       out.studyAnnouncements = results.study?.studyAnnouncements ?? [];
       if (out.studyplan && courseInfo) out.studyplan.courseInfo = courseInfo;
+      if (out.studyplan && extras) Object.assign(out.studyplan, extras);
     }
     await mkdir(CACHE_DIR, { recursive: true });
     await writeAtomic(LIVE_FILE, { ...keepPrevious(live, prevLive, failed, seed), fetchedAt, sources });

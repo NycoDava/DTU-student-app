@@ -148,3 +148,11 @@
   color: var(--color-text);
   text-decoration: underline;
 }
+
+/* What the numbers mean: only seats with a sensor are counted (the API knows nothing about the others). */
+.library__explain {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--color-placeholder);
+  text-align: center;
+}
