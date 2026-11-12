@@ -241,6 +241,13 @@ comes back. Without the proxy (static hosting) the last real reading is shown wi
 - Services for students: four colored buttons that open external sites (Study Abroad, DTU Career Hub, Student life...).
 - Contact: static text.
 
+## Services for students  (SPECIFIED, redesigned 12 Nov 2026)
+Route `/dtu/services` (Figma 45:154, author's request: the tiles looked outdated). One row per service: icon in a soft
+circle of the Figma color, title, one-line description, chevron. Service pages (`ServicePage` template): picture,
+title + one-line summary, red main action (external), the original text folded into expandable sections, secondary
+link rows. Career Hub -> "Open DTU Career Hub"; Study abroad -> "Explore exchange at DTU"; Student life -> "See sports at
+DTU Sport" + row "PF, the student union"; Wellbeing -> "DTU Help and Guidance" + row "Study guidance".
+
 ## Profile  (DRAFT)
 - Mock "Edit My User Profile": header "Name (s-number)" from `currentUser`; all fields start EMPTY (author's decision),
   editable, local state only, nothing is sent.
