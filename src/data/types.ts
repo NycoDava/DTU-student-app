@@ -96,7 +96,12 @@ export type Studyplan = {
   ectsByType: EctsByType[];
   /** ECTS not assigned to any course type. */
   uncategorized: { completed: number; planned: number };
+  /** Per course code (from the raw Studyplanner data, added by the local server sync). */
+  courseInfo?: Record<string, CourseInfo>;
 };
+
+/** Course type (→ color in `ectsByType`), schedule groups ("E5B", "January") and DTU's schedule note. */
+export type CourseInfo = { typeId?: number; schedule?: string[]; scheduleText?: string | null };
 
 /** `news[]`: dtu.dk news. */
 export type NewsItem = {

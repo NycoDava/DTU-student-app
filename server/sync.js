@@ -76,6 +76,27 @@ async function normalize(raw, anon) {
   }
 }
 
+/**
+ * Per course code, from the raw Studyplanner data (normalize.cjs drops these): course type (→ color), schedule groups
+ * ("E5B", "January") and the schedule note. Used by the Studyplanner schedule view and the color squares.
+ */
+function courseInfoFrom(sp) {
+  if (!sp) return null;
+  const info = {};
+  for (const r of sp.CourseTypeSpecificationRelations || []) (info[r.CourseCode] ??= {}).typeId = r.TypeId;
+  const walk = (o) => {
+    if (!o || typeof o !== 'object') return;
+    if (o.CourseCode && 'ClassSchedule' in o) {
+      const entry = (info[o.CourseCode] ??= {});
+      entry.schedule = (o.ClassSchedule || []).flat().filter(Boolean);
+      entry.scheduleText = o.ScheduleText?.English || null;
+    }
+    Object.values(o).forEach(walk);
+  };
+  walk(sp);
+  return info;
+}
+
 /** For every failed source, copy its part of the app data from the previous saved file. */
 function keepPrevious(out, prev, failed, seed) {
   if (!prev) return out;
@@ -177,7 +198,11 @@ async function doSync() {
     const sources = Object.fromEntries(SOURCES.map((s) => [s, { ok: !failed.has(s), error: syncState.sources[s].error }]));
     const [live, demo] = await Promise.all([normalize(raw, false), normalize(raw, true)]);
     // Fields normalize.cjs does not know about (public study announcements: same in both files).
-    for (const out of [live, demo]) out.studyAnnouncements = results.study?.studyAnnouncements ?? [];
+    const courseInfo = courseInfoFrom(results.studyplan?.studyplan);
+    for (const out of [live, demo]) {
+      out.studyAnnouncements = results.study?.studyAnnouncements ?? [];
+      if (out.studyplan && courseInfo) out.studyplan.courseInfo = courseInfo;
+    }
     await mkdir(CACHE_DIR, { recursive: true });
     await writeAtomic(LIVE_FILE, { ...keepPrevious(live, prevLive, failed, seed), fetchedAt, sources });
     await writeAtomic(DEMO_FILE, { ...keepPrevious(demo, prevDemo, failed, seed), fetchedAt, sources });

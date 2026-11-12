@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 import {
   DndContext,
   DragOverlay,
@@ -17,7 +17,38 @@ import EctsDistribution from '../components/EctsDistribution';
 import { grades, studyplan } from '../data/appData';
 import { useCurrentUser } from '../data/currentUser';
 import { BASKET, buildBoard, placeItems, type PlanItem, type PlanPeriod } from '../lib/studyplan';
+import { DAYS, TIMES, examFor, normalizeGroup, slotGrid, type Season } from '../lib/schedule';
 import './Studyplanner.css';
+
+// ---- Course colors: DTU course type (studyplan.courseInfo) -> color of that type (ectsByType). ----
+// Demo feature: the user can pick another of the 4 types for a course; kept in this browser only.
+const COLOR_KEY = 'studyplanner.colors.v1';
+
+function loadColors(): Record<string, string> {
+  try {
+    return JSON.parse(localStorage.getItem(COLOR_KEY) ?? '{}');
+  } catch {
+    return {};
+  }
+}
+
+function saveColors(colors: Record<string, string>) {
+  try {
+    localStorage.setItem(COLOR_KEY, JSON.stringify(colors));
+  } catch {
+    // Storage blocked: the choice lasts until reload.
+  }
+}
+
+type ColorApi = { colorOf: (code: string | null) => string | null; pick: (item: PlanItem) => void };
+const ColorContext = createContext<ColorApi>({ colorOf: () => null, pick: () => {} });
+
+const courseInfo = (code: string | null) => (code ? studyplan.courseInfo?.[code] : undefined);
+/** Type ids are numbers in the Studyplanner data and strings in ectsByType: compare them as strings. */
+const dtuTypeOf = (code: string | null) => {
+  const id = courseInfo(code)?.typeId;
+  return id == null ? undefined : String(id);
+};
 
 /**
  * Studyplanner (Figma 27:19). Past periods use the "completed" view (Result / ECTS),
@@ -50,6 +81,23 @@ export default function Studyplanner() {
   const [moves, setMoves] = useState(loadMoves);
   const [dragging, setDragging] = useState<PlanItem | null>(null);
   const [showDistribution, setShowDistribution] = useState(false);
+  const [colors, setColors] = useState(loadColors);
+  const [picking, setPicking] = useState<PlanItem | null>(null);
+
+  const typeOf = (code: string | null) => (code ? colors[code] ?? dtuTypeOf(code) : undefined);
+  const colorApi: ColorApi = {
+    colorOf: (code) => studyplan.ectsByType.find((t) => String(t.typeId) === typeOf(code))?.color ?? null,
+    pick: (item) => setPicking(item),
+  };
+
+  function chooseType(code: string, typeId: string | null) {
+    const next = { ...colors };
+    if (typeId === null) delete next[code];
+    else next[code] = typeId;
+    setColors(next);
+    saveColors(next);
+    setPicking(null);
+  }
 
   const place = placeItems(board, moves);
   const itemsIn = (key: string) => Object.values(board.items).filter((i) => place[i.id] === key);
@@ -87,6 +135,7 @@ export default function Studyplanner() {
         </button>
       </div>
 
+      <ColorContext.Provider value={colorApi}>
       <DndContext
         sensors={sensors}
         collisionDetection={pointerWithin}
@@ -120,6 +169,17 @@ export default function Studyplanner() {
 
         <DragOverlay dropAnimation={null}>{dragging && <ItemRow item={dragging} lifted />}</DragOverlay>
       </DndContext>
+      </ColorContext.Provider>
+
+      {picking?.code && (
+        <ColorPicker
+          item={picking}
+          current={typeOf(picking.code)}
+          dtuType={dtuTypeOf(picking.code)}
+          onPick={(typeId) => chooseType(picking.code!, typeId)}
+          onClose={() => setPicking(null)}
+        />
+      )}
 
       {showDistribution && <EctsDistribution studyplan={studyplan} onClose={() => setShowDistribution(false)} />}
     </div>
@@ -159,6 +219,7 @@ function PastPeriod({ period, items }: { period: PlanPeriod; items: PlanItem[] }
 /** View 2: current or future period. Drop target; its courses can be dragged. */
 function OpenPeriod({ period, items }: { period: PlanPeriod; items: PlanItem[] }) {
   const { setNodeRef, isOver } = useDroppable({ id: period.key });
+  const [showSchedule, setShowSchedule] = useState(false);
   return (
     <div ref={setNodeRef} className={'planner__period planner__drop' + (isOver ? ' planner__drop--over' : '')}>
       <div className="planner__period-head">
@@ -167,7 +228,15 @@ function OpenPeriod({ period, items }: { period: PlanPeriod; items: PlanItem[] }
           <span>Placement</span>
           <span>Status</span>
           <span>ECTS</span>
-          <img src="/icons/grid.svg" width={12} height={12} alt="" />
+          <button
+            type="button"
+            className={'planner__schedule-btn' + (showSchedule ? ' is-on' : '')}
+            aria-expanded={showSchedule}
+            aria-label={showSchedule ? 'Hide schedule' : 'Show schedule'}
+            onClick={() => setShowSchedule(!showSchedule)}
+          >
+            <img src="/icons/grid.svg" width={12} height={12} alt="" />
+          </button>
         </span>
       </div>
       <ul className="planner__rows">
@@ -177,6 +246,7 @@ function OpenPeriod({ period, items }: { period: PlanPeriod; items: PlanItem[] }
           items.map((item) => <DraggableRow key={item.id} item={item} />)
         )}
       </ul>
+      {showSchedule && <ScheduleView period={period} items={items} />}
       <p className="planner__register">Register/withdraw not open</p>
     </div>
   );
@@ -229,9 +299,23 @@ function ItemRow({ item, lifted = false }: { item: PlanItem; lifted?: boolean })
 }
 
 function ItemName({ item }: { item: PlanItem }) {
+  const { colorOf, pick } = useContext(ColorContext);
+  const color = colorOf(item.code);
   return (
     <span className="planner__name">
-      <span className="planner__square" aria-hidden="true" />
+      {item.code ? (
+        <button
+          type="button"
+          className="planner__square-btn"
+          aria-label={`Course type color of ${item.code}`}
+          onPointerDown={(e) => e.stopPropagation()} // a tap on the square never starts a drag
+          onClick={() => pick(item)}
+        >
+          <span className="planner__square" style={color ? { background: color, borderColor: color } : undefined} />
+        </button>
+      ) : (
+        <span className="planner__square" aria-hidden="true" />
+      )}
       <span>{item.code ? `${item.code} ${item.name}` : item.name}</span>
     </span>
   );
@@ -242,5 +326,147 @@ function EmptyRow({ text }: { text: string }) {
     <li className="planner__row planner__row--empty">
       <span>{text}</span>
     </li>
+  );
+}
+
+/** Schedule groups of a course: from the Studyplanner data, else the placement column. */
+const groupsOf = (item: PlanItem) => courseInfo(item.code)?.schedule ?? (item.placement ? [item.placement] : []);
+
+/**
+ * "Show schedule" (Figma 273:425, like the official Studyplanner): week grid Monday-Friday x 8-12 / 13-17 / 18-22 with
+ * the slot codes and the courses in their slot, DTU's schedule notes, and the exam day from the DTU exam timetable.
+ */
+function ScheduleView({ period, items }: { period: PlanPeriod; items: PlanItem[] }) {
+  const courses = items.filter((i) => i.code);
+  const threeWeeks = period.key.endsWith('-3w');
+  const season: Season = /spring/i.test(period.label) ? 'F' : 'E';
+  const year = period.start.getUTCFullYear();
+  const grid = slotGrid(season);
+  const inSlot = (slot: string) =>
+    courses.filter((c) => groupsOf(c).some((g) => normalizeGroup(g) === slot)).map((c) => c.code as string);
+
+  return (
+    <div className="planner__schedule">
+      {threeWeeks ? (
+        <p className="planner__schedule-note">3-week period: the courses run full time on weekdays.</p>
+      ) : (
+        <table className="planner__grid">
+          <thead>
+            <tr>
+              <th aria-label="Time" />
+              {DAYS.map((d) => (
+                <th key={d} scope="col">
+                  {d.slice(0, 3)}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {TIMES.map((time, r) => (
+              <tr key={time}>
+                <th scope="row">{time}</th>
+                {grid[r].map((slot, d) => (
+                  <td key={d}>
+                    {slot && <span className="planner__slot">{slot}</span>}
+                    {slot &&
+                      inSlot(slot).map((code) => (
+                        <span key={code} className="planner__slot-course">
+                          {code}
+                        </span>
+                      ))}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {courses.length === 0 ? (
+        <p className="planner__schedule-note">No courses in this period.</p>
+      ) : (
+        <dl className="planner__notes">
+          {courses.map((c) => {
+            const exam = threeWeeks ? null : examFor(c.code, groupsOf(c), season, year);
+            const note = courseInfo(c.code)?.scheduleText;
+            return (
+              <div key={c.id} className="planner__note">
+                <dt>{c.code}</dt>
+                <dd>
+                  {note && <span>{note}</span>}
+                  <span>Schedule: {groupsOf(c).join(', ') || '–'}</span>
+                  <span className="planner__exam">
+                    {exam
+                      ? `Exam: ${exam.label} (${exam.via})`
+                      : threeWeeks
+                        ? 'Exam: at the end of the 3-week period'
+                        : 'Exam: not in the DTU exam timetable'}
+                  </span>
+                </dd>
+              </div>
+            );
+          })}
+        </dl>
+      )}
+      {!threeWeeks && (
+        <p className="planner__schedule-source">
+          Exam days from the DTU exam timetable (see Exam dates). Project courses may have no written exam.
+        </p>
+      )}
+    </div>
+  );
+}
+
+/** Demo: choose the course type (color) of a course. Saved in this browser only, never sent to DTU. */
+function ColorPicker({
+  item,
+  current,
+  dtuType,
+  onPick,
+  onClose,
+}: {
+  item: PlanItem;
+  current: string | undefined;
+  dtuType: string | undefined;
+  onPick: (typeId: string | null) => void;
+  onClose: () => void;
+}) {
+  return (
+    <div className="planner__picker-backdrop" onClick={onClose}>
+      <div
+        className="planner__picker"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="picker-title"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 id="picker-title" className="planner__picker-title">
+          {item.code} {item.name}
+        </h2>
+        <p className="planner__picker-hint">Course type (demo, saved in this browser only)</p>
+        <ul className="planner__picker-list">
+          {studyplan.ectsByType.map((t) => (
+            <li key={t.typeId}>
+              <button
+                type="button"
+                className={'planner__picker-option' + (current === String(t.typeId) ? ' is-current' : '')}
+                onClick={() => onPick(String(t.typeId))}
+              >
+                <span className="planner__square" style={{ background: t.color, borderColor: t.color }} />
+                <span>{t.name}</span>
+                {dtuType === String(t.typeId) && <span className="planner__picker-dtu">DTU</span>}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <div className="planner__picker-actions">
+          <button type="button" onClick={() => onPick(null)}>
+            Reset
+          </button>
+          <button type="button" onClick={onClose}>
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

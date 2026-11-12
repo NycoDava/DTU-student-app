@@ -224,3 +224,13 @@ Work from these notes; do not re-read the frames.
 - Back arrow; "List of Grades" Bold 20 centered (y50). Header row y94 Bold 15: Number (x27) / Title (x135) / Grade (x246) / ECTS (x315).
 - Rows from y124, pitch 59, 342 wide, 1px black border, r10, pad 5: code Bold 15, title Bold 12 (w93, wraps),
   grade "10 (B)" Bold 15, ECTS Bold 15.
+
+## Calendar event preview (157:1094) — Figma IMAGE (Learn popup screenshot)
+- Small white card r10: clock icon + title Bold ("Group work"), course ("02830 Advanced project ..., Fall 2026"),
+  rooms ("LYN.358.042 | LYN.358.039"), "30 September, 2026 13:00 - 30 September, 2026 17:00", note text, ✕ top right.
+  Built as a centered card over the calendar (colored left border = chip color).
+
+## Studyplanner schedule (273:425) — Figma IMAGE (official Studyplanner screenshot)
+- Period header "Placement Status ECTS" + 2x2 grid icon (tooltip "Show schedule"). Opens under the period rows:
+  table Monday-Friday x 8-12 / 13-17 / 18-22, black slot tags (E1A E3A E5A E2B E4B / E2A E4A E5B E1B E3B / E7 on Tuesday
+  evening), course codes inside their slot; below: "02830  The course is in schedule E5B for project presentations ..."

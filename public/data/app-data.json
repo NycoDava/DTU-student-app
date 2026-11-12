@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "collectedAt": "2026-11-12T10:17:07.764Z",
+  "collectedAt": "2026-11-12T10:21:56.163Z",
   "timezone": "Europe/Copenhagen",
   "summary": {
     "gpa": 8.55,
@@ -13627,6 +13627,116 @@
     "uncategorized": {
       "completed": 0,
       "planned": 0
+    },
+    "courseInfo": {
+      "12105": {
+        "typeId": 11
+      },
+      "38102": {
+        "schedule": [
+          "E1B"
+        ],
+        "scheduleText": null
+      },
+      "38110": {
+        "typeId": 14,
+        "schedule": [
+          "E1B"
+        ],
+        "scheduleText": null
+      },
+      "38400": {
+        "typeId": 11,
+        "schedule": [
+          "January"
+        ],
+        "scheduleText": "The course runs in all 3 week periods: 38400(January), 38402(June), 38404(August)"
+      },
+      "38402": {
+        "schedule": [
+          "June"
+        ],
+        "scheduleText": null
+      },
+      "42501": {
+        "typeId": 14
+      },
+      "02830": {
+        "typeId": 12,
+        "schedule": [
+          "E5B"
+        ],
+        "scheduleText": "The course is in schedule E5B for project presentations, but individual supervision is arranged with the supervisor."
+      },
+      "02808": {
+        "typeId": 12
+      },
+      "02806": {
+        "typeId": 12
+      },
+      "02504": {
+        "typeId": 12
+      },
+      "02180": {
+        "typeId": 12
+      },
+      "02266": {
+        "typeId": 12,
+        "schedule": [
+          "January"
+        ],
+        "scheduleText": null
+      },
+      "02805": {
+        "typeId": 12
+      },
+      "02810": {
+        "typeId": 12,
+        "schedule": [
+          "E1A"
+        ],
+        "scheduleText": null
+      },
+      "02452": {
+        "typeId": 12
+      },
+      "02455": {
+        "schedule": [
+          "E5A"
+        ],
+        "scheduleText": null
+      },
+      "02456": {
+        "schedule": [
+          "E2A"
+        ],
+        "scheduleText": null
+      },
+      "02458": {
+        "schedule": [
+          "E2B"
+        ],
+        "scheduleText": null
+      },
+      "02476": {
+        "schedule": [
+          "January"
+        ],
+        "scheduleText": null
+      },
+      "02517": {
+        "schedule": [
+          "E2B"
+        ],
+        "scheduleText": null
+      },
+      "02566": {
+        "schedule": [
+          "F2A",
+          "F2B"
+        ],
+        "scheduleText": null
+      }
     }
   },
   "agenda": [
@@ -15124,7 +15234,7 @@
       "text": "Please be aware that DTU has introduced a new application deadline for Master’s programmes starting in autumn 2026.\nThere will now be a single deadline: 1 March 2026.\nAfter this date, the application portal will close, and no extended application deadline will be offered.\nWe strongly encourage you to prepare early and submit your application on time.\nAdditionally, DTU has implemented a new admission process. Applying for an MSc at DTU - admission process\nFor any questions, feel free to contact the Study Guidance team at studvejl@adm.dtu.dk.\nFor application related questions, you can write to the Admissions Team kandidatopt@adm.dtu.dk.\n\nList settings\n\nGo to messages.dtu.dk"
     }
   ],
-  "fetchedAt": "2026-11-12T10:17:07.764Z",
+  "fetchedAt": "2026-11-12T10:21:56.163Z",
   "sources": {
     "learn": {
       "ok": true,

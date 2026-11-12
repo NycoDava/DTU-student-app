@@ -148,7 +148,13 @@ FIGMA: node 27:19 (see design-notes). Route `/studyplanner`. Logic in `src/lib/s
 - Drag & drop (@dnd-kit/core): hold 250 ms on touch (5 px drag with mouse), drop into a current/future period or back
   into the basket. Past periods and passed courses never move. Moves saved in localStorage (`studyplanner.moves.v1`),
   this browser only (prototype, not sent to DTU).
-- Color square: the data has no course type per course, so it is drawn empty.
+- Color square = course type color: `studyplan.courseInfo[code].typeId` (Studyplanner `CourseTypeSpecificationRelations`,
+  added by the server sync) -> `ectsByType[].color`. Tap the square: choose one of the 4 types (demo, localStorage
+  `studyplanner.colors.v1`, "Reset" back to the DTU type). Courses without a DTU type (e.g. basket) start empty.
+- Grid icon in a current/future period header = "Show schedule" (Figma 273:425): week grid Mon-Fri x 8-12 / 13-17 / 18-22
+  with the slot codes (autumn E1A...E7, spring F1A...F7) and the course codes in their slot; under it per course DTU's
+  schedule note (`courseInfo.scheduleText`), the schedule group and "Exam: Fri, 18 Dec 2026 (E5-B)" from the DTU exam
+  timetable (`src/lib/schedule.ts` `examFor`: course number first, then group E5B -> "E5-B"). 3-week periods: no grid.
 
 ## Exam dates  (SPECIFIED)
 FIGMA: node 163:1493. Route `/exams`.
