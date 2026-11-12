@@ -244,3 +244,9 @@ Work from these notes; do not re-read the frames.
   help line food-app@foodandco.dk. "Follow us" + Instagram icon.
 - Built (author's scope): name, Weekly menu (sample data), WHEN & WHERE (real DTU opening hours), map link,
   "Order here" opens the eat@DTU app / store. No bonus, orders, news, E-Smiley.
+
+## eat@DTU "Select venue" (275:426) — Figma IMAGE (real Android app, corrects 30:172)
+- Red header "Select venue". 2-column cards: logo on white + caption on light grey + round arrow button.
+- Order: B101 - Food Court | B101 - Hav a Java Central | B101 Social (logo "SOCIAL DINING, Every month in the Food Court
+  in B101") | B342 (Wicked Rabbit logo) | SkyLab | Ballerup - The Canteen (Folkekøkken logo) | Food & Co. | Food & Co.
+  (last two cut off, names unknown). The 4th card is Wicked Rabbit, NOT a second Food Court (30:172 was wrong).

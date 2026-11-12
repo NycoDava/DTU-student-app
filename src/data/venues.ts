@@ -5,7 +5,7 @@
 export type Venue = {
   id: string;
   name: string;
-  /** Key in venueInfo when it differs from `id` (Food Court appears twice in the app grid). */
+  /** Key in venueInfo when it differs from `id` (e.g. Ballerup - The Canteen is Folkekøkken). */
   infoId?: string;
   /** In-app page that opens on tap: building 101 list for Food Court, the venue page for all others. */
   to?: string;
@@ -13,14 +13,14 @@ export type Venue = {
 
 const foodCourt: Venue = { id: 'b101-food-court', name: 'B101 - Food Court', to: '/campus/food/101' };
 
-/** "Select Venue" on Food and Drinks, in the order of the Figma frame (Food Court appears twice there). */
+/** Food and drinks, in the order of the eat@DTU app (Figma 275:426). Two more "Food & Co." venues exist there (names unknown). */
 export const venues: Venue[] = [
   foodCourt,
   { id: 'b101-hav-a-java', name: 'B101 - Hav a Java Central', to: '/campus/food/venue/b101-hav-a-java' },
   { id: 'b101-social', name: 'B101 Social', to: '/campus/food/venue/b101-social' },
-  { ...foodCourt, id: 'b101-food-court-2', infoId: 'b101-food-court' },
+  { id: 'b342-wicked-rabbit', name: 'B342 - Wicked Rabbit', infoId: 'wicked-rabbit', to: '/campus/food/venue/wicked-rabbit' },
   { id: 'skylab', name: 'SkyLab', to: '/campus/food/venue/skylab' },
-  { id: 'ballerup-canteen', name: 'Ballerup - The Canteen', to: '/campus/food/venue/ballerup-canteen' },
+  { id: 'ballerup-canteen', name: 'Ballerup - The Canteen', infoId: 'folkekokken', to: '/campus/food/venue/folkekokken' },
 ];
 
 /** Venues inside building 101 (Figma 157:1132). */

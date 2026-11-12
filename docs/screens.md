@@ -196,7 +196,10 @@ venue name in a serif (`--font-display`, Playfair Display) like the app's logos,
 "Open · until 14:00" / "Opens 11:00" / "Closed" from the real DTU opening hours (`src/lib/openingHours.ts`, tested).
 - Naming (author's decision 12 Nov 2026): the grid is titled "Food and drinks" (like the Campus row) and the building 101
   grid "Food Court"; no "Eat@DTU" logo / "Select Venue". "eat@DTU" only on the hand-off button "Order in eat@DTU".
-  Grid: 2 equal columns over the full width, 14 px gaps, 16 px side margins (centered). Every card is clickable (12 Nov 2026):
+  Grid: 2 equal columns over the full width, 14 px gaps, 16 px side margins (centered).
+- Venue order = eat@DTU app (Figma 275:426): Food Court, Hav a Java Central, Social Dining (monthly event, "Every month",
+  All you can eat 60 kr.), Wicked Rabbit (B342), SkyLab Café, Folkekøkken (= "Ballerup - The Canteen"). No duplicate.
+  The app has two more "Food & Co." venues (names unknown, not added). Every card is clickable (12 Nov 2026):
 "B101 - Food Court" opens the building 101 venues, every other card opens its venue page.
 - Venue page `/campus/food/venue/:id` (Figma 275:425, eat@DTU Android app): DTU logo, name, red "Order here" button
   (opens the eat@DTU app: App Store on iPhone, Google Play otherwise; `LINKS.eatDtuIos` / `eatDtuAndroid`),

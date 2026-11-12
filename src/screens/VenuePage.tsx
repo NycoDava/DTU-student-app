@@ -83,6 +83,11 @@ export default function VenuePage() {
         <h2 className="venue__caps">{info.title}</h2>
         {info.description && <p>{info.description}</p>}
         <h2 className="venue__caps">When &amp; where</h2>
+        {info.hours.length === 0 && info.when && (
+          <p>
+            <strong>{info.building}</strong> {info.when}
+          </p>
+        )}
         {info.hours.map((h) => (
           <p key={h.days}>
             <strong>{info.building}</strong> {h.days} {h.time}

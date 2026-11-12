@@ -15,6 +15,8 @@ export type VenueInfo = {
   /** "B101" etc., as in the app ("B101 Monday to Friday 11.00 - 14.00"). */
   building: string;
   hours: { days: string; time: string }[];
+  /** For venues without daily hours (Social Dining): shown instead of the hours. */
+  when?: string;
   description?: string;
   menu: WeekMenu | FixedMenu;
 };
@@ -81,9 +83,16 @@ const canteenWeek: WeekMenu = {
 export const venueInfo: Record<string, VenueInfo> = {
   'b101-food-court': { title: 'Food Court', building: 'B101', hours: [{ days: WEEKDAYS, time: '11.00 - 14.00' }], menu: canteenWeek },
   'b101-hav-a-java': { title: 'Hav a Java Central', building: 'B101', hours: [{ days: WEEKDAYS, time: '07.30 - 17.00' }], menu: coffeeMenu() },
-  'b101-social': { title: 'Social', building: 'B101', hours: [{ days: WEEKDAYS, time: '11.00 - 14.00' }], menu: canteenWeek },
+  // Social Dining is a monthly dinner event, not a daily venue (eat@DTU app, Figma 275:425/275:426).
+  'b101-social': {
+    title: 'Social Dining',
+    building: 'B101',
+    hours: [],
+    when: 'Every month in the Food Court',
+    description: 'Every month we invite you, your friends and family to Social Dining dinner in B101.',
+    menu: { kind: 'fixed', sections: [{ title: 'Dinner', items: [{ name: 'All you can eat', price: 60 }] }] },
+  },
   skylab: { title: 'SkyLab Café', building: 'B374', hours: [{ days: WEEKDAYS, time: '08.00 - 15.00 (lunch 11.00 - 14.00)' }], menu: coffeeMenu([{ name: 'Lunch dish of the day', price: 55 }]) },
-  'ballerup-canteen': { title: 'The Canteen', building: 'Ballerup', hours: [{ days: WEEKDAYS, time: '11.00 - 14.00' }], menu: canteenWeek },
   'wicked-rabbit': {
     title: 'Wicked Rabbit',
     building: 'B342',

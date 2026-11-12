@@ -11,7 +11,8 @@ import './VenueCard.css';
  */
 export default function VenueCard({ venue }: { venue: Venue }) {
   const info = venueInfo[venue.infoId ?? venue.id];
-  const status = info ? venueStatus(info) : null;
+  // No daily hours (Social Dining): the short form of `when` ("Every month"), the full text is on the venue page.
+  const status = info ? (info.hours.length ? venueStatus(info) : { open: false, label: (info.when ?? '').split(' in ')[0] }) : null;
   const content = (
     <>
       <span className="venue-card__logo">
