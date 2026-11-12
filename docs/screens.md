@@ -116,6 +116,11 @@ Routes: `/courses/:id` (My Course), `/courses/:id/classlist`, `/courses/:id/cont
 - My Course: "Classlist ->" + number of people; Groups: category, group number, members n/max, number of group
   assignments (if no group: "You are not in a group in this course"); Announcements: latest 3 with full text
   (HTML entities decoded, shown as plain text), "See all (n)" expands in place. Author is not in the data: "Posted on <date>".
+- Groups (12 Nov 2026): "Members: n/max" is tappable and shows the group members (initials, name, email; from
+  `group.memberIds` + classlist, anonymized ids in demo data). "Group assignments: n" opens the Assignments tab.
+- Content files (live mode): PDFs and images open in the in-app viewer (back arrow + file name, pages edge to edge),
+  other files download; see docs/live-data.md "Course files in the app".
+- Real phones (narrow touch screen): no phone frame, banner flush with the top (also under the status bar when installed).
 - Classlist: dropdown All / Students / Instructors (Figma) + search by name/email (author's choice), instructors first,
   "Last, First" shown as "First Last", own row "(You)", initials avatar (no photos), email as `mailto:`.
 - Content: one row per module; module view lists sub-modules and topics with a file/link icon. A topic opens

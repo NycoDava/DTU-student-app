@@ -107,6 +107,8 @@ It is a PROTOTYPE for usability testing, not a product. Prefer simple, readable 
   stored, logged, or sent to any host other than DTU; they are only typed into the DTU login form. The session (cookies) lives
   only in memory, no automatic re-login. The server listens only on 127.0.0.1 (Host header checked, JSON-only POSTs, no CORS).
   Usability testers never enter real DTU credentials: tests use the static demo build.
+- Course files opened in the app are fetched on demand and kept only in the server's memory (never on disk, never in
+  git or the demo build), sent with `Cache-Control: no-store`.
 - The demo build contains no real data of other people: `public/data/app-data.json` is always the `ANON=1` output
   (`npm run demo-data` refuses non-anonymized classlists). Real grades/studyplan of the author are allowed.
 - `classlists` contains OTHER PEOPLE's names and emails: the file with real names is `app-data.real.json` (gitignored). Anything deployed or handed in must be generated with `ANON=1` (fictional names for everyone except the author). No photos: initials avatars.
