@@ -60,7 +60,7 @@ export default function App() {
             <Route path="/exams" element={<ExamDates />} />
             <Route path="/campus" element={<Campus />} />
             <Route path="/campus/food" element={<Food venues={venues} />} />
-            <Route path="/campus/food/101" element={<Food venues={venues101} compact />} />
+            <Route path="/campus/food/101" element={<Food venues={venues101} title="Food Court" />} />
             <Route path="/campus/food/venue/:venueId" element={<VenuePage />} />
             <Route path="/campus/library" element={<Library />} />
             <Route path="/dtu" element={<Dtu />} />

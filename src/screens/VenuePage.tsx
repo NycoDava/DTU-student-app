@@ -50,7 +50,7 @@ export default function VenuePage() {
         <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M7 3v8M5 3v4a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 2-2 6 0 8v10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <span>Order here</span>
+        <span>Order in eat@DTU</span>
         <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>

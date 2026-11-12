@@ -3,16 +3,17 @@ import VenueCard from '../components/VenueCard';
 import type { Venue } from '../data/venues';
 import './Food.css';
 
-/** eat@DTU "Select Venue" (Figma 30:172 = all venues, 157:1132 = venues of building 101). Kept identical to eat@DTU. */
-export default function Food({ venues, compact = false }: { venues: Venue[]; compact?: boolean }) {
+/**
+ * Venue grid (Figma 30:172 = all venues, 157:1132 = venues of the Food Court in building 101).
+ * Same cards and order as the eat@DTU app; the title uses the app's own wording ("Food and drinks", like the Campus
+ * row) instead of the eat@DTU logo, so navigation names stay consistent (author's decision). "eat@DTU" only appears
+ * where the user is sent to the official app ("Order in eat@DTU").
+ */
+export default function Food({ venues, title = 'Food and drinks' }: { venues: Venue[]; title?: string }) {
   return (
     <div className="sub-screen food">
-      <SubHeader />
-      <h1 className="food__title">
-        Eat@<span>DTU</span>
-      </h1>
-      <p className="food__subtitle">Select Venue</p>
-      <div className={'food__grid' + (compact ? ' food__grid--compact' : '')}>
+      <SubHeader title={title} />
+      <div className="food__grid">
         {venues.map((venue) => (
           <VenueCard key={venue.id} venue={venue} />
         ))}
