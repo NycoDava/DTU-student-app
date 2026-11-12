@@ -419,3 +419,78 @@ html.is-standalone .course-banner {
     border-radius: 0 0 20px 20px;
   }
 }
+
+/* Real phones: the banner starts at the very top (no white strip, no frame border) and runs under the status bar
+   (safe area) like a native header. */
+@media (max-width: 500px) and (pointer: coarse) {
+  .course-banner {
+    margin-top: 0;
+    border: none;
+    border-radius: 0 0 20px 20px;
+  }
+}
+
+html.is-standalone .course-page {
+  margin-top: calc(-1 * env(safe-area-inset-top));
+}
+
+html.is-standalone .course-banner {
+  height: calc(207px + env(safe-area-inset-top));
+}
+
+html.is-standalone .course-banner__back {
+  top: env(safe-area-inset-top);
+}
+
+/* Tappable values in the Groups block (members list, assignments tab) */
+.my-course__value-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 2px;
+  border: none;
+  background: none;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.group-members {
+  list-style: none;
+  margin: 4px 0 8px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.group-members__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.group-members__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 14px;
+}
+
+.group-members__text a {
+  font-size: var(--text-meta);
+  color: var(--color-muted);
+  overflow-wrap: anywhere;
+}
+
+/* File type tag for files that download instead of opening in the app (PPTX, DOCX, ...) */
+.course-row__ext {
+  flex: none;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: var(--planner-bg);
+  font-size: 11px;
+  font-weight: var(--font-semibold);
+  color: var(--color-muted);
+}

@@ -224,6 +224,15 @@ async function doSync() {
     const sources = Object.fromEntries(SOURCES.map((s) => [s, { ok: !failed.has(s), error: syncState.sources[s].error }]));
     const [live, demo] = await Promise.all([normalize(raw, false), normalize(raw, true)]);
     // Fields normalize.cjs does not know about (public study announcements: same in both files).
+    // Group member ids: the demo file has anonymized person ids (normalize ANON: "anon-<course>-<index>", me unchanged).
+    for (const [courseId, cl] of Object.entries(results.learn?.classlists ?? {})) {
+      const ids = cl.group?.memberIds;
+      if (!ids || !demo.classlists?.[courseId]?.group) continue;
+      demo.classlists[courseId].group.memberIds = ids.map((id) => {
+        const i = cl.users.findIndex((u) => u.id === id);
+        return i < 0 || id === cl.myId ? id : `anon-${courseId}-${i}`;
+      });
+    }
     const courseInfo = courseInfoFrom(results.studyplan?.studyplan);
     const extras = planExtrasFrom(results.studyplan?.studyplan);
     for (const out of [live, demo]) {

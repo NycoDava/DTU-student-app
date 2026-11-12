@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { LINKS } from '../../config/links';
+import { dataMode } from '../../data/appFile';
+import { IMAGE_EXT, topicExt } from './FileViewer';
 import { useVisited } from '../../data/visited';
 import type { ContentTopic } from '../../data/types';
 import CheckIcon from './CheckIcon';
@@ -89,6 +91,38 @@ export function ModuleView() {
       ))}
       {module.topics.map((t) => {
         const href = local[t.id] ?? t.url ?? course.url ?? LINKS.learn;
+        const icon = (
+          <img
+            className="course-row__kind"
+            src={t.kind === 'File' ? '/icons/file.svg' : '/icons/external-link.svg'}
+            width={20}
+            height={20}
+            alt={t.kind === 'File' ? 'File' : 'Link'}
+          />
+        );
+        // Live mode: files open inside the app (PDF reader / image) or download through the local server, no Learn.
+        if (dataMode === 'live' && t.kind === 'File') {
+          const ext = topicExt(t);
+          const inApp = ext === 'pdf' || IMAGE_EXT.has(ext);
+          return (
+            <li key={t.id}>
+              {inApp ? (
+                <Link to={`/courses/${course.id}/file/${t.id}`} className="course-row" onClick={() => visited.mark(`t:${t.id}`)}>
+                  {icon}
+                  <span className="course-row__title">{t.title}</span>
+                  {visited.has(`t:${t.id}`) && <CheckIcon />}
+                </Link>
+              ) : (
+                <a href={`/api/local/files/${course.id}/${t.id}?download=1`} className="course-row" onClick={() => visited.mark(`t:${t.id}`)}>
+                  {icon}
+                  <span className="course-row__title">{t.title}</span>
+                  <span className="course-row__ext">{ext.toUpperCase()}</span>
+                  {visited.has(`t:${t.id}`) && <CheckIcon />}
+                </a>
+              )}
+            </li>
+          );
+        }
         return (
           <li key={t.id}>
             <a

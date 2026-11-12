@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import LinkRow from '../../components/LinkRow';
 import { plainText } from '../../data/courseData';
 import { formatLongDateTime } from '../../data/format';
@@ -11,6 +12,7 @@ const LINK_PROPS = { target: '_blank', rel: 'noopener noreferrer' } as const;
 export function MyCourseTab() {
   const { course, data } = useCourse();
   const [showAll, setShowAll] = useState(false);
+  const [showMembers, setShowMembers] = useState(false);
 
   const classlist = data.classlists[course.id];
   const group = classlist?.group ?? null;
@@ -45,16 +47,25 @@ export function MyCourseTab() {
             </p>
             <p className="my-course__light">
               Members:{' '}
-              <span className="my-course__value">
+              <button
+                type="button"
+                className="my-course__value my-course__value-btn"
+                aria-expanded={showMembers}
+                onClick={() => setShowMembers(!showMembers)}
+              >
                 {group.members}/{group.maxMembers}
-              </span>
+              </button>
             </p>
+            {showMembers && <GroupMembers ids={group.memberIds ?? []} people={classlist?.people ?? []} />}
           </>
         ) : (
           <p className="my-course__light">You are not in a group in this course</p>
         )}
         <p className="my-course__light">
-          Group assignments: <span className="my-course__value">{groupAssignments}</span>
+          Group assignments:{' '}
+          <Link to={`/courses/${course.id}/assignments`} className="my-course__value my-course__value-btn">
+            {groupAssignments}
+          </Link>
         </p>
       </section>
 
@@ -81,6 +92,33 @@ export function MyCourseTab() {
         )}
       </section>
     </div>
+  );
+}
+
+/** Members of my group: initials avatar, name, email (from the classlist; no photos). */
+function GroupMembers({ ids, people }: { ids: string[]; people: Person[] }) {
+  const members = ids.map((id) => people.find((p) => p.id === id)).filter((p): p is Person => !!p);
+  if (members.length === 0) return <p className="my-course__light">Members are not available. Refresh the data.</p>;
+  return (
+    <ul className="group-members">
+      {members.map((p) => {
+        const name = displayName(p.name);
+        return (
+          <li key={p.id} className="group-members__row">
+            <span className="classlist__avatar" style={{ background: avatarColor(p.id) }} aria-hidden>
+              {initials(name)}
+            </span>
+            <span className="group-members__text">
+              <span>
+                {name}
+                {p.isMe && <span className="classlist__you"> (You)</span>}
+              </span>
+              {p.email && <a href={`mailto:${p.email}`}>{p.email}</a>}
+            </span>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 

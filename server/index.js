@@ -10,7 +10,7 @@
  * The app talks to it through the Vite proxy: /api/local/* -> http://127.0.0.1:8787/api/*
  */
 import http from 'node:http';
-import { LEARN, SessionExpired, closeSession, fetchGrades, fetchStudyplan, getJson, getSession, login, publicUser, shutdown } from './dtu.js';
+import { LEARN, SessionExpired, closeSession, fetchGrades, fetchStudyplan, getCourseFile, getJson, getSession, login, publicUser, shutdown } from './dtu.js';
 import { readSaved, startSync, syncState } from './sync.js';
 
 const PORT = Number(process.env.DTU_SERVER_PORT || 8787);
@@ -177,6 +177,44 @@ async function courseDetail(req, res, id) {
   );
 }
 
+/**
+ * GET /api/files/:orgUnitId/:topicId -> the file itself, inline (the in-app viewer) or as a download (?download=1).
+ * Supports Range requests (the PDF viewer reads big files in pieces). Cache-Control no-store: the phone keeps no copy.
+ */
+async function courseFile(req, res, ou, topic) {
+  if (!/^\d+$/.test(ou) || !/^\d+$/.test(topic)) return send(res, 400, { error: 'bad_request' });
+  let file;
+  try {
+    file = await getCourseFile(ou, topic);
+  } catch (e) {
+    if (e instanceof SessionExpired) return send(res, 401, { error: 'session_expired' });
+    return send(res, 502, { error: 'upstream_failed', detail: String(e.message).slice(0, 200) });
+  }
+  const download = new URL(req.url, 'http://x').searchParams.get('download') === '1';
+  const headers = {
+    'content-type': file.type,
+    'content-disposition': `${download ? 'attachment' : 'inline'}; filename*=UTF-8''${encodeURIComponent(file.name)}`,
+    'cache-control': 'no-store',
+    'accept-ranges': 'bytes',
+    'x-content-type-options': 'nosniff',
+  };
+  const range = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range || '');
+  if (range && (range[1] || range[2])) {
+    let start = range[1] ? Number(range[1]) : file.size - Number(range[2]);
+    let end = range[1] && range[2] ? Number(range[2]) : file.size - 1;
+    start = Math.max(0, start);
+    end = Math.min(end, file.size - 1);
+    if (start > end) {
+      res.writeHead(416, { 'content-range': `bytes */${file.size}` });
+      return res.end();
+    }
+    res.writeHead(206, { ...headers, 'content-range': `bytes ${start}-${end}/${file.size}`, 'content-length': end - start + 1 });
+    return res.end(file.body.subarray(start, end + 1));
+  }
+  res.writeHead(200, { ...headers, 'content-length': file.size });
+  res.end(file.body);
+}
+
 const server = http.createServer(async (req, res) => {
   const t0 = performance.now();
   res.on('finish', () => console.log(`${req.method} ${req.url.split('?')[0]} ${res.statusCode} ${Math.round(performance.now() - t0)}ms`));
@@ -191,6 +229,8 @@ const server = http.createServer(async (req, res) => {
     if (route) return await route(req, res);
     const m = req.method === 'GET' && /^\/api\/courses\/([^/]+)$/.exec(pathname);
     if (m) return await courseDetail(req, res, m[1]);
+    const f = req.method === 'GET' && /^\/api\/files\/([^/]+)\/([^/]+)$/.exec(pathname);
+    if (f) return await courseFile(req, res, f[1], f[2]);
     send(res, 404, { error: 'not_found' });
   } catch (e) {
     send(res, 500, { error: 'server_error', detail: String(e.message).slice(0, 200) });

@@ -267,7 +267,7 @@ export async function fetchLearn({ saveImage }) {
               for (const g of JSON.parse(gr.text)) {
                 const members = (g.Enrollments || []).map(String);
                 if (members.includes(entry.myId)) {
-                  entry.group = { category: cat.Name, name: g.Name, members: members.length, maxMembers: cat.MaxUsersPerGroup ?? null };
+                  entry.group = { category: cat.Name, name: g.Name, members: members.length, maxMembers: cat.MaxUsersPerGroup ?? null, memberIds: members };
                 }
               }
             }
@@ -465,4 +465,64 @@ export async function fetchStudyAnnouncements() {
   );
   for (const item of items) if (!item.teaser) item.teaser = item.text.replace(/\s+/g, ' ').slice(0, 200);
   return { studyAnnouncements: items, counts: { announcements: items.length } };
+}
+
+// ===================================================================================================
+// Course files on demand (lecture PDFs, ...). Downloaded from Learn with the session only when the user opens one,
+// kept ONLY IN MEMORY: dropped 30 minutes after the last use, when the cache passes 300 MB, and when the server stops.
+// Nothing is written to disk. A file already in memory opens even if the session has expired.
+// ===================================================================================================
+const FILE_TTL_MS = 30 * 60_000;
+const FILE_CACHE_MAX = 300 * 1024 * 1024;
+const fileCache = new Map(); // "ou/topic" -> { body, type, name, size, at }
+const fileDownloads = new Map(); // "ou/topic" -> Promise (one download per file, even with parallel requests)
+
+function sweepFiles() {
+  const now = Date.now();
+  let total = 0;
+  for (const [key, f] of [...fileCache].sort((a, b) => b[1].at - a[1].at)) {
+    if (now - f.at > FILE_TTL_MS || total + f.size > FILE_CACHE_MAX) fileCache.delete(key);
+    else total += f.size;
+  }
+}
+setInterval(sweepFiles, 60_000).unref();
+
+/** "attachment; filename*=UTF-8''02830%20Playbook.pdf" -> "02830 Playbook.pdf" */
+function fileNameFrom(disposition, fallback) {
+  const star = /filename\*=UTF-8''([^;]+)/i.exec(disposition || '');
+  if (star) return decodeURIComponent(star[1]);
+  const plain = /filename="?([^";]+)"?/i.exec(disposition || '');
+  return plain ? plain[1] : fallback;
+}
+
+export async function getCourseFile(orgUnitId, topicId) {
+  const key = `${orgUnitId}/${topicId}`;
+  const hit = fileCache.get(key);
+  if (hit) {
+    hit.at = Date.now();
+    return hit;
+  }
+  if (fileDownloads.has(key)) return fileDownloads.get(key);
+  if (!session) throw new SessionExpired();
+
+  const download = (async () => {
+    // Not through the shared limiter: a big file must not hold up the data refresh.
+    const res = await session.context.request.get(`${LEARN}/d2l/api/le/${session.le}/${orgUnitId}/content/topics/${topicId}/file`, {
+      failOnStatusCode: false,
+      timeout: 180_000,
+    });
+    const type = (res.headers()['content-type'] || 'application/octet-stream').split(';')[0];
+    if (type === 'text/html' && /^sts\.|login\.microsoftonline/i.test(new URL(res.url()).host)) {
+      await closeSession();
+      throw new SessionExpired();
+    }
+    if (!res.ok()) throw new Error(`HTTP ${res.status()} from Learn`);
+    const body = await res.body();
+    const file = { body, type, name: fileNameFrom(res.headers()['content-disposition'], `file-${topicId}`), size: body.length, at: Date.now() };
+    fileCache.set(key, file);
+    sweepFiles();
+    return file;
+  })().finally(() => fileDownloads.delete(key));
+  fileDownloads.set(key, download);
+  return download;
 }

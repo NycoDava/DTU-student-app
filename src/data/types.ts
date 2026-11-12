@@ -172,7 +172,8 @@ export type Classlist = {
   myId: string | null;
   myRoleId: string | null;
   people: Person[];
-  group: { category: string; name: string; members: number; maxMembers: number } | null;
+  /** memberIds: classlist person ids of the group members (added by the server sync; anonymized ids in demo data). */
+  group: { category: string; name: string; members: number; maxMembers: number; memberIds?: string[] } | null;
 };
 
 /** DTU study announcement (student.dtu.dk, shown by the "Study Announcements" widget on the Learn home page). */

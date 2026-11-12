@@ -28,6 +28,7 @@ import CourseLayout from './screens/course/CourseLayout';
 import { ClasslistTab, MyCourseTab } from './screens/course/MyCourseTab';
 import { ContentTab, ModuleView } from './screens/course/ContentTab';
 import { AssignmentsTab } from './screens/course/AssignmentsTab';
+import FileViewer from './screens/course/FileViewer';
 
 export default function App() {
   return (
@@ -46,6 +47,7 @@ export default function App() {
             <Route path="/grades/list" element={<GradesList />} />
             <Route path="/grades/calculator" element={<GpaCalculator />} />
             <Route path="/courses" element={<MyCourses />} />
+            <Route path="/courses/:courseId/file/:topicId" element={<FileViewer />} />
             <Route path="/courses/:courseId" element={<CourseLayout />}>
               <Route index element={<MyCourseTab />} />
               <Route path="classlist" element={<ClasslistTab />} />

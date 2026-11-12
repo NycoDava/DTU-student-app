@@ -27,6 +27,16 @@ The app has two modes, chosen automatically at start:
   ends the session (the saved data stays).
 - `DTU_SERVER_PORT` sets the server port for both `npm run server` and the Vite proxy (default 8787).
 
+## Course files in the app (12 Nov 2026)
+- `GET /api/files/:orgUnitId/:topicId` (`?download=1` for a download): the server fetches the file from Learn with the
+  session the first time it is opened (`/d2l/api/le/1.100/{ou}/content/topics/{id}/file`), then serves it with Range
+  support. Kept ONLY IN MEMORY: dropped 30 min after the last use, above 300 MB in total, and when the server stops.
+  Nothing on disk; `Cache-Control: no-store`, so the phone keeps no copy. A file in memory opens without a session.
+- Measured: 0.3 MB in ~1 s, 3.2 MB in ~0.8 s, 87.5 MB in ~20 s (first time); from memory ~4 ms.
+- App: in live mode a PDF or image topic opens the in-app viewer (`/courses/:id/file/:topicId`, PDF.js, lazy-loaded,
+  pages drawn only near the screen). Other files (PPTX, DOCX) download through the server. Demo mode: unchanged
+  (local copy if present, otherwise DTU Learn).
+
 ## Endpoints (Phase 0, measured 12 Nov 2026 with context.request)
 
 | Source | Endpoint | Kind | Result | Time |

@@ -79,3 +79,18 @@ html.is-standalone body {
   background: var(--color-bg);
   overscroll-behavior: none; /* no rubber-band of the whole page behind the app */
 }
+
+/* Real phones (narrow touch screens), installed or not: no Figma phone frame either.
+   Chrome may not report "standalone" for an app installed from an http address, so the frame must not depend on it. */
+@media (max-width: 500px) and (pointer: coarse) {
+  .app-shell {
+    max-width: none;
+    border: none;
+    border-radius: 0;
+  }
+
+  html,
+  body {
+    background: var(--color-bg);
+  }
+}

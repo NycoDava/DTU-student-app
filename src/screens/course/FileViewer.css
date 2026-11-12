@@ -1,0 +1,99 @@
+/* In-app file viewer: back arrow + file name, then the pages edge to edge. */
+.file-viewer {
+  min-height: 100%;
+  background: var(--planner-bg);
+}
+
+.file-viewer__header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 0 16px 0 16px;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.file-viewer__header .sub-header {
+  min-height: 64px;
+  padding-top: 8px;
+}
+
+.file-viewer__header .sub-header__back {
+  top: 10px;
+}
+
+.file-viewer__header .sub-header__title {
+  max-width: calc(100% - 96px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--text-body);
+  font-weight: var(--font-semibold);
+}
+
+.file-viewer__status {
+  margin: 48px 16px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.pdf-view {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0 24px;
+}
+
+.pdf-view__page {
+  position: relative;
+  width: 100%;
+  background: var(--color-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.pdf-view__page canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.file-viewer__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--color-bg);
+}
+
+.file-viewer__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 48px 16px;
+  text-align: center;
+  font-size: var(--text-body);
+}
+
+.file-viewer__error p {
+  margin: 0;
+}
+
+.file-viewer__button {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  padding: 0 22px;
+  border-radius: 30px;
+  background: var(--tabbar-red);
+  color: var(--color-bg);
+  font-weight: var(--font-bold);
+  text-decoration: none;
+}
+
+.file-viewer__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  color: var(--dtu-red);
+  font-weight: var(--font-semibold);
+}
