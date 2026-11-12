@@ -15,10 +15,13 @@ export type VenueInfo = {
   /** "B101" etc., as in the app ("B101 Monday to Friday 11.00 - 14.00"). */
   building: string;
   hours: { days: string; time: string }[];
-  /** For venues without daily hours (Social Dining): shown instead of the hours. */
+  /** For venues without daily hours (Social Dining, food trucks): shown instead of the hours. */
   when?: string;
   description?: string;
-  menu: WeekMenu | FixedMenu;
+  /** No menu = no menu section (food trucks: not in the eat@DTU app). */
+  menu?: WeekMenu | FixedMenu;
+  /** false = no "Order in eat@DTU" button (food trucks are not in the app). */
+  orderable?: boolean;
 };
 
 const WEEKDAYS = 'Monday to Friday';
@@ -107,6 +110,10 @@ export const venueInfo: Record<string, VenueInfo> = {
   'b202-canteen': { title: 'Canteen B202', building: 'B202', hours: [{ days: WEEKDAYS, time: '11.00 - 14.00' }], menu: canteenWeek },
   'riso-canteen': { title: 'Risø Canteen', building: 'Risø', hours: [{ days: WEEKDAYS, time: '07.30 - 14.00 (lunch 11.00 - 14.00)' }], menu: canteenWeek },
   'faculty-club': { title: 'Faculty Club', building: 'B101, 1st floor', hours: [{ days: WEEKDAYS, time: '11.00 - 14.00' }], menu: canteenWeek },
+  // Food trucks (listed by the DTU campus web app with their location; no official hours, not in the eat@DTU app).
+  spiceboat: { title: 'Spiceboat', building: 'Next to B324', hours: [], when: 'Food truck', orderable: false },
+  'tyrkiske-kokken': { title: 'Det Tyrkiske Køkken', building: 'At B116', hours: [], when: 'Food truck', orderable: false },
+  yatai: { title: 'Yatai', building: 'Outside B414', hours: [], when: 'Food truck', orderable: false },
   'street-food': {
     title: 'Street Food',
     building: 'B101',

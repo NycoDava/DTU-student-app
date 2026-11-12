@@ -24,6 +24,9 @@ export const venues: Venue[] = [
   { id: 'b202-canteen', name: 'B202 - Canteen', to: '/campus/food/venue/b202-canteen' },
   { id: 'riso-canteen', name: 'Risø - Canteen', to: '/campus/food/venue/riso-canteen' },
   { id: 'faculty-club', name: 'B101 - Faculty Club', to: '/campus/food/venue/faculty-club' },
+  { id: 'spiceboat', name: 'Spiceboat', to: '/campus/food/venue/spiceboat' },
+  { id: 'tyrkiske-kokken', name: 'Det Tyrkiske Køkken', to: '/campus/food/venue/tyrkiske-kokken' },
+  { id: 'yatai', name: 'Yatai', to: '/campus/food/venue/yatai' },
 ];
 
 /** Venues inside building 101 (Figma 157:1132). */

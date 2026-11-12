@@ -185,7 +185,9 @@ FIGMA: node 7:55. Route `/campus`.
 FIGMA: node 30:214. Route `/campus/map`, outside the tab layout (no tab bar).
 - Full MazeMap APP (`LINKS.mazemapApp`, config=DTU, campusid=89, lang=en; author's request 12 Nov 2026) inside the
   frame: search buildings/rooms, directions, floors and MazeMap's own location button. The Campus preview keeps the light
-  embed (`mazemapEmbedBase`, not touchable). "Reduce" button top right goes back. Do not download or copy map data.
+  embed (`mazemapEmbedBase`, not touchable).
+- Close control: a slim bar ABOVE the map (back arrow + "Campus map"), not a floating button: the full MazeMap app has
+  its own buttons in the top corners (author's request). "Reduce" button top right goes back. Do not download or copy map data.
 - Keep the visible credit "Map by MazeMap" (link to `LINKS.mazemap`).
 - Geolocation needs HTTPS or localhost: on a phone through `--host` (http://192.168...) the browser refuses it,
   so the map falls back to DTU Lyngby.
@@ -210,7 +212,9 @@ venue name in a serif (`--font-display`, Playfair Display) like the app's logos,
   Grid: 2 equal columns over the full width, 14 px gaps, 16 px side margins (centered).
 - Venue order = eat@DTU app (Figma 275:426): Food Court, Hav a Java Central, Social Dining (monthly event, "Every month",
   All you can eat 60 kr.), Wicked Rabbit (B342), SkyLab Café, Folkekøkken (= "Ballerup - The Canteen"). No duplicate.
-  Then Canteen B202 and Risø Canteen (the two "Food & Co." cards) and the Faculty Club (B101, 1st floor), hours from DTU Inside. Every card is clickable (12 Nov 2026):
+  Then Canteen B202 and Risø Canteen (the two "Food & Co." cards) and the Faculty Club (B101, 1st floor), hours from DTU Inside.
+  Then the food trucks Spiceboat (next to B324), Det Tyrkiske Køkken (B116), Yatai (outside B414): location only (from the
+  DTU campus web app), card status "Food truck", no menu and no "Order in eat@DTU" button (not in the app). Every card is clickable (12 Nov 2026):
 "B101 - Food Court" opens the building 101 venues, every other card opens its venue page.
 - Venue page `/campus/food/venue/:id` (Figma 275:425, eat@DTU Android app): DTU logo, name, red "Order here" button
   (opens the eat@DTU app: App Store on iPhone, Google Play otherwise; `LINKS.eatDtuIos` / `eatDtuAndroid`),

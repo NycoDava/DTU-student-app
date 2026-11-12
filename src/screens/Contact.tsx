@@ -1,5 +1,6 @@
 import SubHeader from '../components/SubHeader';
 import { LINKS } from '../config/links';
+import LinkRow from '../components/LinkRow';
 import './DtuPages.css';
 
 const ext = { target: '_blank', rel: 'noopener noreferrer' };
@@ -10,6 +11,11 @@ export default function Contact() {
     <div className="sub-screen">
       <SubHeader title="Contact" stacked />
       <div className="contact">
+        <nav className="contact__rows" aria-label="Help">
+          <LinkRow href={LINKS.serviceportal}>IT help (DTU Serviceportal)</LinkRow>
+          <LinkRow href={LINKS.phonebook}>Phonebook</LinkRow>
+        </nav>
+
         <section>
           <h2>Main address</h2>
           <p>

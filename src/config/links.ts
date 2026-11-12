@@ -31,6 +31,8 @@ export const LINKS = {
   careerHub: 'https://dtu.jobteaser.com/', // TODO verify: the pasted link had a one-time login token, this is the stable base
   dtuSport: 'https://dtusport.dk/default.aspx',
   pf: 'https://www.pf.dk/',
+  serviceportal: 'https://dtuserviceportal.ivanticloud.com/alp.aspx',
+  phonebook: 'https://www.dtu.dk/english/Search?area=samesite&entity=persons',
 
   // Map
   mazemapEmbed:
