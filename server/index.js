@@ -200,10 +200,8 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, HOST, () => console.log(`DTU local server on http://${HOST}:${PORT} (localhost only)`));
 
 // An unexpected error must not kill the server (the app would only see a proxy error).
-process.on('unhandledRejection', (e) => console.error('[error] unhandled rejection:', String(e?.message || e).split('
-')[0]));
-process.on('uncaughtException', (e) => console.error('[error] uncaught exception:', String(e?.message || e).split('
-')[0]));
+process.on('unhandledRejection', (e) => console.error('[error] unhandled rejection:', String(e?.message || e).split(String.fromCharCode(10))[0]));
+process.on('uncaughtException', (e) => console.error('[error] uncaught exception:', String(e?.message || e).split(String.fromCharCode(10))[0]));
 server.on('error', (e) => {
   if (e.code === 'EADDRINUSE') console.error(`Port ${PORT} is already in use: another "npm run server" is running.`);
   else console.error('[error]', e.message);
