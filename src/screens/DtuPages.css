@@ -13,52 +13,6 @@
 }
 
 /* ---- Services: tiles 321 x 106, r10, gap 36 ---- */
-/* ---- Contact: headings Bold 20, body 15 ---- */
-.contact {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  padding: 0 0 0 13px; /* x34 */
-  font-size: 15px;
-}
-
-.contact h2 {
-  margin: 0 0 6px;
-  font-size: var(--text-lg);
-  font-weight: var(--font-bold);
-}
-
-.contact p,
-.contact ul {
-  margin: 0;
-}
-
-.contact ul {
-  padding-left: 22px;
-}
-
-.contact a {
-  color: var(--color-text);
-  text-decoration: underline;
-}
-
-.contact__hours {
-  font-size: var(--text-lg);
-  font-weight: 500;
-}
-
-.contact__medium {
-  font-weight: 500;
-}
-
-/* Contact: help rows on top (IT help, phonebook) */
-.contact__rows {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 18px;
-  border-top: 1px solid var(--color-hairline);
-}
-
 /* Services for students: rows with a soft colored icon circle (Figma colors), title, description, chevron */
 .services {
   display: flex;
@@ -129,7 +83,32 @@
 .service-row--life { --row-color: #0096b8; }
 .service-row--wellbeing { --row-color: #e0607e; }
 
-/* Rows are not inline links: no underline from the contact link style */
-.contact .link-row {
-  text-decoration: none;
+/* Contact: sections of tappable rows (call, maps, web) */
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.contact__section {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact__heading {
+  margin: 0 0 4px;
+  font-size: var(--text-section);
+  font-weight: var(--font-bold);
+}
+
+.contact__address {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0;
+}
+
+.contact__address span {
+  font-size: var(--text-meta);
+  font-weight: var(--font-regular);
+  color: var(--color-muted);
 }

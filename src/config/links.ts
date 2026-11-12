@@ -49,6 +49,8 @@ export const LINKS = {
     ballerup: 'https://map.cas.dtu.dk/lbal_bike',
     riso: 'https://map.cas.dtu.dk/lris_bike',
   },
+  /** + encoded address: opens the address in the phone's maps app. */
+  mapsSearch: 'https://www.google.com/maps/search/?api=1&query=',
   /** + "lat,lng": opens directions in the phone's maps app. */
   directions: 'https://www.google.com/maps/dir/?api=1&destination=',
   /** Base of the in-app MazeMap iframe; the hash (center, zoom...) is built in src/components/CampusMap.tsx. */

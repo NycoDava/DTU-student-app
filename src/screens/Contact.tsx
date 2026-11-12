@@ -1,84 +1,61 @@
 import SubHeader from '../components/SubHeader';
-import { LINKS } from '../config/links';
 import LinkRow from '../components/LinkRow';
+import { LINKS } from '../config/links';
 import './DtuPages.css';
 
-const ext = { target: '_blank', rel: 'noopener noreferrer' };
+const place = (address: string) => LINKS.mapsSearch + encodeURIComponent(address);
 
-/** "Contact" (Figma 45:127): static DTU contact info. */
+/**
+ * "Contact" (Figma 45:127, redesigned on the author's request like the other screens): sections of tappable rows.
+ * Phone numbers call, addresses open the maps app, web pages open in a new tab. Same facts as before (fax numbers
+ * dropped: not useful on a phone).
+ */
 export default function Contact() {
   return (
     <div className="sub-screen">
-      <SubHeader title="Contact" stacked />
+      <SubHeader title="Contact" />
       <div className="contact">
-        <nav className="contact__rows" aria-label="Help">
+        <section className="contact__section">
+          <h2 className="contact__heading">Help</h2>
           <LinkRow href={LINKS.serviceportal}>IT help (DTU Serviceportal)</LinkRow>
           <LinkRow href={LINKS.phonebook}>Phonebook</LinkRow>
-        </nav>
-
-        <section>
-          <h2>Main address</h2>
-          <p>
-            Technical University of Denmark
-            <br />
-            Anker Engelunds Vej 101
-            <br />
-            2800 Kongens Lyngby
-          </p>
-          <ul>
-            <li>
-              Tel.: <a href="tel:+4545252525">+45 45 25 25 25</a>
-            </li>
-            <li>
-              <a href={LINKS.contactForm} {...ext}>
-                Send e-mail (via contact form)
-              </a>
-            </li>
-          </ul>
         </section>
 
-        <section>
-          <h2>Opening hours of the reception:</h2>
-          <p className="contact__hours">Monday - Friday: 8 a.m. – 4 p.m.</p>
+        <section className="contact__section">
+          <h2 className="contact__heading">DTU main office</h2>
+          <LinkRow href="tel:+4545252525" meta="Mon–Fri 8–16">
+            +45 45 25 25 25
+          </LinkRow>
+          <LinkRow href={LINKS.contactForm}>Contact form</LinkRow>
+          <LinkRow href={place('Anker Engelunds Vej 101, 2800 Kongens Lyngby')} icon="map">
+            <span className="contact__address">
+              Anker Engelunds Vej 101
+              <span>2800 Kongens Lyngby</span>
+            </span>
+          </LinkRow>
         </section>
 
-        <section className="contact__medium">
-          <h2>Information regarding Studies:</h2>
-          <a href={LINKS.oss} {...ext}>
-            Office for Study Programmes and Student Affairs
-          </a>
-          <p>
-            Technical University of Denmark
-            <br />
-            Anker Engelunds Vej 101, ground floor
-            <br />
-            2800 Kongens Lyngby
-          </p>
-          <ul>
-            <li>
-              Tel: <a href="tel:+4545251199">+45 45 25 11 99</a>
-            </li>
-            <li>Fax: +45 45 87 02 16</li>
-          </ul>
+        <section className="contact__section">
+          <h2 className="contact__heading">Study programmes and student affairs</h2>
+          <LinkRow href={LINKS.oss}>Office for Study Programmes and Student Affairs</LinkRow>
+          <LinkRow href="tel:+4545251199">+45 45 25 11 99</LinkRow>
+          <LinkRow href={place('Anker Engelunds Vej 101, 2800 Kongens Lyngby')} icon="map">
+            <span className="contact__address">
+              Anker Engelunds Vej 101, ground floor
+              <span>2800 Kongens Lyngby</span>
+            </span>
+          </LinkRow>
         </section>
 
-        <section className="contact__medium">
-          <h2>Information regarding Finance and Accounting:</h2>
-          <p>
-            Office for Finance and Accounting
-            <br />
-            Technical University of Denmark
-            <br />
-            Lundtoftevej 150
-            <br />
-            2800 Kongens Lyngby
-          </p>
-          <ul>
-            <li>
-              Tel: <a href="tel:+4545251088">+45 45 25 10 88</a>
-            </li>
-            <li>Fax: +45 45 88 80 40</li>
-          </ul>
+        <section className="contact__section">
+          <h2 className="contact__heading">Finance and accounting</h2>
+          <LinkRow href="tel:+4545251088">+45 45 25 10 88</LinkRow>
+          <LinkRow href={place('Lundtoftevej 150, 2800 Kongens Lyngby')} icon="map">
+            <span className="contact__address">
+              Lundtoftevej 150
+              <span>2800 Kongens Lyngby</span>
+            </span>
+          </LinkRow>
         </section>
       </div>
     </div>

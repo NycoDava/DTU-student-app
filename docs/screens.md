@@ -248,6 +248,12 @@ title + one-line summary, red main action (external), the original text folded i
 link rows. Career Hub -> "Open DTU Career Hub"; Study abroad -> "Explore exchange at DTU"; Student life -> "See sports at
 DTU Sport" + row "PF, the student union"; Wellbeing -> "DTU Help and Guidance" + row "Study guidance".
 
+## Contact  (SPECIFIED, redesigned 12 Nov 2026)
+Route `/dtu/contact` (Figma 45:127, author's request: same style as the other screens). Sections of LinkRows: Help (IT help
+= DTU Serviceportal, Phonebook), DTU main office (phone + reception hours, contact form, address), Study programmes and
+student affairs (OSS page, phone, address), Finance and accounting (phone, address). Phone rows call (`tel:`), address
+rows open the maps app (`LINKS.mapsSearch`), web rows open a new tab. Fax numbers dropped.
+
 ## Profile  (DRAFT)
 - Mock "Edit My User Profile": header "Name (s-number)" from `currentUser`; all fields start EMPTY (author's decision),
   editable, local state only, nothing is sent.
