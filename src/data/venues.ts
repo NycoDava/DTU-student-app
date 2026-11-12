@@ -13,7 +13,7 @@ export type Venue = {
 
 const foodCourt: Venue = { id: 'b101-food-court', name: 'B101 - Food Court', to: '/campus/food/101' };
 
-/** Food and drinks, in the order of the eat@DTU app (Figma 275:426). Two more "Food & Co." venues exist there (names unknown). */
+/** Food and drinks, in the order of the eat@DTU app (Figma 275:426); the two "Food & Co." cards are B202 and Risø. */
 export const venues: Venue[] = [
   foodCourt,
   { id: 'b101-hav-a-java', name: 'B101 - Hav a Java Central', to: '/campus/food/venue/b101-hav-a-java' },
@@ -21,6 +21,9 @@ export const venues: Venue[] = [
   { id: 'b342-wicked-rabbit', name: 'B342 - Wicked Rabbit', infoId: 'wicked-rabbit', to: '/campus/food/venue/wicked-rabbit' },
   { id: 'skylab', name: 'SkyLab', to: '/campus/food/venue/skylab' },
   { id: 'ballerup-canteen', name: 'Ballerup - The Canteen', infoId: 'folkekokken', to: '/campus/food/venue/folkekokken' },
+  { id: 'b202-canteen', name: 'B202 - Canteen', to: '/campus/food/venue/b202-canteen' },
+  { id: 'riso-canteen', name: 'Risø - Canteen', to: '/campus/food/venue/riso-canteen' },
+  { id: 'faculty-club', name: 'B101 - Faculty Club', to: '/campus/food/venue/faculty-club' },
 ];
 
 /** Venues inside building 101 (Figma 157:1132). */

@@ -199,7 +199,7 @@ venue name in a serif (`--font-display`, Playfair Display) like the app's logos,
   Grid: 2 equal columns over the full width, 14 px gaps, 16 px side margins (centered).
 - Venue order = eat@DTU app (Figma 275:426): Food Court, Hav a Java Central, Social Dining (monthly event, "Every month",
   All you can eat 60 kr.), Wicked Rabbit (B342), SkyLab Café, Folkekøkken (= "Ballerup - The Canteen"). No duplicate.
-  The app has two more "Food & Co." venues (names unknown, not added). Every card is clickable (12 Nov 2026):
+  Then Canteen B202 and Risø Canteen (the two "Food & Co." cards) and the Faculty Club (B101, 1st floor), hours from DTU Inside. Every card is clickable (12 Nov 2026):
 "B101 - Food Court" opens the building 101 venues, every other card opens its venue page.
 - Venue page `/campus/food/venue/:id` (Figma 275:425, eat@DTU Android app): DTU logo, name, red "Order here" button
   (opens the eat@DTU app: App Store on iPhone, Google Play otherwise; `LINKS.eatDtuIos` / `eatDtuAndroid`),

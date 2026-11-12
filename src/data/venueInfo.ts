@@ -103,6 +103,10 @@ export const venueInfo: Record<string, VenueInfo> = {
     menu: canteenWeek,
   },
   folkekokken: { title: 'Folkekøkken', building: 'Ballerup', hours: [{ days: WEEKDAYS, time: '11.00 - 14.00' }], menu: canteenWeek },
+  // The two "Food & Co." cards of the app + the Faculty Club (author, 12 Nov 2026). Hours from DTU Inside.
+  'b202-canteen': { title: 'Canteen B202', building: 'B202', hours: [{ days: WEEKDAYS, time: '11.00 - 14.00' }], menu: canteenWeek },
+  'riso-canteen': { title: 'Risø Canteen', building: 'Risø', hours: [{ days: WEEKDAYS, time: '07.30 - 14.00 (lunch 11.00 - 14.00)' }], menu: canteenWeek },
+  'faculty-club': { title: 'Faculty Club', building: 'B101, 1st floor', hours: [{ days: WEEKDAYS, time: '11.00 - 14.00' }], menu: canteenWeek },
   'street-food': {
     title: 'Street Food',
     building: 'B101',
