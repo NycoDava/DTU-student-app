@@ -239,3 +239,86 @@
   color: var(--color-placeholder);
   font-size: 12px;
 }
+
+/* ---- Event preview card (Figma 157:1094): white card r10, title bold, details, close ✕ ---- */
+.cal {
+  position: relative;
+}
+
+.cal-preview {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.cal-preview__card {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  padding: 14px 16px 16px;
+  border: 1px solid var(--cal-border-strong);
+  border-left: 5px solid var(--cal-activity);
+  border-radius: 10px;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-card);
+  font-family: var(--cal-font);
+  color: var(--cal-text);
+}
+
+.cal-preview__card--deadline {
+  border-left-color: var(--cal-deadline);
+}
+
+.cal-preview__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border: none;
+  background: none;
+  font-size: 16px;
+  color: var(--cal-text);
+  cursor: pointer;
+}
+
+.cal-preview__title {
+  margin: 0 32px 8px 0;
+  font-size: 16px;
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+}
+
+.cal-preview__line {
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+
+.cal-preview__course {
+  font-weight: var(--font-bold);
+}
+
+.cal-preview__note {
+  margin: 8px 0 0;
+  font-size: 13px;
+}
+
+.cal-preview__open {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  margin-top: 8px;
+  padding: 0 16px;
+  border-radius: 30px;
+  background: var(--tabbar-red);
+  color: var(--color-bg);
+  font-family: var(--font-family);
+  font-weight: var(--font-bold);
+  font-size: 14px;
+  text-decoration: none;
+}

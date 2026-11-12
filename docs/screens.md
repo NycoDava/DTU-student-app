@@ -32,8 +32,9 @@ FIGMA: <link>
 - Events come from `agenda`. `kind: "event"` = neutral green-grey chip, `kind: "deadline"` = mauve chip (see Figma).
   Deadlines are point-in-time (no end): show them as a 30-minute chip ending at the due time.
 - Phone width (393 px): the Month view cannot fit text in 7 columns. Show colored dots or very short chips (max 1 line,
-  ellipsis) and `dayMaxEvents: 2` with the "+n more" popover. Tapping an event opens a bottom sheet: title, date and time,
-  location, course, button "Open in DTU Learn" (`url`).
+  ellipsis) and `dayMaxEvents: 2` with the "+n more" popover. Tapping an event opens the preview card of Figma 157:1094
+  (centered over the calendar, author's choice): title, course, location, date and time (deadlines: "Due …"), ✕, and
+  "Open in DTU Learn" only when the item has a `url`. The URL is NOT passed to FullCalendar (it would become a real link).
 - Week view: show 08:00-18:00 by default and scroll for the rest. Highlight today.
 - Style with CSS variables so it matches the app (DTU red for today and buttons, system font). No FullCalendar default blue.
 

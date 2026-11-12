@@ -26,8 +26,14 @@ const calendarEvents = () =>
     start: a.startsAt,
     end: a.endsAt ?? undefined,
     allDay: a.isAllDay,
-    url: a.url ?? undefined,
-    extendedProps: { kind: a.kind },
+    // No `url` here: FullCalendar would render a real link that a tap can follow. The preview card opens it instead.
+    extendedProps: {
+      kind: a.kind,
+      plainTitle: a.title,
+      course: courseLabel(a.courseCode) ?? a.courseCode,
+      location: a.location,
+      link: a.url ?? null,
+    },
   }));
 
 export default function Home() {

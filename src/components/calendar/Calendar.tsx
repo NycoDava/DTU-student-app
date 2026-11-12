@@ -1,11 +1,70 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
-import type { DatesSetArg, EventContentArg, EventInput } from '@fullcalendar/core';
+import type { DatesSetArg, EventClickArg, EventContentArg, EventInput } from '@fullcalendar/core';
+import { formatLongDateTime, formatTime } from '../../data/format';
 import './Calendar.css';
+
+/** What the preview card shows (Figma 157:1094). */
+type Preview = {
+  title: string;
+  kind: 'event' | 'deadline';
+  course: string | null;
+  location: string | null;
+  start: string;
+  end: string | null;
+  link: string | null;
+};
+
+const sameDay = (a: string, b: string) => formatLongDateTime(a).split(',')[0] === formatLongDateTime(b).split(',')[0];
+
+/** "30 September 2026, 13:00 – 17:00", or with both dates when it spans days. Deadlines: "Due 12 November 2026, 23:59". */
+function whenText(p: Preview): string {
+  if (p.kind === 'deadline' || !p.end) return `${p.kind === 'deadline' ? 'Due ' : ''}${formatLongDateTime(p.start)}`;
+  return sameDay(p.start, p.end)
+    ? `${formatLongDateTime(p.start)} – ${formatTime(p.end)}`
+    : `${formatLongDateTime(p.start)} – ${formatLongDateTime(p.end)}`;
+}
+
+/** Event preview card (Figma 157:1094): tap outside or ✕ closes it; "Open in DTU Learn" only when there is a link. */
+function EventPreview({ preview, onClose }: { preview: Preview; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  return (
+    <div className="cal-preview" onClick={onClose}>
+      <div
+        className={'cal-preview__card' + (preview.kind === 'deadline' ? ' cal-preview__card--deadline' : '')}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cal-preview-title"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button type="button" className="cal-preview__close" aria-label="Close" onClick={onClose}>
+          ✕
+        </button>
+        <h3 id="cal-preview-title" className="cal-preview__title">
+          {preview.title}
+        </h3>
+        {preview.course && <p className="cal-preview__line cal-preview__course">{preview.course}</p>}
+        {preview.location && <p className="cal-preview__line">{preview.location}</p>}
+        <p className="cal-preview__line">{whenText(preview)}</p>
+        {preview.kind === 'deadline' && <p className="cal-preview__note">Assignment deadline in DTU Learn.</p>}
+        {preview.link && (
+          <a className="cal-preview__open" href={preview.link} target="_blank" rel="noopener noreferrer">
+            Open in DTU Learn
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
 
 /** Our segmented control → FullCalendar view names (see docs/screens.md, Calendar). */
 const VIEWS = [
@@ -58,6 +117,22 @@ export default function Calendar({ events = [] }: Props) {
   const calendarRef = useRef<FullCalendar>(null);
   const [view, setView] = useState<ViewKey>('week');
   const [title, setTitle] = useState('');
+  const [preview, setPreview] = useState<Preview | null>(null);
+
+  function handleEventClick(info: EventClickArg) {
+    info.jsEvent.preventDefault();
+    const e = info.event;
+    const x = e.extendedProps as { kind?: Preview['kind']; plainTitle?: string; course?: string; location?: string; link?: string };
+    setPreview({
+      title: x.plainTitle ?? e.title,
+      kind: x.kind ?? 'event',
+      course: x.course ?? null,
+      location: x.location || null,
+      start: e.startStr,
+      end: e.endStr || null,
+      link: x.link ?? null,
+    });
+  }
 
   const api = () => calendarRef.current?.getApi();
 
@@ -114,12 +189,7 @@ export default function Calendar({ events = [] }: Props) {
             firstDay={1}
             locale="en-gb"
             events={events}
-            eventClick={(info) => {
-              // Open DTU Learn in a new tab instead of leaving the app.
-              if (!info.event.url) return;
-              info.jsEvent.preventDefault();
-              window.open(info.event.url, '_blank', 'noopener,noreferrer');
-            }}
+            eventClick={handleEventClick}
             eventClassNames={eventClassNames}
             datesSet={handleDatesSet}
             nowIndicator
@@ -137,6 +207,7 @@ export default function Calendar({ events = [] }: Props) {
           />
         </div>
       </div>
+      {preview && <EventPreview preview={preview} onClose={() => setPreview(null)} />}
     </div>
   );
 }
