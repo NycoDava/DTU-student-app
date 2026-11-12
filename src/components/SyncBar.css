@@ -1,0 +1,67 @@
+/* Live-data bar on Home (not in Figma, only when the local server runs). */
+.sync-bar {
+  margin: 0 0 8px;
+  font-size: 13px;
+}
+
+.sync-bar__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.sync-bar__updated {
+  color: var(--color-placeholder);
+}
+
+.sync-bar__button {
+  min-height: var(--touch-target);
+  padding: 0 4px;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: var(--font-semibold);
+  color: var(--dtu-red);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.sync-bar__button:disabled {
+  color: var(--color-placeholder);
+  text-decoration: none;
+  cursor: progress;
+}
+
+.sync-bar__sources {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sync-bar__source {
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--filter-pill-bg);
+}
+
+.sync-bar__source--ok {
+  color: var(--color-text);
+}
+
+.sync-bar__source--failed,
+.sync-bar__source--kept {
+  color: var(--dtu-red);
+}
+
+.sync-bar__note {
+  color: var(--color-placeholder);
+}
+
+.sync-bar__error {
+  margin: 4px 0 0;
+  color: var(--dtu-red);
+}

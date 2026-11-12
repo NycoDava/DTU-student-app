@@ -10,6 +10,8 @@ It is a PROTOTYPE for usability testing, not a product. Prefer simple, readable 
 - Charts: `recharts`. Calendar: FullCalendar (all four views: Day, Week, Month, List). Map: official MazeMap iframe embed.
 - All external URLs are named constants in `src/config/links.ts`.
 - Commands: `npm run dev` (use `npm run dev -- --host` to open it on a phone), `npm run build` (must pass).
+- Live data: `npm run server` (local DTU server, `server/`, 127.0.0.1:8787, reached via the Vite proxy `/api/local`),
+  `npm run demo-data` (copies the anonymized output of the last sync to `public/data/app-data.json`). See `docs/live-data.md`.
 - UI language: English (the Figma frames are in English).
 
 ## Layout rules
@@ -30,8 +32,9 @@ It is a PROTOTYPE for usability testing, not a product. Prefer simple, readable 
   visual reference only; build the real UI from the data.
 
 ## Data (single source of truth)
-- The app reads ONE JSON file: `public/data/app-data.json`. It is the output of the scraper + normalize.js, so it already
-  holds everything collected (courses, content, deadlines, grades, studyplan, news, events, classlists). Only the raw
+- The app reads ONE JSON file in the app-data format. Live mode (local server running): the server's last saved sync
+  (`server/cache/app-data.live.json`, via `/api/local/data`). Demo mode (no server, static build): `public/data/app-data.json`,
+  always generated with `ANON=1`. Both are the output of normalize.js (scraper or `server/normalize.cjs`), so they hold everything collected (courses, content, deadlines, grades, studyplan, news, events, classlists). Only the raw
   intermediate file `dtu_data.json` is off limits (huge, raw). It contains the author's REAL
   study data (the professor requires real data, do not invent data). Its `classlists` are anonymized (`ANON=1`).
   Do not create a fictional dataset.
@@ -58,7 +61,8 @@ It is a PROTOTYPE for usability testing, not a product. Prefer simple, readable 
   Open the local file if it exists, otherwise open `url` (DTU Learn).
 
 ## Scope (what to build, in this order)
-1. Project setup, tokens, tab bar, routing with empty screens, fake login (accepts any input, goes to Home, no network call).
+1. Project setup, tokens, tab bar, routing with empty screens, login. Demo mode (no local server): fake login (accepts any
+   input, goes to Home, no network call). Live mode (local server answers): real DTU login through the local server.
 2. Home: study announcements, upcoming activities and deadlines, calendar. The calendar uses FullCalendar, so all four
    views (Day, Week, Month, List) are built together from `agenda`; the work is the styling. See docs/screens.md.
 3. Upcoming events (tabs: All / Deadlines / Activities), study announcements list.
@@ -93,5 +97,12 @@ It is a PROTOTYPE for usability testing, not a product. Prefer simple, readable 
 ## Privacy and safety (important)
 - NEVER read, open, copy or print `.env`, `dtu_data.json`, or any file containing credentials.
 - Never put credentials in the client code or git. The real grades/studyplan in `app-data.json` are the author's own and may be committed.
-- `.gitignore` must include: `.env`, `dtu_data.json`, `public/data/app-data.real.json` (non-anonymized classlists), `public/files/`, `node_modules/`.
+- `.gitignore` must include: `.env`, `dtu_data.json`, `public/data/app-data.real.json` (non-anonymized classlists), `public/files/`,
+  `node_modules/`, `server/cache/` (live sync output with real names).
+- Live login (local server): every user runs the server on their OWN computer with their OWN account. Credentials are never
+  stored, logged, or sent to any host other than DTU; they are only typed into the DTU login form. The session (cookies) lives
+  only in memory, no automatic re-login. The server listens only on 127.0.0.1 (Host header checked, JSON-only POSTs, no CORS).
+  Usability testers never enter real DTU credentials: tests use the static demo build.
+- The demo build contains no real data of other people: `public/data/app-data.json` is always the `ANON=1` output
+  (`npm run demo-data` refuses non-anonymized classlists). Real grades/studyplan of the author are allowed.
 - `classlists` contains OTHER PEOPLE's names and emails: the file with real names is `app-data.real.json` (gitignored). Anything deployed or handed in must be generated with `ANON=1` (fictional names for everyone except the author). No photos: initials avatars.

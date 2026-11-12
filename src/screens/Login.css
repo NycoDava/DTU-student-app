@@ -86,3 +86,31 @@
 .login__format {
   margin-top: 42px !important;
 }
+
+/* Live mode (local server): status / error line and "Continue with saved data" */
+.login__message {
+  margin: 4px 0 0;
+  font-size: 14px;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.login__message--error {
+  color: var(--dtu-red);
+}
+
+.login__button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.login__offline {
+  min-height: var(--touch-target);
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  color: var(--color-text);
+  text-decoration: underline;
+  cursor: pointer;
+}

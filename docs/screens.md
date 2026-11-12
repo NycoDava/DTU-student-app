@@ -201,7 +201,8 @@ comes back. Without the proxy (static hosting) the last real reading is shown wi
 - Change Picture: file picker (camera on phones), replaces the avatar app-wide for the session (lost on reload).
 - Change PIN: inline form (new + confirm, 4-6 digits); on match updates the PIN field and says
   "prototype only, not sent to DTU". Eye icon shows/hides the PIN.
-- Fake login: any input goes to Home, no network call.
+- Login: demo mode (no local server) = fake login, any input goes to Home, no network call. Live mode = real DTU login via
+  the local server; errors shown under the fields; "Continue with saved data". Home shows "Updated: …  Refresh" (live only). See docs/live-data.md.
 
 ## External links (fill `src/config/links.ts`)
 Studyplanner, DTU Learn, CampusNet, Study Abroad, DTU Career Hub, Student life, exam page, DTU contact page.

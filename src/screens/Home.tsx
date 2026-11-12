@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { initials, useCurrentUser } from '../data/currentUser';
 import Calendar from '../components/calendar/Calendar';
+import SyncBar from '../components/SyncBar';
 import { agenda, announcements, courseLabel } from '../data/appData';
 import { plainText } from '../data/courseData';
 import { formatDay, formatMonth, formatTime } from '../data/format';
@@ -48,6 +49,8 @@ export default function Home() {
         </Link>
         <img className="home__logo" src="/images/dtu-logo-small.png" alt="DTU" />
       </header>
+
+      <SyncBar />
 
       <div className="home__sections">
         <section className="home__group">

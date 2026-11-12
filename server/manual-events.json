@@ -1,0 +1,13 @@
+[
+  {
+    "title": "02830 Lecture / group work",
+    "courseCode": "02830",
+    "location": "",
+    "weekday": 3,
+    "start": "13:00",
+    "end": "17:00",
+    "from": "2026-09-02",
+    "to": "2026-12-02",
+    "skip": ["2026-10-14"]
+  }
+]

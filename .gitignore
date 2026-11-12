@@ -29,3 +29,8 @@ dtu_data.json
 public/data/app-data.real.json
 public/files/
 .claude/settings.local.json
+
+# Local DTU server: saved data (real names in classlists) and temporary files
+server/cache/
+# Stray copy of the app data at the repo root (may contain real names)
+/app-data.json
