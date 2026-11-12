@@ -9,7 +9,7 @@
   width: fit-content;
   max-width: calc(100% + 7px);
   min-height: var(--touch-target);
-  margin: 46px 0 16px -7px; /* Figma x14 y147 */
+  margin: 0 0 16px; /* right under the "DTU exam timetable" heading */
   padding: 6px 8px 6px 20px;
   border-radius: 22px;
   background: var(--exam-pill-bg);
@@ -135,4 +135,89 @@ button.exam-card {
   margin-top: 8px;
   font-size: 12px;
   color: var(--color-placeholder);
+}
+
+/* ---- My exams (study plan + DTU timetable) ---- */
+.exams__heading {
+  margin: 8px 0 10px;
+  font-size: var(--text-section);
+  font-weight: var(--font-bold);
+}
+
+.exams__mine {
+  margin-bottom: 18px;
+}
+
+.exams__mine-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.my-exam {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-hairline);
+  border-radius: 14px;
+}
+
+.my-exam__date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  min-height: 44px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.my-exam--nodate .my-exam__date {
+  background: var(--planner-bg);
+  color: var(--color-muted);
+}
+
+.my-exam__month {
+  font-size: 11px;
+  font-weight: var(--font-semibold);
+}
+
+.my-exam__day {
+  font-size: 20px;
+  font-weight: var(--font-bold);
+  line-height: 1.1;
+}
+
+.my-exam__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.my-exam__course {
+  font-size: var(--text-body);
+  font-weight: var(--font-semibold);
+}
+
+.my-exam__meta {
+  font-size: var(--text-meta);
+  color: var(--color-muted);
+}
+
+/* Days in the official list with one of my exams */
+.exam-card--mine {
+  border: 2px solid var(--color-text);
+}
+
+.exam-card__mine {
+  font-weight: var(--font-bold);
+  color: var(--color-text);
 }

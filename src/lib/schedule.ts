@@ -1,4 +1,5 @@
 import { examPeriods, type ExamDay } from '../data/examDates';
+import type { Studyplan } from '../data/types';
 
 /**
  * DTU schedule groups (Studyplanner "Show schedule", Figma 273:425). A 13-week course sits in one weekly slot:
@@ -54,4 +55,41 @@ export function examFor(code: string | null, groups: string[], season: Season, y
     if (day) return done(day, token);
   }
   return null;
+}
+
+export type MyExam = {
+  code: string;
+  name: string;
+  /** "YYYY-MM-DD" from the DTU exam timetable, or null (3-week courses are not in the table). */
+  date: string | null;
+  /** How it was matched: the course number or the group token ("E5-B"). */
+  via: string | null;
+  /** "Winter exam 2026" / "January 2027". */
+  period: string;
+};
+
+/**
+ * The user's exams: every course placed in the study plan and not passed yet, matched to the DTU exam timetable.
+ * Semester parity gives the season (odd = autumn, even = spring); 13-week periods have a date, 3-week periods do not.
+ */
+export function myExams(plan: Studyplan, passedCodes: Set<string>): MyExam[] {
+  const out: MyExam[] = [];
+  for (const sem of plan.semesters) {
+    const autumn = sem.number % 2 === 1;
+    for (const p of sem.periods) {
+      for (const c of p.courses) {
+        if (passedCodes.has(c.code)) continue;
+        const name = c.name.English;
+        if (p.type === 4) {
+          out.push({ code: c.code, name, date: null, via: null, period: autumn ? `January ${p.year + 1}` : `June ${p.year}` });
+          continue;
+        }
+        const groups = plan.courseInfo?.[c.code]?.schedule ?? (c.scheduleGroup ? [c.scheduleGroup] : []);
+        const season: Season = autumn ? 'E' : 'F';
+        const match = examFor(c.code, groups, season, p.year);
+        out.push({ code: c.code, name, date: match?.date ?? null, via: match?.via ?? null, period: autumn ? `Winter exam ${p.year}` : `Summer exam ${p.year}` });
+      }
+    }
+  }
+  return out.sort((a, b) => (a.date ?? '9999').localeCompare(b.date ?? '9999'));
 }

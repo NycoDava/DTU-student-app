@@ -411,11 +411,6 @@ function ScheduleView({ period, items }: { period: PlanPeriod; items: PlanItem[]
           })}
         </dl>
       )}
-      {!threeWeeks && (
-        <p className="planner__schedule-source">
-          Exam days from the DTU exam timetable (see Exam dates). Project courses may have no written exam.
-        </p>
-      )}
     </div>
   );
 }
@@ -446,7 +441,6 @@ function ColorPicker({
         <h2 id="picker-title" className="planner__picker-title">
           {item.code ? `${item.code} ${item.name}` : item.name}
         </h2>
-        <p className="planner__picker-hint">Course type (demo, saved in this browser only)</p>
         <ul className="planner__picker-list">
           {studyplan.ectsByType.map((t) => (
             <li key={t.typeId}>

@@ -22,7 +22,8 @@ Common rules
   One card each on purpose (author's choice, to be revisited after testing).
 - "Calendar": unchanged (see Calendar).
 - Agenda: a Learn calendar event with the same course + title as a deadline, within a day of it, is dropped (only the
-  deadline stays), in `appData.ts` `withoutDeadlineCopies` — applies to Home, calendar and Upcoming events.
+  deadline stays), and manual events the Learn calendar already has (same course, start within 30 min) are dropped,
+  in `appData.ts` `withoutCopies` — applies to Home, calendar and Upcoming events.
 
 ## Calendar  (SPECIFIED)
 - Use FullCalendar (`@fullcalendar/react`, `daygrid`, `timegrid`, `list`, `interaction`; core is MIT). It provides all four
@@ -156,6 +157,12 @@ FIGMA: node 163:1493. Route `/exams`.
 - Card exactly as Figma (342x94): "DEC / 6", "Course Numbers:" + the cell text, "Grading Deadline: 12/1 2027" grey.
   Long course lists are cut at 2 lines; tapping such a card expands it. Days already past are faded.
 - Link "Source: DTU exam dates" at the bottom.
+- "My exams" on top (author's request, 12 Nov 2026): courses placed in the study plan and not passed, matched to the
+  timetable (`myExams` in `src/lib/schedule.ts`: course number first, then schedule group E1B -> "E1-B"; odd semester =
+  winter exam, even = summer exam). 3-week courses (January/June) are listed with their period, no date (not in the
+  table). Days with one of my exams are highlighted in the timetable ("Your exam: 38110").
+- My exams with a date are also all-day agenda items (`kind: "exam"`, dark chip in the calendar, dark date block on Home,
+  in Upcoming events "All").
 
 ## Campus page  (SPECIFIED)
 FIGMA: node 7:55. Route `/campus`.

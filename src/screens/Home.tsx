@@ -77,7 +77,7 @@ export default function Home() {
           Upcoming
         </LinkRow>
         {next ? (
-          <Link to="/events" className={'home__card home__next' + (next.kind === 'deadline' ? ' home__next--deadline' : '')}>
+          <Link to="/events" className={'home__card home__next' + (next.kind !== 'event' ? ` home__next--${next.kind}` : '')}>
             <span className="home__date">
               <span className="home__date-month">{formatMonth(next.startsAt)}</span>
               <span className="home__date-day">{formatDay(next.startsAt)}</span>

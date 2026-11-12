@@ -24,7 +24,7 @@ export default function AgendaCard({ item, courseLabel }: { item: AgendaItem; co
       </span>
     </>
   );
-  const className = 'agenda-card' + (isDeadline ? ' agenda-card--deadline' : '');
+  const className = 'agenda-card' + (isDeadline ? ' agenda-card--deadline' : '') + (item.kind === 'exam' ? ' agenda-card--exam' : '');
 
   return item.url ? (
     <a className={className} href={item.url} target="_blank" rel="noopener noreferrer">

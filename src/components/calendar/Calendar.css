@@ -210,6 +210,14 @@
   background: var(--cal-deadline);
 }
 
+/* Exams (from the study plan + DTU exam timetable): dark chip, white text */
+.cal-grid .fc .cal-event--exam,
+.cal-grid .fc .cal-event--exam .fc-event-main,
+.cal-grid .fc .cal-event--exam .fc-event-title {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
 .cal-grid .fc .fc-daygrid-event {
   white-space: nowrap;
   overflow: hidden;
@@ -272,6 +280,10 @@
 
 .cal-preview__card--deadline {
   border-left-color: var(--cal-deadline);
+}
+
+.cal-preview__card--exam {
+  border-left-color: var(--color-text);
 }
 
 .cal-preview__close {

@@ -2,7 +2,7 @@
 
 export type AgendaItem = {
   id: string;
-  kind: 'event' | 'deadline';
+  kind: 'event' | 'deadline' | 'exam';
   source: string;
   courseCode: string | null;
   title: string;

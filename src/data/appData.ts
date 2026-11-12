@@ -1,3 +1,4 @@
+import { myExams as findMyExams, type MyExam } from '../lib/schedule';
 import type { AgendaItem, Announcement, Course, Deadline, Grade, LocalizedName, StudyAnnouncement, Studyplan, Summary } from './types';
 
 /**
@@ -28,6 +29,8 @@ export let announcements: Announcement[] = [];
 export let agenda: AgendaItem[] = [];
 /** DTU study announcements (not the course announcements), newest first. */
 export let studyAnnouncements: StudyAnnouncement[] = [];
+/** The user's upcoming exams (study plan + DTU exam timetable), soonest first. */
+export let myExams: MyExam[] = [];
 
 type RawGrade = Omit<Grade, 'title'> & { title: string | LocalizedName };
 
@@ -48,20 +51,49 @@ export function initAppData(file: Record<string, unknown>) {
   courses = f.courses ?? [];
   announcements = [...(f.announcements ?? [])].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
   studyAnnouncements = [...(f.studyAnnouncements ?? [])].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
-  agenda = withoutDeadlineCopies(f.agenda ?? []).sort((a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt));
+  const passed = new Set(grades.filter((g) => g.passed).map((g) => g.code));
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Copenhagen' }).format(new Date());
+  myExams = findMyExams(studyplan, passed).filter((e) => !e.date || e.date >= today);
+  agenda = [...withoutCopies(f.agenda ?? []), ...examItems(myExams)].sort((a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt));
 }
 
 /**
- * The Learn calendar also lists every assignment due date as an event. When an event has the same course and title as a
- * deadline and starts within a day of it, keep only the deadline (author's decision: no grey duplicate).
+ * Duplicates out (author's decision): the Learn calendar also lists every assignment due date as an event (same course
+ * and title as a deadline, within a day) → keep only the deadline. Manual events that the Learn calendar now has → drop.
  */
-function withoutDeadlineCopies(items: AgendaItem[]): AgendaItem[] {
+function withoutCopies(items: AgendaItem[]): AgendaItem[] {
   const key = (a: AgendaItem) => `${a.courseCode ?? ''}|${a.title.trim().toLowerCase()}`;
   const deadlines = new Map<string, number[]>();
   for (const d of items) if (d.kind === 'deadline') deadlines.set(key(d), [...(deadlines.get(key(d)) ?? []), Date.parse(d.startsAt)]);
-  return items.filter(
-    (a) => a.kind !== 'event' || !(deadlines.get(key(a)) ?? []).some((t) => Math.abs(t - Date.parse(a.startsAt)) <= 86_400_000),
-  );
+  const learnEvents = items.filter((a) => a.kind === 'event' && a.source === 'learn');
+  return items.filter((a) => {
+    if (a.kind !== 'event') return true;
+    // Learn calendar copy of an assignment deadline
+    if ((deadlines.get(key(a)) ?? []).some((t) => Math.abs(t - Date.parse(a.startsAt)) <= 86_400_000)) return false;
+    // Manual event (manual-events.json) for a slot the Learn calendar already has: same course, start within 30 min
+    if (a.source === 'manual') {
+      return !learnEvents.some((l) => l.courseCode === a.courseCode && Math.abs(Date.parse(l.startsAt) - Date.parse(a.startsAt)) <= 1_800_000);
+    }
+    return true;
+  });
+}
+
+/** Exams with a date as all-day agenda items (calendar, Home, Upcoming events). */
+function examItems(exams: MyExam[]): AgendaItem[] {
+  return exams
+    .filter((e) => e.date)
+    .map((e) => ({
+      id: `exam-${e.code}`,
+      kind: 'exam' as const,
+      source: 'studyplan',
+      courseCode: e.code,
+      title: `Exam${e.via && e.via !== e.code ? ` (${e.via})` : ''}`,
+      location: null,
+      startsAt: e.date!,
+      endsAt: `${e.date}T22:59:59.000Z`, // end of the day in Copenhagen
+      isAllDay: true,
+      url: null,
+    }));
 }
 
 /** "02830 Advanced project …, Fall 2026" for an agenda item / course code, from `courses`. */
@@ -69,7 +101,10 @@ export function courseLabel(courseCode: string | null): string | undefined {
   if (!courseCode) return undefined;
   const matches = courses.filter((c) => c.code === courseCode);
   // Prefer the newest run of the course.
-  return matches.sort((a, b) => (b.startDate ?? '').localeCompare(a.startDate ?? ''))[0]?.name;
+  const learnName = matches.sort((a, b) => (b.startDate ?? '').localeCompare(a.startDate ?? ''))[0]?.name;
+  if (learnName) return learnName;
+  const exam = myExams.find((e) => e.code === courseCode);
+  return exam ? `${exam.code} ${exam.name}` : undefined;
 }
 
 export type { Deadline };

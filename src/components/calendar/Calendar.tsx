@@ -11,7 +11,8 @@ import './Calendar.css';
 /** What the preview card shows (Figma 157:1094). */
 type Preview = {
   title: string;
-  kind: 'event' | 'deadline';
+  kind: 'event' | 'deadline' | 'exam';
+  allDay: boolean;
   course: string | null;
   location: string | null;
   start: string;
@@ -22,7 +23,10 @@ type Preview = {
 const sameDay = (a: string, b: string) => formatLongDateTime(a).split(',')[0] === formatLongDateTime(b).split(',')[0];
 
 /** "30 September 2026, 13:00 – 17:00", or with both dates when it spans days. Deadlines: "Due 12 November 2026, 23:59". */
+const fmtDate = new Intl.DateTimeFormat('en-GB', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
 function whenText(p: Preview): string {
+  if (p.allDay) return fmtDate.format(new Date(`${p.start.slice(0, 10)}T00:00:00Z`));
   if (p.kind === 'deadline' || !p.end) return `${p.kind === 'deadline' ? 'Due ' : ''}${formatLongDateTime(p.start)}`;
   return sameDay(p.start, p.end)
     ? `${formatLongDateTime(p.start)} – ${formatTime(p.end)}`
@@ -40,7 +44,7 @@ function EventPreview({ preview, onClose }: { preview: Preview; onClose: () => v
   return (
     <div className="cal-preview" onClick={onClose}>
       <div
-        className={'cal-preview__card' + (preview.kind === 'deadline' ? ' cal-preview__card--deadline' : '')}
+        className={'cal-preview__card' + (preview.kind !== 'event' ? ` cal-preview__card--${preview.kind}` : '')}
         role="dialog"
         aria-modal="true"
         aria-labelledby="cal-preview-title"
@@ -110,7 +114,8 @@ function titleFor(view: ViewKey, start: Date, end: Date): string {
 }
 
 function eventClassNames(arg: EventContentArg): string[] {
-  return arg.event.extendedProps.kind === 'deadline' ? ['cal-event--deadline'] : ['cal-event--activity'];
+  const kind = arg.event.extendedProps.kind;
+  return [kind === 'deadline' ? 'cal-event--deadline' : kind === 'exam' ? 'cal-event--exam' : 'cal-event--activity'];
 }
 
 export default function Calendar({ events = [] }: Props) {
@@ -126,6 +131,7 @@ export default function Calendar({ events = [] }: Props) {
     setPreview({
       title: x.plainTitle ?? e.title,
       kind: x.kind ?? 'event',
+      allDay: e.allDay,
       course: x.course ?? null,
       location: x.location || null,
       start: e.startStr,

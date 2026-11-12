@@ -147,6 +147,16 @@
   color: var(--color-bg);
 }
 
+/* Exams: the date block turns black */
+.home__next--exam .home__date {
+  background: var(--color-text);
+}
+
+.home__next--exam .home__date-month,
+.home__next--exam .home__date-day {
+  color: var(--color-bg);
+}
+
 .home__next-text {
   display: flex;
   flex-direction: column;

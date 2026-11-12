@@ -2,11 +2,14 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import SubHeader from '../components/SubHeader';
 import { examPeriods, type ExamDay } from '../data/examDates';
 import { LINKS } from '../config/links';
+import { myExams } from '../data/appData';
+import type { MyExam } from '../lib/schedule';
 import './ExamDates.css';
 
 /**
- * Exam dates (Figma 163:1493). Official DTU timetable (static, the same for everyone), one exam period at a time.
- * Only periods that are not over yet; the first one is selected.
+ * Exam dates (Figma 163:1493). On top "My exams": the user's courses from the study plan matched to the DTU timetable
+ * (author's request). Below, the official DTU timetable (static, the same for everyone), one exam period at a time;
+ * days with one of my exams are highlighted. Only periods that are not over yet; the first one is selected.
  */
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
@@ -29,7 +32,20 @@ export default function ExamDates() {
 
   return (
     <div className="sub-screen exams">
-      <SubHeader title="Exams Dates" />
+      <SubHeader title="Exam dates" />
+
+      {myExams.length > 0 && (
+        <section className="exams__mine">
+          <h2 className="exams__heading">My exams</h2>
+          <ul className="exams__mine-list">
+            {myExams.map((e) => (
+              <MyExamRow key={e.code} exam={e} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <h2 className="exams__heading">DTU exam timetable</h2>
 
       {period ? (
         <>
@@ -49,7 +65,12 @@ export default function ExamDates() {
 
           <ul className="exams__list">
             {period.exams.map((exam) => (
-              <ExamCard key={exam.date} exam={exam} past={exam.date < today} />
+              <ExamCard
+                key={exam.date}
+                exam={exam}
+                past={exam.date < today}
+                mine={myExams.filter((m) => m.date === exam.date).map((m) => m.code)}
+              />
             ))}
           </ul>
         </>
@@ -66,7 +87,32 @@ export default function ExamDates() {
 }
 
 /** Card 342 x 94 as in Figma. Very long course lists are cut at 2 lines; tapping the card shows them all. */
-function ExamCard({ exam, past }: { exam: ExamDay; past: boolean }) {
+/** One of my exams: date block (or the 3-week period), course, how it was matched. */
+function MyExamRow({ exam }: { exam: MyExam }) {
+  const [, m, d] = exam.date ? exam.date.split('-').map(Number) : [0, 0, 0];
+  return (
+    <li className={'my-exam' + (exam.date ? '' : ' my-exam--nodate')}>
+      <span className="my-exam__date">
+        {exam.date ? (
+          <>
+            <span className="my-exam__month">{MONTHS[m - 1]}</span>
+            <span className="my-exam__day">{d}</span>
+          </>
+        ) : (
+          <span className="my-exam__month">{exam.period.slice(0, 3).toUpperCase()}</span>
+        )}
+      </span>
+      <span className="my-exam__text">
+        <span className="my-exam__course">
+          {exam.code} {exam.name}
+        </span>
+        <span className="my-exam__meta">{exam.date ? `${exam.period}${exam.via ? ` · ${exam.via}` : ''}` : `${exam.period} · 3-week course`}</span>
+      </span>
+    </li>
+  );
+}
+
+function ExamCard({ exam, past, mine }: { exam: ExamDay; past: boolean; mine: string[] }) {
   const [, m, d] = exam.date.split('-').map(Number);
   const coursesRef = useRef<HTMLSpanElement>(null);
   const [cut, setCut] = useState(false);
@@ -90,11 +136,12 @@ function ExamCard({ exam, past }: { exam: ExamDay; past: boolean }) {
           {exam.courses.join('\n')}
         </span>
         <span className="exam-card__deadline">Grading Deadline: {shortDate(exam.gradingDeadline)}</span>
+        {mine.length > 0 && <span className="exam-card__mine">Your exam: {mine.join(', ')}</span>}
       </span>
     </>
   );
 
-  const className = 'exam-card' + (past ? ' exam-card--past' : '') + (open ? ' exam-card--open' : '');
+  const className = 'exam-card' + (past ? ' exam-card--past' : '') + (open ? ' exam-card--open' : '') + (mine.length ? ' exam-card--mine' : '');
   return (
     <li>
       {cut || open ? (

@@ -186,3 +186,9 @@
   color: var(--dtu-red);
   font-weight: var(--font-semibold);
 }
+
+/* Exams: dark border (deadlines are red) */
+.agenda-card--exam {
+  border-color: var(--color-text);
+  border-width: 2px;
+}
