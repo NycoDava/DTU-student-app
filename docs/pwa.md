@@ -22,6 +22,15 @@ Browsers only allow installing (and service workers) on **https** or **localhost
 3. Open the address → menu ⋮ → **Install app** (or "Add to Home screen").
 The flag is for testing on your own phone only. A published build on https installs without it.
 
+## The address bar still shows in the installed app (Android)
+Chrome shows the address bar in an installed app whose page is served over plain **http** (security indicator).
+The flag above enables installing, but does not remove that bar, and the app code cannot hide it. Two ways around it:
+1. **USB + localhost (simplest, nothing to install):** phone with USB debugging, PC Chrome → `chrome://inspect/#devices`
+   → Port forwarding `5173` → `localhost:5173`. On the phone open `http://localhost:5173` and install from there.
+   `localhost` counts as secure: no bar, no flag. The cable must be connected while using the app.
+2. **HTTPS on the local network:** a local certificate (mkcert) trusted by the phone, and Vite on https. Needs mkcert
+   on the PC and its root certificate installed on the phone once; the certificate is tied to the PC's IP.
+
 ## Notes
 - The IP address changes with the network: if it changes, the installed icon points to the old address. Remove and add again.
 - Live mode works in the installed app too (it talks to Vite on the PC, which forwards to the local server).

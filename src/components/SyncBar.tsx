@@ -16,8 +16,13 @@ const fmt = new Intl.DateTimeFormat('en-GB', {
 
 const ICON = { idle: '', running: '…', ok: '✓', failed: '✕', kept: '✕' } as const;
 
+/** Saved data older than this is refreshed automatically when the app opens (if the DTU session is still valid). */
+const STALE_MS = 30 * 60_000;
+let autoRefreshTried = false; // once per page load
+
 /**
- * "Updated: Thu 12 Nov, 10:32 · Refresh" (live mode only, not in Figma). While a refresh runs it shows the progress
+ * "Updated: Thu 12 Nov, 10:32 · Refresh" (live mode only, not in Figma). Data older than 30 min is refreshed by itself
+ * when the app opens and the DTU session is still valid. While a refresh runs it shows the progress
  * per source; when it ends the page reloads with the new data. A source that failed keeps its last saved data.
  * Expired session → the login screen asks for username + password again.
  */
@@ -40,7 +45,16 @@ export default function SyncBar() {
   }, []);
 
   useEffect(() => {
-    if (dataMode === 'live') poll();
+    if (dataMode !== 'live') return;
+    (async () => {
+      const s = await getSession();
+      const stale = !dataFetchedAt || Date.now() - new Date(dataFetchedAt).getTime() > STALE_MS;
+      if (s?.loggedIn && stale && !s.sync.running && !autoRefreshTried) {
+        autoRefreshTried = true;
+        if ((await refresh()) === 'started') sawRunning.current = true;
+      }
+      poll();
+    })();
   }, [poll]);
 
   if (dataMode !== 'live') return null;
@@ -69,9 +83,12 @@ export default function SyncBar() {
         <span className="sync-bar__updated">
           {dataFetchedAt ? `Updated: ${fmt.format(new Date(dataFetchedAt))}` : 'No saved data yet'}
         </span>
-        <button type="button" className="sync-bar__button" onClick={onRefresh} disabled={running}>
-          {running ? 'Refreshing…' : session?.loggedIn ? 'Refresh' : 'Sign in to refresh'}
-        </button>
+        {/* Hidden until the session state is known, so it never flashes "Sign in to refresh" by mistake */}
+        {session && (
+          <button type="button" className="sync-bar__button" onClick={onRefresh} disabled={running}>
+            {running ? 'Refreshing…' : session.loggedIn ? 'Refresh' : 'Sign in to refresh'}
+          </button>
+        )}
       </div>
       {shown.length > 0 && (
         <ul className="sync-bar__sources">

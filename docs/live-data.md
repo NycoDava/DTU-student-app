@@ -16,6 +16,17 @@ The app has two modes, chosen automatically at start:
 4. A source that fails keeps its previous saved data; the other sources are updated anyway.
 5. `npm run demo-data` copies the anonymized file to `public/data/app-data.json` (refuses if any classlist entry is not anonymized).
 
+## Log in once (12 Nov 2026)
+- Live mode with saved data: the app opens straight on Home with the last saved data (no login screen).
+- The login screen only appears when a refresh needs it ("Sign in to refresh", or a 401 session_expired), or when there
+  is no saved data yet. If the server still has a valid session, /login redirects to Home.
+- When the app opens and the session is valid, data older than 30 minutes is refreshed automatically.
+- Keep-alive: while a session exists the server makes one light Learn request (whoami) every 10 minutes, so the DTU
+  session does not time out for inactivity. DTU still ends it after its absolute lifetime; then one new login is needed.
+- Still true: the password is never stored, the session (cookies) only lives in memory. Restarting `npm run server`
+  ends the session (the saved data stays).
+- `DTU_SERVER_PORT` sets the server port for both `npm run server` and the Vite proxy (default 8787).
+
 ## Endpoints (Phase 0, measured 12 Nov 2026 with context.request)
 
 | Source | Endpoint | Kind | Result | Time |

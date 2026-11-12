@@ -52,7 +52,28 @@ let session = null;
 
 export const getSession = () => session;
 
+/**
+ * Keep-alive: one light Learn request every 10 minutes keeps the DTU session from timing out for inactivity, so the
+ * user logs in less often. When DTU ends the session anyway (absolute lifetime), get() notices it and closes it.
+ * No password is kept: after that, a new login is needed.
+ */
+const KEEPALIVE_MS = 10 * 60_000;
+let keepAlive = null;
+
+function startKeepAlive() {
+  clearInterval(keepAlive);
+  keepAlive = setInterval(async () => {
+    if (!session) return clearInterval(keepAlive);
+    try {
+      await get(`${LEARN}/d2l/api/lp/${session.lp ?? '1.64'}/users/whoami`);
+    } catch (e) {
+      if (e instanceof SessionExpired) console.log('[session] DTU session ended, log in again to refresh');
+    }
+  }, KEEPALIVE_MS);
+}
+
 export async function closeSession() {
+  clearInterval(keepAlive);
   const s = session;
   session = null;
   if (s) await s.context.close().catch(() => {});
@@ -123,6 +144,7 @@ export async function login(username, password) {
   );
 
   session = { context, page, le: null, lp: null, me: null, since: new Date().toISOString(), entries };
+  startKeepAlive();
   try {
     const versions = await getJson(`${LEARN}/d2l/api/versions/`);
     session.le = versions.find((v) => v.ProductCode === 'le')?.LatestVersion ?? null;

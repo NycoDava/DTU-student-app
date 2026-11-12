@@ -202,7 +202,8 @@ comes back. Without the proxy (static hosting) the last real reading is shown wi
 - Change PIN: inline form (new + confirm, 4-6 digits); on match updates the PIN field and says
   "prototype only, not sent to DTU". Eye icon shows/hides the PIN.
 - Login: demo mode (no local server) = fake login, any input goes to Home, no network call. Live mode = real DTU login via
-  the local server; errors shown under the fields; "Continue with saved data". Home shows "Updated: …  Refresh" (live only). See docs/live-data.md.
+  the local server; errors shown under the fields; "Continue with saved data". Live mode with saved data: the splash goes straight to
+  Home (log in only when a refresh needs it). Home shows "Updated: …  Refresh" (live only). See docs/live-data.md.
 
 ## External links (fill `src/config/links.ts`)
 Studyplanner, DTU Learn, CampusNet, Study Abroad, DTU Career Hub, Student life, exam page, DTU contact page.

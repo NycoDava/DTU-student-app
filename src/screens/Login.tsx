@@ -1,8 +1,8 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LINKS } from '../config/links';
 import { dataFetchedAt, dataMode } from '../data/appFile';
-import { login, refresh, type LoginError } from '../data/liveServer';
+import { getSession, login, refresh, type LoginError } from '../data/liveServer';
 import './Login.css';
 
 const ERRORS: Record<LoginError, string> = {
@@ -29,6 +29,12 @@ export default function Login() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const live = dataMode === 'live';
+
+  // Live mode: the DTU session is still valid on the local server → no need to log in again.
+  useEffect(() => {
+    if (!live || expired) return;
+    getSession().then((s) => s?.loggedIn && navigate('/home', { replace: true }));
+  }, [live, expired, navigate]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
