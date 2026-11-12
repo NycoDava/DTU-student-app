@@ -36,6 +36,19 @@ export const LINKS = {
   mazemapEmbed:
     'https://use.mazemap.com/embed.html#v=1&campusid=89&zlevel=1&center=12.519825,55.786341&zoom=18.2&utm_medium=iframe',
   mazemap: 'https://www.mazemap.com/',
+  /** Full MazeMap app (search, directions, floors). Embeddable; the hash (center, zoom...) is built in CampusMap.tsx. */
+  mazemapApp: 'https://use.mazemap.com/',
+
+  // Parking (sources used by the DTU campus web app)
+  sensadeApi: 'https://api.sensade.com/guideapp/organization/67c1b612-1751-441a-b1d7-bb2a60d1db5c',
+  sensadeMap: 'https://dtu.sensade.com/lyngby',
+  bikeMap: {
+    lyngby: 'https://map.cas.dtu.dk/llyn_bike',
+    ballerup: 'https://map.cas.dtu.dk/lbal_bike',
+    riso: 'https://map.cas.dtu.dk/lris_bike',
+  },
+  /** + "lat,lng": opens directions in the phone's maps app. */
+  directions: 'https://www.google.com/maps/dir/?api=1&destination=',
   /** Base of the in-app MazeMap iframe; the hash (center, zoom...) is built in src/components/CampusMap.tsx. */
   mazemapEmbedBase: 'https://use.mazemap.com/embed.html',
 

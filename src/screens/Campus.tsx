@@ -4,6 +4,7 @@ import VenueCard from '../components/VenueCard';
 import CampusMap from '../components/CampusMap';
 import { recentVenues } from '../data/venues';
 import { useLibraryStatus } from '../data/library';
+import { useCarParks } from '../data/parking';
 import './Campus.css';
 
 /**
@@ -13,6 +14,9 @@ import './Campus.css';
 export default function Campus() {
   const recent = recentVenues(2);
   const { status } = useLibraryStatus();
+  const { parks, campusOf } = useCarParks();
+  const lyngby = (parks ?? []).filter((p) => campusOf(p.lat) === 'lyngby');
+  const liveFree = lyngby.filter((p) => p.free !== null).reduce((n, p) => n + (p.free ?? 0), 0);
 
   return (
     <div className="campus">
@@ -55,6 +59,22 @@ export default function Campus() {
           <img src="/icons/expand.svg" width={42} height={42} alt="" />
         </Link>
       </div>
+
+      <section className="campus__parking">
+        <LinkRow variant="section" to="/campus/parking">
+          Parking
+        </LinkRow>
+        <dl className="campus__stats campus__stats--two">
+          <div>
+            <dt>Free car spaces</dt>
+            <dd>{parks ? liveFree : '–'}</dd>
+          </div>
+          <div>
+            <dt>EV charging</dt>
+            <dd>{parks ? lyngby.reduce((n, p) => n + p.evSpaces, 0) : '–'}</dd>
+          </div>
+        </dl>
+      </section>
     </div>
   );
 }

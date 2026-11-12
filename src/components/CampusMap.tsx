@@ -6,13 +6,18 @@ import './CampusMap.css';
  * MazeMap embedded in the app (iframe, needs internet).
  * - `mini`: Campus page preview, not touchable, centered on the user when the browser shares the position
  *   (blue dot drawn by us in the center; MazeMap's embed has no "show my position" option).
- * - full: the real interactive map (search, routes, MazeMap's own location button).
+ * - full: the full MazeMap app (search buildings and rooms, directions, floors, its own location button).
  * Offline: the Figma screenshot of the map with a message.
  */
 const DTU_LYNGBY = { lng: 12.519825, lat: 55.786341 };
 
 function embedUrl(center: { lng: number; lat: number }, zoom: number) {
-  return `${LINKS.mazemapEmbedBase}#v=1&config=DTU&zlevel=1&center=${center.lng},${center.lat}&zoom=${zoom}&utm_medium=iframe`;
+  return `${LINKS.mazemapEmbedBase}#v=1&config=DTU&zlevel=1&center=${center.lng},${center.lat}&zoom=${zoom}&lang=en&utm_medium=iframe`;
+}
+
+/** Full MazeMap app (author's request: search a building, get directions). English UI. */
+function appUrl(center: { lng: number; lat: number }, zoom: number) {
+  return `${LINKS.mazemapApp}#v=1&config=DTU&campusid=89&zlevel=1&center=${center.lng},${center.lat}&zoom=${zoom}&lang=en`;
 }
 
 function useOnline() {
@@ -57,7 +62,9 @@ export default function CampusMap({ mini = false }: { mini?: boolean }) {
     );
   }
 
-  const src = embedUrl(pos ?? DTU_LYNGBY, mini ? (pos ? 17.5 : 16) : pos ? 17 : 16);
+  const center = pos ?? DTU_LYNGBY;
+  // Preview: the light embed (not touchable). Full screen: the whole MazeMap app with search and directions.
+  const src = mini ? embedUrl(center, pos ? 17.5 : 16) : appUrl(center, pos ? 17 : 16);
   return (
     <div className={'campus-map' + (mini ? ' campus-map--mini' : '')}>
       <iframe

@@ -1,0 +1,188 @@
+/* Parking: Car / Bike tabs, campus chips, live lots, list of car parks, embedded bike map. */
+.parking__modes {
+  margin-bottom: 10px;
+}
+
+.parking__campuses {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.parking__campus {
+  flex: 1;
+  min-height: 40px;
+  border: 1px solid var(--color-hairline);
+  border-radius: 20px;
+  background: var(--color-bg);
+  font: inherit;
+  font-size: 14px;
+  font-weight: var(--font-semibold);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.parking__campus.is-active {
+  border-color: var(--dtu-red);
+  background: var(--dtu-red);
+  color: var(--color-bg);
+}
+
+.parking__status {
+  margin: 32px 0;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+/* Three red tiles, like the library numbers on Campus */
+.parking__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 8px;
+}
+
+.parking__stats div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--tabbar-red);
+}
+
+.parking__stats dt {
+  font-size: var(--text-meta);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.parking__stats dd {
+  margin: 0;
+  font-size: 24px;
+  font-weight: var(--font-bold);
+  color: var(--color-bg);
+}
+
+.parking__section {
+  padding-top: 14px;
+}
+
+.parking__heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: var(--text-section);
+  font-weight: var(--font-bold);
+}
+
+.parking__live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1fb35a;
+}
+
+.parking__time {
+  margin-left: auto;
+  font-size: var(--text-meta);
+  font-weight: var(--font-regular);
+  color: var(--color-muted);
+}
+
+.parking__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.parking__lot {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-hairline);
+  border-radius: 14px;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.parking__lot-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.parking__free {
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.parking__free strong {
+  font-size: 22px;
+  color: #1e7a3c;
+  margin-right: 3px;
+}
+
+/* Occupancy bar: occupied part in DTU red on a light track */
+.parking__bar {
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--bar-track);
+}
+
+.parking__bar span {
+  display: block;
+  height: 100%;
+  background: var(--tabbar-red);
+}
+
+.parking__rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.parking__rows .link-row__label {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0;
+}
+
+.parking__name {
+  font-size: var(--text-body);
+  font-weight: var(--font-semibold);
+}
+
+.parking__address {
+  font-size: var(--text-meta);
+  font-weight: var(--font-regular);
+  color: var(--color-muted);
+}
+
+.parking__credit {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  margin-top: 6px;
+  font-size: var(--text-meta);
+  color: var(--color-muted);
+}
+
+/* Bike: the official map fills the rest of the screen */
+.parking__bike {
+  display: flex;
+  flex-direction: column;
+}
+
+.parking__bike iframe {
+  width: 100%;
+  height: 62vh;
+  min-height: 420px;
+  border: 1px solid var(--color-hairline);
+  border-radius: 16px;
+}

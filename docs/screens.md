@@ -183,11 +183,22 @@ FIGMA: node 7:55. Route `/campus`.
 
 ## Map  (SPECIFIED)
 FIGMA: node 30:214. Route `/campus/map`, outside the tab layout (no tab bar).
-- Full MazeMap embed (`LINKS.mazemapEmbedBase`, config=DTU) inside the black rounded frame: search, routes and
-  MazeMap's own location button. "Reduce" button top right goes back. Do not download or copy map data.
+- Full MazeMap APP (`LINKS.mazemapApp`, config=DTU, campusid=89, lang=en; author's request 12 Nov 2026) inside the
+  frame: search buildings/rooms, directions, floors and MazeMap's own location button. The Campus preview keeps the light
+  embed (`mazemapEmbedBase`, not touchable). "Reduce" button top right goes back. Do not download or copy map data.
 - Keep the visible credit "Map by MazeMap" (link to `LINKS.mazemap`).
 - Geolocation needs HTTPS or localhost: on a phone through `--host` (http://192.168...) the browser refuses it,
   so the map falls back to DTU Lyngby.
+
+## Parking  (SPECIFIED, built 12 Nov 2026)
+Idea and sources from the DTU campus web app (dashboard-a0e2c.web.app). Route `/campus/parking`; Campus page: section
+"Parking" under the map with two red tiles (free car spaces now at Lyngby, EV charging spaces).
+- Tabs Car / Bike, campus chips Lyngby / Ballerup / Risø.
+- Car: public Sensade API (`LINKS.sensadeApi`, CORS *, read directly, refresh 60 s): stat tiles (free now, spaces,
+  EV), "Live" lots with sensors (Koppels Allé A-E: free = spaces x (1 - status), occupancy bar), then all other car
+  parks (name, address, spaces, Free/Paid, EV). Tap = directions in the phone's maps app (`LINKS.directions`).
+  dtu.sensade.com itself cannot be embedded (X-Frame-Options), so the data is shown with our components.
+- Bike: the official DTU bicycle map (`LINKS.bikeMap`, map.cas.dtu.dk, public, embeddable) in an iframe.
 
 ## Food  (SPECIFIED)
 FIGMA: 30:172 (`/campus/food`) and 157:1132 (`/campus/food/101`). Same grid, order and red rounded cards as the eat@DTU
