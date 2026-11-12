@@ -391,3 +391,56 @@ export async function fetchDtuFeeds() {
     },
   };
 }
+
+/**
+ * DTU study announcements (registration for exams, 3-week periods, ...): the "Study Announcements" widget on the
+ * Learn home page shows these messages from student.dtu.dk. The org-level Learn news API answers 403 to students,
+ * so we read the PUBLIC RSS feed (no login, no cookies) and each message page for its text.
+ */
+const STUDY_RSS = 'https://student.dtu.dk/en/messages/studiemeddelelser/rss';
+const runPublic = limiter(4); // other host, no session: does not wait behind the Learn requests
+
+/** HTML → plain text with paragraph breaks (never rendered as HTML in the app). */
+function htmlToText($, el) {
+  $(el).find('br').replaceWith('\n');
+  $(el).find('p, li, h2, h3, h4, div').each((_, e) => $(e).append('\n'));
+  return $(el).text().replace(/[ \t]+/g, ' ').replace(/\n\s*\n\s*/g, '\n\n').trim();
+}
+
+export async function fetchStudyAnnouncements() {
+  const res = await fetch(STUDY_RSS, { signal: AbortSignal.timeout(15000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status} from student.dtu.dk RSS`);
+  const $ = cheerio.load(await res.text(), { xmlMode: true });
+  const items = $('item')
+    .map((_, e) => {
+      const $e = $(e);
+      const title = $e.find('title').text().trim();
+      const desc = cheerio.load(`<div>${$e.find('description').text()}</div>`);
+      return {
+        id: (/\bs\d{3,5}\b/i.exec(title) || [$e.find('guid').text().trim() || title])[0],
+        title,
+        url: $e.find('link').text().trim() || null,
+        publishedAt: new Date($e.find('pubDate').text()).toISOString(),
+        teaser: desc('div').text().replace(/\s+/g, ' ').trim(),
+        text: '',
+      };
+    })
+    .get();
+
+  // Message text from each page (div.o-messages-detail-body). A page that fails keeps the RSS teaser.
+  await Promise.all(
+    items.map((item) =>
+      runPublic(async () => {
+        if (!item.url) return;
+        const page = await fetch(item.url, { signal: AbortSignal.timeout(15000) }).catch(() => null);
+        if (!page?.ok) return;
+        const $p = cheerio.load(await page.text());
+        $p('script, style').remove();
+        const body = $p('main .o-messages-detail-body').first();
+        if (body.length) item.text = htmlToText($p, body);
+      }),
+    ),
+  );
+  for (const item of items) if (!item.teaser) item.teaser = item.text.replace(/\s+/g, ' ').slice(0, 200);
+  return { studyAnnouncements: items, counts: { announcements: items.length } };
+}

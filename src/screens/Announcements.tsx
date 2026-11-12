@@ -1,9 +1,10 @@
 import SubHeader from '../components/SubHeader';
 import AnnouncementCard from '../components/AnnouncementCard';
-import { announcements } from '../data/appData';
+import { studyAnnouncements } from '../data/appData';
 
 export default function Announcements() {
-  const items = announcements; // newest first
+  // DTU study announcements (student.dtu.dk), newest first. Course announcements live on each course page.
+  const items = studyAnnouncements;
 
   return (
     <div className="sub-screen">

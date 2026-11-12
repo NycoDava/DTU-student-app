@@ -5,7 +5,7 @@
  */
 const BASE = '/api/local';
 
-export type SourceName = 'learn' | 'studyplan' | 'grades' | 'dtu';
+export type SourceName = 'learn' | 'studyplan' | 'grades' | 'study' | 'dtu';
 export type SourceState = { state: 'idle' | 'running' | 'ok' | 'failed' | 'kept'; ms: number | null; error: string | null };
 export type SyncState = { running: boolean; finishedAt: string | null; error: string | null; sources: Record<SourceName, SourceState> };
 export type Session = {
@@ -20,6 +20,7 @@ export const SOURCE_LABELS: Record<SourceName, string> = {
   learn: 'Courses',
   studyplan: 'Studyplan',
   grades: 'Grades',
+  study: 'Announcements',
   dtu: 'DTU news',
 };
 

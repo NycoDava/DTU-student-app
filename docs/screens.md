@@ -17,9 +17,8 @@ Common rules
 ## Home  (SPECIFIED, except the first card, see note)
 FIGMA: <link>
 - Header: student name + DTU logo.
-- "Study Announcements ->": card with the latest announcement (`announcements[0]`: course code, title, preview).
-  Tap opens the Study announcements screen. NOTE: the Figma sample text ("Study Announcement n.821, winter exams") comes
-  from DTU Study Administration, which is NOT in the data. We use course announcements instead. Keep the card style.
+- "Study Announcements ->": card with the newest DTU study announcement (`studyAnnouncements[0]`: title, teaser).
+  Tap opens the Study announcements screen.
 - "Upcoming Activities and Deadlines ->": the NEXT upcoming `agenda` item (event or deadline): date block (Oct 28),
   time, title, course code + course name. Deadlines have the red border. Tap opens Upcoming events.
 - "Your Calendar": segmented control Day / Week / Month / List. Default view: Week. See Calendar.
@@ -44,10 +43,13 @@ FIGMA: <link>  (3 variants: All / Deadlines / Activities)
 - Row: date block (month + day), time, bold title, small line "course code course name". Deadlines have a red border.
 - Tap opens `url`.
 
-## Study announcements  (DRAFT)
-- List of `announcements`, newest first: course code, title, preview (2 lines). Tap expands the full `text`.
-
----------------------------------------------------------------------------------------------------
+## Study announcements  (SPECIFIED, built)
+Route `/announcements`. Data: `studyAnnouncements[]` = DTU study announcements from student.dtu.dk (registration for exams,
+3-week periods, ...), the same messages as the "Study Announcements" widget on the Learn home page. Source: the public RSS
+`student.dtu.dk/en/messages/studiemeddelelser/rss` + each message page for the text (read by the local server sync;
+the Learn org-level news API answers 403 to students). Course announcements stay on each course page.
+- Card (Figma): "Study Announcement s1924:" + title on the next line. Tap expands date, full text, "Read on student.dtu.dk".
+- Home card: the newest study announcement (title + teaser).
 
 ## My studies (tab "school", route `/student`)  (SPECIFIED)
 FIGMA: node 7:22. Hub: "Grades and ECTS→" (/grades), ECTS pie from `studyplan.ectsByType` (slice color = type color

@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import { initials, useCurrentUser } from '../data/currentUser';
 import Calendar from '../components/calendar/Calendar';
 import SyncBar from '../components/SyncBar';
-import { agenda, announcements, courseLabel } from '../data/appData';
-import { plainText } from '../data/courseData';
+import { agenda, courseLabel, studyAnnouncements } from '../data/appData';
 import { formatDay, formatMonth, formatTime } from '../data/format';
 import './Home.css';
 
@@ -38,7 +37,7 @@ const calendarEvents = () =>
 
 export default function Home() {
   const { user } = useCurrentUser();
-  const latest = announcements[0];
+  const latest = studyAnnouncements[0];
   const next = nextAgendaItem();
   const events = useMemo(calendarEvents, []);
 
@@ -65,10 +64,8 @@ export default function Home() {
           </Link>
           {latest ? (
             <Link to="/announcements" className="home__card home__announcement">
-              <span className="home__announcement-title">
-                Study Announcement {latest.courseCode}: {latest.title}
-              </span>
-              <span className="home__announcement-preview">{plainText(latest.preview)}</span>
+              <span className="home__announcement-title">{latest.title.replace(/^study announcement/i, 'Study Announcement')}</span>
+              <span className="home__announcement-preview">{latest.teaser}</span>
             </Link>
           ) : (
             <Link to="/announcements" className="home__card home__card--empty">

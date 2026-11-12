@@ -163,3 +163,13 @@ export type Classlist = {
   people: Person[];
   group: { category: string; name: string; members: number; maxMembers: number } | null;
 };
+
+/** DTU study announcement (student.dtu.dk, shown by the "Study Announcements" widget on the Learn home page). */
+export type StudyAnnouncement = {
+  id: string; // "s1924"
+  title: string; // "Study announcement s1924: Registration for the 3-week period January 2027"
+  url: string | null;
+  publishedAt: string; // ISO, UTC
+  teaser: string;
+  text: string; // plain text with paragraph breaks
+};

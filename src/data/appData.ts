@@ -1,4 +1,4 @@
-import type { AgendaItem, Announcement, Course, Deadline, Grade, LocalizedName, Studyplan, Summary } from './types';
+import type { AgendaItem, Announcement, Course, Deadline, Grade, LocalizedName, StudyAnnouncement, Studyplan, Summary } from './types';
 
 /**
  * App data from `public/data/app-data.json`. main.tsx calls `initAppData()` with the loaded file BEFORE the first
@@ -26,6 +26,8 @@ export let studyplan: Studyplan = {
 export let courses: Course[] = [];
 export let announcements: Announcement[] = [];
 export let agenda: AgendaItem[] = [];
+/** DTU study announcements (not the course announcements), newest first. */
+export let studyAnnouncements: StudyAnnouncement[] = [];
 
 type RawGrade = Omit<Grade, 'title'> & { title: string | LocalizedName };
 
@@ -37,6 +39,7 @@ export function initAppData(file: Record<string, unknown>) {
     courses: Course[];
     announcements: Announcement[];
     agenda: AgendaItem[];
+    studyAnnouncements: StudyAnnouncement[];
   }>;
   if (f.summary) summary = { ...summary, ...f.summary };
   if (f.studyplan) studyplan = { ...studyplan, ...f.studyplan };
@@ -44,6 +47,7 @@ export function initAppData(file: Record<string, unknown>) {
   grades = (f.grades ?? []).map((g) => ({ ...g, title: typeof g.title === 'string' ? g.title : g.title.English }));
   courses = f.courses ?? [];
   announcements = [...(f.announcements ?? [])].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  studyAnnouncements = [...(f.studyAnnouncements ?? [])].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
   agenda = [...(f.agenda ?? [])].sort((a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt));
 }
 

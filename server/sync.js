@@ -13,7 +13,7 @@ import { randomUUID } from 'node:crypto';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SessionExpired, fetchDtuFeeds, fetchGrades, fetchLearn, fetchStudyplan } from './dtu.js';
+import { SessionExpired, fetchDtuFeeds, fetchGrades, fetchLearn, fetchStudyAnnouncements, fetchStudyplan } from './dtu.js';
 
 const exec = promisify(execFile);
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -25,7 +25,7 @@ const IMAGES_DIR = path.join(HERE, '..', 'public', 'course-images');
 const DEMO_PUBLIC = path.join(HERE, '..', 'public', 'data', 'app-data.json');
 const FRESH_MS = 60_000; // short cache: a refresh within a minute of the last one reuses it
 
-export const SOURCES = ['learn', 'studyplan', 'grades', 'dtu'];
+export const SOURCES = ['learn', 'studyplan', 'grades', 'study', 'dtu'];
 
 /** Progress shown by the app. state: idle | running | ok | failed | kept (failed, previous data kept). */
 export const syncState = {
@@ -107,6 +107,7 @@ function keepPrevious(out, prev, failed, seed) {
       out.summary.ectsPassed = prev.summary?.ectsPassed;
     }
   }
+  if (failed.has('study')) out.studyAnnouncements = prev.studyAnnouncements ?? [];
   if (failed.has('dtu')) {
     // An empty previous list is not worth keeping: fall back to the demo data's lists.
     out.news = prev.news?.length ? prev.news : seed?.news ?? [];
@@ -150,6 +151,7 @@ async function doSync() {
     runSource('learn', () => fetchLearn({ saveImage })),
     runSource('studyplan', fetchStudyplan),
     runSource('grades', fetchGrades),
+    runSource('study', fetchStudyAnnouncements),
     runSource('dtu', fetchDtuFeeds),
   ]);
 
@@ -174,6 +176,8 @@ async function doSync() {
     };
     const sources = Object.fromEntries(SOURCES.map((s) => [s, { ok: !failed.has(s), error: syncState.sources[s].error }]));
     const [live, demo] = await Promise.all([normalize(raw, false), normalize(raw, true)]);
+    // Fields normalize.cjs does not know about (public study announcements: same in both files).
+    for (const out of [live, demo]) out.studyAnnouncements = results.study?.studyAnnouncements ?? [];
     await mkdir(CACHE_DIR, { recursive: true });
     await writeAtomic(LIVE_FILE, { ...keepPrevious(live, prevLive, failed, seed), fetchedAt, sources });
     await writeAtomic(DEMO_FILE, { ...keepPrevious(demo, prevDemo, failed, seed), fetchedAt, sources });
