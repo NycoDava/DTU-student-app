@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import LinkRow from '../../components/LinkRow';
 import { plainText } from '../../data/courseData';
 import { formatLongDateTime } from '../../data/format';
 import type { Person } from '../../data/types';
@@ -24,15 +24,15 @@ export function MyCourseTab() {
     <div className="my-course">
       <section className="my-course__block">
         {classlist?.ok ? (
-          <Link to={`/courses/${course.id}/classlist`} className="my-course__classlist">
-            Classlist →
-          </Link>
+          <LinkRow variant="section" to={`/courses/${course.id}/classlist`} meta={`${classlist.people.length} people`}>
+            Classlist
+          </LinkRow>
         ) : (
-          <span className="my-course__heading">Classlist</span>
+          <>
+            <span className="my-course__heading">Classlist</span>
+            <p className="my-course__light">Not available for this course</p>
+          </>
         )}
-        <p className="my-course__light">
-          {classlist?.ok ? `${classlist.people.length} people` : 'Not available for this course'}
-        </p>
       </section>
 
       <section className="my-course__block">

@@ -175,10 +175,9 @@
 
 /* ---- My Course (42:205) ---- */
 .my-course__block {
-  padding: 12px 9px 16px;
-  border-bottom: 2px solid var(--color-text);
-  box-shadow: var(--shadow-bar);
-  font-size: var(--text-lg);
+  padding: 8px 12px 16px;
+  border-bottom: 1px solid var(--color-hairline);
+  font-size: var(--text-body);
 }
 
 .my-course__block--last {
@@ -186,19 +185,10 @@
   box-shadow: none;
 }
 
-.my-course__classlist {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--touch-target);
-  color: var(--color-text);
-  font-weight: var(--font-semibold);
-  text-decoration: underline;
-}
-
 .my-course__heading {
-  margin: 0 0 4px;
-  font-size: var(--text-lg);
-  font-weight: var(--font-semibold);
+  margin: 8px 0 6px;
+  font-size: var(--text-section);
+  font-weight: var(--font-bold);
 }
 
 .my-course__heading--bold {
@@ -206,8 +196,8 @@
 }
 
 .my-course__light {
-  margin: 0;
-  font-weight: var(--font-light);
+  margin: 0 0 2px;
+  font-weight: var(--font-regular);
 }
 
 .my-course__value {
@@ -215,20 +205,21 @@
 }
 
 .my-course__announcement {
-  padding: 8px 7px 12px;
+  padding: 6px 0 14px;
 }
 
 .my-course__ann-title {
   display: inline-block;
-  padding: 6px 0;
-  font-weight: var(--font-light);
+  padding: 4px 0;
+  font-size: 16px;
+  font-weight: var(--font-semibold);
   color: var(--dtu-red);
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .my-course__ann-text {
-  margin: 8px 0 0;
-  font-weight: var(--font-light);
+  margin: 6px 0 0;
+  line-height: 1.45;
   white-space: pre-line;
 }
 
@@ -406,4 +397,25 @@
 
 .assignment--past {
   opacity: 0.5;
+}
+
+/* Course meta lines ("Posted on …"): secondary */
+.my-course__announcement .my-course__light {
+  font-size: var(--text-meta);
+  color: var(--color-muted);
+}
+
+/* Installed app: no frame around the banner either (it would look like the phone frame again) */
+html.is-standalone .course-banner {
+  margin-top: 0;
+  border: none;
+  border-radius: 0 0 20px 20px;
+}
+
+@media (display-mode: standalone) {
+  .course-banner {
+    margin-top: 0;
+    border: none;
+    border-radius: 0 0 20px 20px;
+  }
 }

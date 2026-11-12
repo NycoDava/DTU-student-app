@@ -1,12 +1,16 @@
-import { Link } from 'react-router-dom';
-import EctsPie from '../components/EctsPie';
 import CourseCard from '../components/CourseCard';
-import { courses as allCourses, studyplan, summary } from '../data/appData';
+import EctsProgress from '../components/EctsProgress';
+import LinkRow from '../components/LinkRow';
+import { courses as allCourses } from '../data/appData';
 import { recentCourses } from '../data/recentCourses';
 import { LINKS } from '../config/links';
 import './MyStudies.css';
 
-/** Tab "school" (Figma "my studies", 7:22): ECTS overview, last visited courses, shortcuts. */
+/**
+ * Tab "school" (Figma "my studies", 7:22, cleaned up): ECTS progress, last visited courses, shortcuts.
+ * Deviation (author's request): section titles are tappable rows with a chevron instead of underlined "Title→" links,
+ * and the pie is replaced by the same ECTS progress bar as on Grades.
+ */
 export default function MyStudies() {
   const courses = recentCourses(allCourses, 2);
   const slots = [courses[0], courses[1]];
@@ -15,43 +19,29 @@ export default function MyStudies() {
     <div className="studies">
       <img className="studies__logo" src="/images/dtu-logo-small.png" alt="DTU" />
 
-      <Link to="/grades" className="studies__title studies__title--big">
-        Grades and ECTS→
-      </Link>
+      <section className="studies__section">
+        <LinkRow variant="section" to="/grades">
+          Grades and ECTS
+        </LinkRow>
+        <EctsProgress compact />
+      </section>
 
-      <div className="studies__ects">
-        <EctsPie studyplan={studyplan} />
-        <p className="studies__ects-text">
-          Ects completed:
-          <br />
-          {summary.ectsPassed}/{summary.ectsRequired}
-        </p>
-      </div>
+      <section className="studies__section">
+        <LinkRow variant="section" to="/courses">
+          My courses
+        </LinkRow>
+        <div className="studies__courses">
+          {slots.map((course, i) => (
+            <CourseCard key={course?.id ?? `empty-${i}`} course={course} />
+          ))}
+        </div>
+      </section>
 
-      <hr className="studies__divider" />
-
-      <Link to="/courses" className="studies__title studies__title--big">
-        My Courses→
-      </Link>
-      <div className="studies__courses">
-        {slots.map((course, i) => (
-          <CourseCard key={course?.id ?? `empty-${i}`} course={course} />
-        ))}
-      </div>
-
-      <nav className="studies__links">
-        <Link to="/studyplanner" className="studies__title">
-          Studyplanner→
-        </Link>
-        <Link to="/exams" className="studies__title">
-          Exams Dates→
-        </Link>
+      <nav className="studies__rows" aria-label="More">
+        <LinkRow to="/studyplanner">Studyplanner</LinkRow>
+        <LinkRow to="/exams">Exam dates</LinkRow>
+        <LinkRow href={LINKS.studyGuidance}>Study guidance</LinkRow>
       </nav>
-
-      <a className="studies__guidance" href={LINKS.studyGuidance} target="_blank" rel="noopener noreferrer">
-        Study Guidance
-        <img src="/icons/external-link.svg" width={17} height={17} alt="" />
-      </a>
     </div>
   );
 }

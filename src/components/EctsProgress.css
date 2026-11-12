@@ -1,0 +1,101 @@
+/* Degree progress in ECTS: passed | planned | missing. */
+.ects-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.ects-progress__headline {
+  margin: 0;
+  font-size: var(--text-body);
+  color: var(--color-muted);
+}
+
+.ects-progress__headline strong {
+  font-size: 34px;
+  line-height: 1;
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  margin-right: 2px;
+}
+
+.ects-progress__bar {
+  position: relative;
+  display: flex;
+  height: 14px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: var(--bar-track);
+}
+
+.ects-progress__seg--passed {
+  background: var(--tabbar-red);
+}
+
+.ects-progress__seg--planned {
+  background: var(--tabbar-red);
+  opacity: 0.35;
+}
+
+/* Marks the required ECTS when the plan holds more than required */
+.ects-progress__goal {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-text);
+}
+
+.ects-progress__legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-size: var(--text-meta);
+  color: var(--color-text);
+}
+
+.ects-progress__legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ects-progress__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.ects-progress__dot--passed {
+  background: var(--tabbar-red);
+}
+
+.ects-progress__dot--planned {
+  background: var(--tabbar-red);
+  opacity: 0.35;
+}
+
+.ects-progress__dot--missing {
+  background: var(--bar-track);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+.ects-progress__status {
+  margin: 0;
+  font-size: var(--text-meta);
+  color: var(--color-muted);
+}
+
+.ects-progress__status--warn {
+  color: var(--dtu-red);
+  font-weight: var(--font-semibold);
+}
+
+/* Compact (My studies) */
+.ects-progress--compact .ects-progress__headline strong {
+  font-size: 28px;
+}

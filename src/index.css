@@ -51,3 +51,31 @@ body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
+
+/* ---- Installed app (PWA) and real phones: no Figma phone frame, respect the notch / home indicator ----
+   The red rounded frame only makes sense on a desktop preview, where it imitates a phone. */
+html.is-standalone .app-shell {
+  max-width: none;
+  border: none;
+  border-radius: 0;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+@media (display-mode: standalone) {
+  .app-shell {
+    max-width: none;
+    border: none;
+    border-radius: 0;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+html.is-standalone,
+html.is-standalone body {
+  background: var(--color-bg);
+  overscroll-behavior: none; /* no rubber-band of the whole page behind the app */
+}

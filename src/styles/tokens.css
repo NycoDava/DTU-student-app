@@ -17,6 +17,14 @@
   --text-xs: 12px;
   --text-lg: 20px;
 
+  /* Type hierarchy (4 levels). Screen title > section title > body > meta. */
+  --text-title: 22px;
+  --text-section: 19px;
+  --text-body: 15px;
+  --text-meta: 13px;
+  --color-muted: #6b6b6b; /* secondary text, darker than the placeholder grey for contrast */
+  --color-hairline: rgba(0, 0, 0, 0.12);
+
   /* Frame chrome */
   --app-width: 393px;
   --frame-border: 5px;

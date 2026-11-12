@@ -9,6 +9,10 @@ It is a PROTOTYPE for usability testing, not a product. Prefer simple, readable 
 - Vite + React + TypeScript, React Router. Plain CSS with CSS variables (design tokens). No heavy UI library.
 - Charts: `recharts`. Calendar: FullCalendar (all four views: Day, Week, Month, List). Map: official MazeMap iframe embed.
 - All external URLs are named constants in `src/config/links.ts`.
+- PWA: installable on the phone (manifest, icons, minimal no-cache service worker). Installed = no red phone frame.
+  See `docs/pwa.md`.
+- Type hierarchy tokens (`--text-title`, `--text-section`, `--text-body`, `--text-meta`) and `LinkRow` (tappable row with
+  chevron) replace underlined "Title→" links. Use them for new screens.
 - Commands: `npm run dev` (use `npm run dev -- --host` to open it on a phone), `npm run build` (must pass).
 - Live data: `npm run server` (local DTU server, `server/`, 127.0.0.1:8787, reached via the Vite proxy `/api/local`),
   `npm run demo-data` (copies the anonymized output of the last sync to `public/data/app-data.json`). See `docs/live-data.md`.

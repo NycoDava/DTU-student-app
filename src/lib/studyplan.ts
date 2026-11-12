@@ -1,21 +1,5 @@
 import type { Grade, Studyplan } from '../data/types';
 
-/**
- * "N activities planned / M activities completed".
- * Completed = passed grades. Planned = courses and activities placed in the study plan that are not passed yet
- * (the Studyplanner export only lists future placements; passed courses come from the grades).
- */
-export function activityCounts(plan: Studyplan, grades: Grade[]) {
-  const passed = new Set(grades.filter((g) => g.passed).map((g) => g.code));
-  let planned = 0;
-  for (const semester of plan.semesters) {
-    for (const period of semester.periods) {
-      planned += period.courses.filter((c) => !passed.has(c.code)).length + period.activities.length;
-    }
-  }
-  return { planned, completed: passed.size };
-}
-
 // ---------------------------------------------------------------------------------------------------------------
 // Studyplanner board: years -> semesters ("terms") -> periods -> items. See docs/screens.md "Study planner".
 // ---------------------------------------------------------------------------------------------------------------
@@ -192,4 +176,11 @@ export function placeItems(board: PlanBoard, moves: Record<string, string>): Rec
     if (board.items[id] && !board.items[id].locked && open.has(target)) place[id] = target;
   }
   return place;
+}
+
+/** End of the last period that holds something (passed or planned): when the current plan finishes. */
+export function planEnd(board: PlanBoard): Date | null {
+  const used = new Set(Object.values(placeItems(board, {})));
+  const ends = board.periods.filter((p) => used.has(p.key)).map((p) => p.end.getTime());
+  return ends.length ? new Date(Math.max(...ends)) : null;
 }

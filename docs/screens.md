@@ -51,36 +51,22 @@ the Learn org-level news API answers 403 to students). Course announcements stay
 - Card (Figma): "Study Announcement s1924:" + title on the next line. Tap expands date, full text, "Read on student.dtu.dk".
 - Home card: the newest study announcement (title + teaser).
 
-## My studies (tab "school", route `/student`)  (SPECIFIED)
+## My studies (tab "school", route `/student`)  (SPECIFIED; cleaned up 12 Nov 2026: section rows with chevron,
+`EctsProgress compact` instead of the pie, rows Studyplanner / Exam dates / Study guidance)
 FIGMA: node 7:22. Hub: "Grades and ECTS→" (/grades), ECTS pie from `studyplan.ectsByType` (slice color = type color
 from Studyplanner) + "Ects completed: passed/required", "My Courses→" (/courses) with the 2 LAST VISITED courses
 (`src/data/recentCourses.ts`, fallback: first active courses), "Studyplanner→" (/studyplanner), "Exams Dates→" (/exams),
 "Study Guidance" external link. Until data is plugged in: grey pie, 0/120, two empty course slots.
 
-## Grades and progress (route `/grades`, behind "Grades and ECTS→")  (SPECIFIED)
-FIGMA: <link>  (this is the "Grades / Progress" screen, with the chart)
-- Top: "Progress" bar with `summary.ectsPassed / summary.ectsRequired` and the text "55/120 ects".
-- Small donut of ECTS by category (see "ECTS distribution") and the button "Show ECTS distribution". Link "StudyPlanner ->"
-  opens the Study planner screen. "N activities planned / M activities completed" are KEPT (author's decision, may change):
-  courses + activities in `studyplan.semesters`, completed = course code has a passed grade (`src/lib/studyplan.ts`).
-- Progress bar fill is DTU red (Figma blue, approved deviation).
-- "Grades Insights": "Current GPA: x.xx" = `summary.gpa`. Link "GPA calculator ->".
-- Card "Last grade": course code, title, grade, ECTS of the most recent grade (latest period; inside a period use the
-  order of the data, there is no exact exam date).
-- Chart (recharts, `LineChart`), interactive:
-  - Blue line = the grade of each course (x = one point per course, labelled with a shortened course title).
-  - Orange line = GPA evolution (ECTS-weighted mean of the passed, numeric grades up to that point). Both are DISCRETE
-    lines: straight segments joining the points, with a dot on every point (`type="linear"`, NOT a step line).
-  - DATA LIMIT: `grades[].period` is only a period ("v25" = winter 2025, "s26" = summer 2026), no exact date. So the order
-    of courses inside a period is arbitrary (sort by period, then course code). The GPA is still computed course by course in
-    that order; the GPA at the last course of a period is exact, the values inside a period are indicative.
-  - A light band + label at the top marks each period ("WINTER 2025", "SPRING 2026"). Failed/"IB" courses: grade point
-    shown as a hollow dot at the bottom, not counted in the GPA.
-  - Horizontal scroll: the plot area is wider than the screen (about 90 px per course) inside an `overflow-x: auto` wrapper,
-    the Y axis stays fixed outside the scroll area. Start scrolled to the RIGHT (latest grades visible).
-  - Test feedback said "it was not clear that it scrolls": show a partially cut-off next point at the right edge, a soft
-    fade on the scrolling edge, and a small hint "swipe to see earlier grades" that disappears after the first scroll.
-  - Tap a point: tooltip with course code and title, grade, ECTS, period, GPA at that point. Add a small legend for the two lines.
+## Grades and progress (route `/grades`, behind "Grades and ECTS")  (SPECIFIED, redesigned 12 Nov 2026)
+Author's request: clearer, coherent progress section (deviation from Figma 27:16).
+- Progress = `EctsProgress` (same component on My studies, compact): "55 of 120 ECTS passed", one bar passed | planned |
+  missing (`summary.ectsPassed`, `summary.ectsPlanned`, `ectsRequired - passed - planned`), legend, and a status line:
+  "Your plan covers all 120 ECTS · last period ends June 2027" (end of the last Studyplanner period holding an item,
+  `planEnd`) or "N ECTS still missing in your plan" (red). No "activities" count, no pie here.
+- Rows: "ECTS by course type" (opens the ECTS distribution sheet), "Studyplanner".
+- Grades: tiles "8.55 Current GPA" + "Last grade: IB 42501 Innovation in engineering · 5 ECTS"; rows "All grades" (count)
+  and "GPA calculator"; "Grade trend" chart (per exam period, see data limit).
 
 ## List of grades  (SPECIFIED, built)
 FIGMA: 38:24. Route `/grades/list`.

@@ -1,82 +1,63 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import SubHeader from '../components/SubHeader';
-import EctsPie from '../components/EctsPie';
+import EctsProgress from '../components/EctsProgress';
+import LinkRow from '../components/LinkRow';
 import GradesChart from '../components/GradesChart';
 import EctsDistribution from '../components/EctsDistribution';
 import { grades, studyplan, summary } from '../data/appData';
 import { lastGrade } from '../lib/gpa';
-import { activityCounts } from '../lib/studyplan';
 import '../components/SubScreen.css';
 import './Grades.css';
 
-/** "Grades and ECTS" (Figma 27:16): ECTS progress on top, grade insights and trend chart below. */
+/**
+ * "Grades and ECTS" (Figma 27:16, cleaned up): degree progress in ECTS on top, then grades (GPA, last grade, trend).
+ * Deviation from Figma (author's request): "N activities planned/completed" + pie replaced by one ECTS progress bar;
+ * underlined "→" links replaced by tappable rows.
+ */
 export default function Grades() {
   const [showDistribution, setShowDistribution] = useState(false);
-  const { planned, completed } = activityCounts(studyplan, grades);
-  const progress = summary.ectsRequired > 0 ? Math.min(summary.ectsPassed / summary.ectsRequired, 1) : 0;
   const last = lastGrade(grades);
 
   return (
     <div className="sub-screen grades">
       <SubHeader title="Progress" />
 
-      <div
-        className="grades__bar"
-        role="progressbar"
-        aria-valuemin={0}
-        aria-valuemax={summary.ectsRequired}
-        aria-valuenow={summary.ectsPassed}
-        aria-label="ECTS completed"
-      >
-        <span className="grades__bar-fill" style={{ width: `${progress * 100}%` }} />
-        <span className="grades__bar-text">
-          {summary.ectsPassed}/{summary.ectsRequired} ects
-        </span>
-      </div>
-
-      <div className="grades__plan">
-        <div className="grades__pie-col">
-          <EctsPie studyplan={studyplan} />
-          <button type="button" className="grades__dist-button" onClick={() => setShowDistribution(true)}>
-            Show ECTS distribution
-          </button>
+      <section className="grades__section">
+        <EctsProgress />
+        <div className="grades__rows">
+          <LinkRow onClick={() => setShowDistribution(true)}>ECTS by course type</LinkRow>
+          <LinkRow to="/studyplanner">Studyplanner</LinkRow>
         </div>
-        <div className="grades__counts">
-          <p>{planned} activities planned</p>
-          <p>{completed} activities completed</p>
-          <Link to="/studyplanner" className="grades__link grades__link--planner">
-            StudyPlanner→
-          </Link>
-        </div>
-      </div>
+      </section>
 
-      <hr className="grades__divider" />
-
-      <section className="grades__insights">
+      <section className="grades__section">
         <h2 className="grades__title">Grades</h2>
-        <Link to="/grades/list" className="grades__link grades__link--center">
-          Your list of grades →
-        </Link>
 
-        <h3 className="grades__subtitle">Grades Insights</h3>
-        <div className="grades__gpa-row">
-          <span className="grades__gpa">Current GPA: {summary.gpa.toFixed(2)}</span>
-          <Link to="/grades/calculator" className="grades__link grades__link--small">
-            GPA calculator →
-          </Link>
+        <div className="grades__stats">
+          <div className="grades__stat">
+            <span className="grades__stat-value">{summary.gpa.toFixed(2)}</span>
+            <span className="grades__stat-label">Current GPA</span>
+          </div>
+          <div className="grades__stat grades__stat--wide">
+            <span className="grades__stat-label">Last grade</span>
+            {last ? (
+              <span className="grades__last">
+                <strong>{last.grade}</strong> {last.code} {last.title} · {last.ects} ECTS
+              </span>
+            ) : (
+              <span className="grades__muted">No grades yet</span>
+            )}
+          </div>
         </div>
 
-        <div className="grades__last">
-          Last grade:
-          <br />
-          {last ? (
-            `${last.code} ${last.title}: ${last.grade} (${last.ects}ects)`
-          ) : (
-            <span className="grades__muted">No grades yet</span>
-          )}
+        <div className="grades__rows">
+          <LinkRow to="/grades/list" meta={`${grades.length}`}>
+            All grades
+          </LinkRow>
+          <LinkRow to="/grades/calculator">GPA calculator</LinkRow>
         </div>
 
+        <h3 className="grades__subtitle">Grade trend</h3>
         <GradesChart grades={grades} />
       </section>
 
