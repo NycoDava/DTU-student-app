@@ -25,14 +25,15 @@ Common rules
   testers disliked the "all day" row): section row → `/calendar`. Week strip Mon–Sun (‹ › change week, tap the range =
   today), colored dots per day (activity / deadline / exam / personal), today outlined red, selected day filled red.
   Under it the items of the selected day (time or "Due 23:59" / "Exam", title, course · location); tap = preview card.
-  Buttons "Open calendar" and "+ Add event".
+  The section row is the only way to the full Calendar (author, 24 Nov 2026); one button "+ Add event" (full width).
 - Agenda: a Learn calendar event with the same course + title as a deadline, within a day of it, is dropped (only the
   deadline stays), and manual events the Learn calendar already has (same course, start within 30 min) are dropped,
   in `appData.ts` `withoutCopies` — applies to Home, calendar and Upcoming events.
 
 ## Calendar  (SPECIFIED, full page since 24 Nov 2026)
 Route `/calendar` (tab layout, back arrow), opened from Home. `src/components/calendar/Calendar.tsx`.
-- FullCalendar (`daygrid`, `timegrid`, `list`, `interaction`), our own segmented control Day / Week / Month / List (the
+- FullCalendar (`daygrid`, `timegrid`, `list`, `interaction`), our own segmented control Day / Week / Month / List, full
+  width, selected tab DTU red (the
   same four views, no "3 days": author's decision), ‹ › + title + "Today". The grid fills the height above the tab bar.
 - Day / Week: 24 hours, 48 px per hour, scroll inside, starts at 08:00. Deadlines = 30-min chip ending at the due time,
   due time in the title. All-day row WITHOUT label, only when the visible range has an all-day item (exams).

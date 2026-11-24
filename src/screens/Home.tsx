@@ -78,9 +78,6 @@ export default function Home() {
         </LinkRow>
         <WeekStrip items={agenda} onItemClick={openItem} />
         <div className="home__calendar-actions">
-          <Link to="/calendar" className="home__btn home__btn--primary">
-            Open calendar
-          </Link>
           <button type="button" className="home__btn" onClick={() => openForm({ date: dayKey(new Date().toISOString()) })}>
             + Add event
           </button>
