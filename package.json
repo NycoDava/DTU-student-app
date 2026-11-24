@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "server": "node server/index.js",
-    "demo-data": "node server/export-demo.js"
+    "demo-data": "node server/export-demo.js",
+    "publish": "npm run build && node scripts/publish.cjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

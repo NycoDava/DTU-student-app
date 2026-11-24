@@ -34,3 +34,6 @@ public/files/
 server/cache/
 # Stray copy of the app data at the repo root (may contain real names)
 /app-data.json
+
+# Netlify CLI link to the site (local)
+.netlify/

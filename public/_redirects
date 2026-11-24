@@ -1,0 +1,5 @@
+# Netlify (published demo build, see docs/pwa.md).
+# No local server online: /api/local answers 404, so the app stays in demo mode.
+/api/*  /404-not-here  404
+# Single-page app: every route (/home, /calendar, ...) serves index.html
+/*      /index.html     200

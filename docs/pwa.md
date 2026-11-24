@@ -34,3 +34,15 @@ The flag above enables installing, but does not remove that bar, and the app cod
 ## Notes
 - The IP address changes with the network: if it changes, the installed icon points to the old address. Remove and add again.
 - Live mode works in the installed app too (it talks to Vite on the PC, which forwards to the local server).
+
+## Published demo (Netlify): the app on the phone without the computer
+The static demo build on an https address: installs as a PWA on Android and iPhone, works with the computer off.
+Demo mode only (fake login, data of the last `npm run demo-data`); live login stays local (`npm run server`), by design:
+the DTU session must never be reachable from the internet. `npm run dev -- --host` keeps working as before.
+The published data includes the author's real grades/studyplan (allowed) and anonymized classlists only.
+
+- First time: `npx netlify-cli login` (browser opens, free account), then `npm run publish` and answer the questions
+  ("Create & configure a new project", pick a name). The link to the site is saved in `.netlify/` (gitignored).
+- Update the data: sync (scraper or `npm run server` + Sync), `npm run demo-data`, `npm run publish`.
+- `public/_redirects`: every route serves index.html; `/api/*` answers 404 so the app stays in demo mode.
+- Installed PWAs from the Netlify address and from the `--host` address are two separate apps (separate personal events).
