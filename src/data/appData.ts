@@ -33,14 +33,8 @@ export let studyAnnouncements: StudyAnnouncement[] = [];
 export let myExams: MyExam[] = [];
 
 /** Who the data belongs to (from the sync, never from the code). */
-export type Profile = {
-  name: string | null;
-  studentId: string | null;
-  programme: string | null;
-  /** Demo only: photo exported with `npm run demo-data -- --photo` (live mode reads it from the server). */
-  photo: string | null;
-};
-export let profile: Profile = { name: null, studentId: null, programme: null, photo: null };
+export type Profile = { name: string | null; studentId: string | null; programme: string | null };
+export let profile: Profile = { name: null, studentId: null, programme: null };
 
 type RawGrade = Omit<Grade, 'title'> & { title: string | LocalizedName };
 type RawPerson = { name?: string; username?: string; isMe?: boolean };
@@ -54,7 +48,6 @@ function profileFrom(file: Record<string, unknown>): Profile {
     name: p.name ?? me?.name ?? null,
     studentId: p.studentId ?? me?.username ?? null,
     programme: p.programme ?? null,
-    photo: p.photo ?? null,
   };
 }
 

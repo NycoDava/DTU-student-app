@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import { profile } from './appData';
-import { dataMode } from './appFile';
 
 /**
  * The student whose data is shown. Nothing personal is written in the code: name, student number and programme come
@@ -10,11 +9,7 @@ export type CurrentUser = {
   name: string;
   /** Student number (DTU username), shown next to the name on the profile page. */
   studentId: string;
-  /**
-   * Round profile photo. Live mode: the student's own Learn photo, through the local server (memory only). Demo: the photo
-   * exported with `npm run demo-data -- --photo`, if any.
-   * null = initials (also when the photo does not load: no photo on Learn, server stopped).
-   */
+  /** Round profile photo. null = initials. Only a photo picked on the Profile page (session only). */
   photoUrl: string | null;
   /** Degree programme, shown as the Studyplanner title. null when the Studyplanner does not give it. */
   programme: string | null;
@@ -23,7 +18,7 @@ export type CurrentUser = {
 const userFromData = (): CurrentUser => ({
   name: profile.name || 'Student',
   studentId: profile.studentId ?? '',
-  photoUrl: dataMode === 'live' ? '/api/local/profile/photo' : profile.photo,
+  photoUrl: null,
   programme: profile.programme,
 });
 

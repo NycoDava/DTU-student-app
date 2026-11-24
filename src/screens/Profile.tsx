@@ -37,7 +37,7 @@ export default function Profile() {
   function onPictureChosen(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    // Session only: the object URL is lost on reload, then the Learn photo (live) or the initials come back.
+    // Session only: the object URL is lost on reload, then the initials come back.
     setUser({ ...user, photoUrl: URL.createObjectURL(file) });
     e.target.value = '';
   }
@@ -75,7 +75,6 @@ export default function Profile() {
               className="profile__avatar profile__avatar--ring"
               src={user.photoUrl}
               alt=""
-              onError={() => setUser({ ...user, photoUrl: null })}
             />
           ) : (
             <span className="profile__avatar profile__avatar--ring profile__avatar--initials">

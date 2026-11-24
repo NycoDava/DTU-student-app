@@ -40,5 +40,3 @@ server/cache/
 
 # Personal timetable entries for the local server (copy manual-events.example.json)
 server/manual-events.json
-# Profile photo for the demo build (opt-in: npm run demo-data -- --photo)
-public/data/profile-photo.*
