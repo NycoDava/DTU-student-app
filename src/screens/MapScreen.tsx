@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import CampusMap from '../components/CampusMap';
 import './MapScreen.css';
 
@@ -8,6 +8,7 @@ import './MapScreen.css';
  */
 export default function MapScreen() {
   const navigate = useNavigate();
+  const search = useSearchParams()[0].get('search') ?? undefined; // from "Show on map" in the calendar
 
   function close() {
     if ((window.history.state?.idx ?? 0) > 0) navigate(-1);
@@ -23,7 +24,7 @@ export default function MapScreen() {
         <h1 className="map-screen__title">Campus map</h1>
       </header>
       <div className="map-screen__frame">
-        <CampusMap />
+        <CampusMap search={search} />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import type { AgendaItem } from '../data/types';
 import { formatDay, formatMonth, formatTime } from '../data/format';
+import { describeLocation } from '../lib/rooms';
 import './SubScreen.css';
 
 /**
@@ -9,6 +10,7 @@ import './SubScreen.css';
  */
 export default function AgendaCard({ item, courseLabel, plain = false }: { item: AgendaItem; courseLabel?: string; plain?: boolean }) {
   const isDeadline = item.kind === 'deadline';
+  const place = describeLocation(item.location);
   const content = (
     <>
       <span className="agenda-card__date">
@@ -22,6 +24,7 @@ export default function AgendaCard({ item, courseLabel, plain = false }: { item:
         {(courseLabel ?? item.courseCode) && (
           <span className="agenda-card__line agenda-card__course">{courseLabel ?? item.courseCode}</span>
         )}
+        {place && <span className="agenda-card__line agenda-card__course">{place.label}</span>}
       </span>
     </>
   );

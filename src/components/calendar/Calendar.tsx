@@ -2,7 +2,6 @@ import { useMemo, useRef, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
 import interactionPlugin, { type DateClickArg } from '@fullcalendar/interaction';
 import type { DatesSetArg, EventClickArg, EventContentArg, EventInput } from '@fullcalendar/core';
 import type { AgendaItem } from '../../data/types';
@@ -13,9 +12,9 @@ import './Calendar.css';
 /** Our segmented control → FullCalendar view names (see docs/screens.md, Calendar). */
 const VIEWS = [
   { key: 'day', label: 'Day', fcView: 'timeGridDay' },
+  { key: 'three', label: '3 days', fcView: 'timeGridThreeDay' },
   { key: 'week', label: 'Week', fcView: 'timeGridWeek' },
   { key: 'month', label: 'Month', fcView: 'dayGridMonth' },
-  { key: 'list', label: 'List', fcView: 'listWeek' },
 ] as const;
 
 type ViewKey = (typeof VIEWS)[number]['key'];
@@ -29,8 +28,8 @@ function titleFor(view: ViewKey, start: Date, end: Date): string {
   switch (view) {
     case 'day':
       return fmtDay.format(start);
+    case 'three':
     case 'week':
-    case 'list':
       return `${fmtShort.format(start)} – ${fmtShort.format(last)} ${last.getFullYear()}`;
     case 'month':
       // Month view starts in the previous month: use the middle of the range
@@ -73,7 +72,7 @@ type Props = {
 };
 
 /**
- * Full-screen calendar (page /calendar): the four views of the old Home calendar, 24 hours scrollable in Day/Week
+ * Full-screen calendar (page /calendar): Day / 3 days / Week / Month (List replaced by 3 days after the usability tests), 24 hours scrollable in Day/Week
  * (starts at 08:00), all-day row without label, shown only when the range has exams (author's decision 24 Nov 2026).
  */
 export default function Calendar({ items, onItemClick, onEmptyClick }: Props) {
@@ -149,7 +148,7 @@ export default function Calendar({ items, onItemClick, onEmptyClick }: Props) {
       <div className="cal-grid">
         <FullCalendar
           ref={calendarRef}
-          plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="timeGridWeek"
           headerToolbar={false}
           height="100%"
@@ -169,11 +168,11 @@ export default function Calendar({ items, onItemClick, onEmptyClick }: Props) {
           eventTimeFormat={{ hour: '2-digit', minute: '2-digit', hour12: false }}
           dayHeaderFormat={{ weekday: 'short', day: 'numeric' }}
           dayMaxEvents={3}
-          noEventsContent="Nothing planned this week"
           views={{
             timeGridDay: { dayHeaders: false },
             dayGridMonth: { dayHeaderFormat: { weekday: 'short' } },
-            listWeek: { listDayFormat: { weekday: 'long', day: 'numeric', month: 'long' }, listDaySideFormat: false as const },
+            // 3 days from the shown date (today first); ‹ › move by 3 days
+            timeGridThreeDay: { type: 'timeGrid', duration: { days: 3 } },
           }}
         />
       </div>

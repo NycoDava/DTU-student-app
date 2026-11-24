@@ -16,8 +16,9 @@ function embedUrl(center: { lng: number; lat: number }, zoom: number) {
 }
 
 /** Full MazeMap app (author's request: search a building, get directions). English UI. */
-function appUrl(center: { lng: number; lat: number }, zoom: number) {
-  return `${LINKS.mazemapApp}#v=1&config=DTU&campusid=89&zlevel=1&center=${center.lng},${center.lat}&zoom=${zoom}&lang=en`;
+function appUrl(center: { lng: number; lat: number }, zoom: number, search?: string) {
+  const query = search ? `&search=${encodeURIComponent(search)}` : '';
+  return `${LINKS.mazemapApp}#v=1&config=DTU&campusid=89&zlevel=1&center=${center.lng},${center.lat}&zoom=${zoom}&lang=en${query}`;
 }
 
 function useOnline() {
@@ -49,7 +50,8 @@ function usePosition() {
   return pos;
 }
 
-export default function CampusMap({ mini = false }: { mini?: boolean }) {
+/** `search`: opens the full map with that search ("358 042" = room 042 in building 358, from a calendar item). */
+export default function CampusMap({ mini = false, search }: { mini?: boolean; search?: string }) {
   const online = useOnline();
   const pos = usePosition();
 
@@ -64,7 +66,7 @@ export default function CampusMap({ mini = false }: { mini?: boolean }) {
 
   const center = pos ?? DTU_LYNGBY;
   // Preview: the light embed (not touchable). Full screen: the whole MazeMap app with search and directions.
-  const src = mini ? embedUrl(center, pos ? 17.5 : 16) : appUrl(center, pos ? 17 : 16);
+  const src = mini ? embedUrl(center, pos ? 17.5 : 16) : appUrl(center, pos ? 17 : 16, search);
   return (
     <div className={'campus-map' + (mini ? ' campus-map--mini' : '')}>
       <iframe

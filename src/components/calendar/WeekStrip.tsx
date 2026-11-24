@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import type { AgendaItem } from '../../data/types';
 import { courseLabel } from '../../data/appData';
 import { addDays, dayKey, formatTime } from '../../data/format';
+import { describeLocation } from '../../lib/rooms';
 import './WeekStrip.css';
 
 const todayKey = () => dayKey(new Date().toISOString());
@@ -121,7 +122,7 @@ export default function WeekStrip({ items, onItemClick }: Props) {
                 <span className="week__text">
                   <span className="week__title">{a.title}</span>
                   {(a.courseCode || a.location) && (
-                    <span className="week__meta">{[a.courseCode ? (courseLabel(a.courseCode) ?? a.courseCode) : null, a.location].filter(Boolean).join(' · ')}</span>
+                    <span className="week__meta">{[a.courseCode ? (courseLabel(a.courseCode) ?? a.courseCode) : null, describeLocation(a.location)?.label].filter(Boolean).join(' · ')}</span>
                   )}
                 </span>
               </button>

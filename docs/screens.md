@@ -32,12 +32,16 @@ Common rules
 
 ## Calendar  (SPECIFIED, full page since 24 Nov 2026)
 Route `/calendar` (tab layout, back arrow), opened from Home. `src/components/calendar/Calendar.tsx`.
-- FullCalendar (`daygrid`, `timegrid`, `list`, `interaction`), our own segmented control Day / Week / Month / List, full
-  width, selected tab DTU red (the
-  same four views, no "3 days": author's decision), ‹ › + title + "Today". The grid fills the height above the tab bar.
+- FullCalendar (`daygrid`, `timegrid`, `list`, `interaction`), our own segmented control Day / 3 days / Week / Month, full
+  width, selected tab DTU red (List removed after the usability tests, "the list is not useful"; 3 days =
+  `timeGrid` with `duration: 3 days`, ‹ › move by 3 days), ‹ › + title + "Today". The grid fills the height above the tab bar.
 - Day / Week: 24 hours, 48 px per hour, scroll inside, starts at 08:00. Deadlines = 30-min chip ending at the due time,
   due time in the title. All-day row WITHOUT label, only when the visible range has an all-day item (exams).
-- Month: short chips, `dayMaxEvents: 3` + "+n more". List: `listWeek`.
+- Month: short chips, `dayMaxEvents: 3` + "+n more".
+- Rooms (usability tests: "room and building for the class"): Learn locations like `LYN.358.042 | LYN.358.039` are shown
+  as "Building 358, rooms 039, 042" (`src/lib/rooms.ts`) in the preview, the Home week list and Upcoming events.
+  Preview: "Show on map" → `/campus/map?search=358%20042` (MazeMap search, the right room is the first result).
+  Exam rooms: no data source (DTU publishes them shortly before the exam), not shown.
 - Colors: activity green-grey, deadline mauve, exam black, personal event light DTU red with a red bar.
 - Tap an item → preview card (Figma 157:1094), over the whole phone column: title, course, location, when, notes;
   "Open in DTU Learn" only with a `url`. Personal events: Edit / Delete (confirm).

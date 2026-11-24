@@ -1,5 +1,7 @@
 import { useEffect, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
+import { describeLocation } from '../../lib/rooms';
 import type { AgendaItem } from '../../data/types';
 import { courseLabel } from '../../data/appData';
 import { formatLongDateTime, formatTime } from '../../data/format';
@@ -37,6 +39,8 @@ export default function EventPreview({ item, onClose, onEdit, onDelete }: Props)
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
 
+  const navigate = useNavigate();
+  const place = describeLocation(item.location);
   const personal = item.source === 'personal';
   const course = item.courseCode ? (courseLabel(item.courseCode) ?? item.courseCode) : null;
 
@@ -57,7 +61,21 @@ export default function EventPreview({ item, onClose, onEdit, onDelete }: Props)
             {item.title}
           </h3>
           {course && <p className="cal-preview__line cal-preview__course">{course}</p>}
-          {item.location && <p className="cal-preview__line">{item.location}</p>}
+          {place && (
+            <p className="cal-preview__line cal-preview__place">
+              <span>{place.label}</span>
+              <button
+                type="button"
+                className="cal-preview__map"
+                onClick={() => {
+                  onClose();
+                  navigate(`/campus/map?search=${encodeURIComponent(place.mapQuery)}`);
+                }}
+              >
+                Show on map
+              </button>
+            </p>
+          )}
           <p className="cal-preview__line">{whenText(item)}</p>
           {item.notes && <p className="cal-preview__line cal-preview__notes">{item.notes}</p>}
           {item.kind === 'deadline' && <p className="cal-preview__note">Assignment deadline in DTU Learn.</p>}

@@ -502,3 +502,24 @@
 .cal-grid .fc .cal-event--deadline .fc-event-time {
   display: none;
 }
+
+/* Location + "Show on map" (opens the in-app MazeMap with the room searched) */
+.cal-preview__place {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.cal-preview__map {
+  min-height: var(--touch-target);
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: var(--font-semibold);
+  color: var(--dtu-red);
+  text-decoration: underline;
+  cursor: pointer;
+}
