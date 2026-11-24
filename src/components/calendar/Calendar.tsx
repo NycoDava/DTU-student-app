@@ -1,74 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import interactionPlugin from '@fullcalendar/interaction';
+import interactionPlugin, { type DateClickArg } from '@fullcalendar/interaction';
 import type { DatesSetArg, EventClickArg, EventContentArg, EventInput } from '@fullcalendar/core';
-import { formatLongDateTime, formatTime } from '../../data/format';
+import type { AgendaItem } from '../../data/types';
+import { formatTime } from '../../data/format';
+import type { FormTarget } from './EventForm';
 import './Calendar.css';
-
-/** What the preview card shows (Figma 157:1094). */
-type Preview = {
-  title: string;
-  kind: 'event' | 'deadline' | 'exam';
-  allDay: boolean;
-  course: string | null;
-  location: string | null;
-  start: string;
-  end: string | null;
-  link: string | null;
-};
-
-const sameDay = (a: string, b: string) => formatLongDateTime(a).split(',')[0] === formatLongDateTime(b).split(',')[0];
-
-/** "30 September 2026, 13:00 – 17:00", or with both dates when it spans days. Deadlines: "Due 12 November 2026, 23:59". */
-const fmtDate = new Intl.DateTimeFormat('en-GB', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-
-function whenText(p: Preview): string {
-  if (p.allDay) return fmtDate.format(new Date(`${p.start.slice(0, 10)}T00:00:00Z`));
-  if (p.kind === 'deadline' || !p.end) return `${p.kind === 'deadline' ? 'Due ' : ''}${formatLongDateTime(p.start)}`;
-  return sameDay(p.start, p.end)
-    ? `${formatLongDateTime(p.start)} – ${formatTime(p.end)}`
-    : `${formatLongDateTime(p.start)} – ${formatLongDateTime(p.end)}`;
-}
-
-/** Event preview card (Figma 157:1094): tap outside or ✕ closes it; "Open in DTU Learn" only when there is a link. */
-function EventPreview({ preview, onClose }: { preview: Preview; onClose: () => void }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
-
-  return (
-    <div className="cal-preview" onClick={onClose}>
-      <div
-        className={'cal-preview__card' + (preview.kind !== 'event' ? ` cal-preview__card--${preview.kind}` : '')}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="cal-preview-title"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button type="button" className="cal-preview__close" aria-label="Close" onClick={onClose}>
-          ✕
-        </button>
-        <h3 id="cal-preview-title" className="cal-preview__title">
-          {preview.title}
-        </h3>
-        {preview.course && <p className="cal-preview__line cal-preview__course">{preview.course}</p>}
-        {preview.location && <p className="cal-preview__line">{preview.location}</p>}
-        <p className="cal-preview__line">{whenText(preview)}</p>
-        {preview.kind === 'deadline' && <p className="cal-preview__note">Assignment deadline in DTU Learn.</p>}
-        {preview.link && (
-          <a className="cal-preview__open" href={preview.link} target="_blank" rel="noopener noreferrer">
-            Open in DTU Learn
-          </a>
-        )}
-      </div>
-    </div>
-  );
-}
 
 /** Our segmented control → FullCalendar view names (see docs/screens.md, Calendar). */
 const VIEWS = [
@@ -80,126 +20,102 @@ const VIEWS = [
 
 type ViewKey = (typeof VIEWS)[number]['key'];
 
-/**
- * Events are FullCalendar EventInput objects. Set `extendedProps.kind` to "event" or "deadline"
- * to get the green-grey or mauve chip. Home passes the whole `agenda`.
- */
-type Props = { events?: EventInput[] };
-
 const fmtDay = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const fmtShort = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' });
 const fmtMonth = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' });
-
-/** Titles like the DTU Learn calendar: "23 October, 2026", "October 2026". */
-function longDate(d: Date): string {
-  const parts = fmtDay.formatToParts(d);
-  const get = (t: string) => parts.find((p) => p.type === t)?.value ?? '';
-  return `${get('day')} ${get('month')}, ${get('year')}`;
-}
 
 function titleFor(view: ViewKey, start: Date, end: Date): string {
   const last = new Date(end.getTime() - 1); // FullCalendar end is exclusive
   switch (view) {
     case 'day':
-      return longDate(start);
+      return fmtDay.format(start);
     case 'week':
-      return `${longDate(start)} - ${longDate(last)}`;
-    case 'month': {
-      // Month view starts in the previous month: use the middle of the range
-      const mid = new Date((start.getTime() + end.getTime()) / 2);
-      return fmtMonth.format(mid);
-    }
     case 'list':
-      return 'Upcoming events';
+      return `${fmtShort.format(start)} – ${fmtShort.format(last)} ${last.getFullYear()}`;
+    case 'month':
+      // Month view starts in the previous month: use the middle of the range
+      return fmtMonth.format(new Date((start.getTime() + end.getTime()) / 2));
   }
 }
 
 function eventClassNames(arg: EventContentArg): string[] {
-  const kind = arg.event.extendedProps.kind;
-  return [kind === 'deadline' ? 'cal-event--deadline' : kind === 'exam' ? 'cal-event--exam' : 'cal-event--activity'];
+  const { kind, source } = arg.event.extendedProps;
+  return [
+    kind === 'deadline' ? 'cal-event--deadline' : kind === 'exam' ? 'cal-event--exam' : 'cal-event--activity',
+    ...(source === 'personal' ? ['cal-event--personal'] : []),
+  ];
 }
-
-const hourFmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Copenhagen', hour: '2-digit', minute: '2-digit', hour12: false });
-/** Copenhagen time of a date as hours with decimals (13:30 -> 13.5). */
-function localHours(d: Date): number {
-  const [h, m] = hourFmt.format(d).split(':').map(Number);
-  return (h % 24) + m / 60;
-}
-const pad = (h: number) => `${String(h).padStart(2, '0')}:00:00`;
 
 /**
- * Day / Week views (author's request, keep it compact): deadlines (mostly 23:59) go to the all-day row with their time
- * in the title, so they do not stretch the grid to midnight; exams are all-day already.
+ * Agenda → FullCalendar events. Exams (and all-day personal events) sit in the all-day row; deadlines are
+ * 30-minute chips ending at the due time. No `url`: FullCalendar would render a real link, the preview opens it.
  */
-function forTimeGrid(events: EventInput[]): EventInput[] {
-  return events.map((e) =>
-    e.extendedProps?.kind === 'deadline' && e.start
-      ? { ...e, allDay: true, end: undefined, title: `${hourFmt.format(new Date(e.start as string))} ${e.title}` }
-      : e,
-  );
+function toEvents(items: AgendaItem[]): EventInput[] {
+  return items.map((a) => {
+    const isDeadline = a.kind === 'deadline';
+    return {
+      id: a.id,
+      // Deadlines: due time in the title (FullCalendar's own time is hidden, the chip starts 30 min earlier)
+      title: `${isDeadline ? `${formatTime(a.startsAt)} ` : ''}${a.courseCode && !a.title.startsWith(a.courseCode) ? `${a.courseCode} ${a.title}` : a.title}`,
+      start: isDeadline ? new Date(Date.parse(a.startsAt) - 30 * 60_000).toISOString() : a.startsAt,
+      end: isDeadline ? a.startsAt : (a.endsAt ?? undefined),
+      allDay: a.isAllDay,
+      extendedProps: { kind: a.kind, source: a.source },
+    };
+  });
 }
 
-/** Hours shown in Day / Week: only the span of the timed events in the visible range (default 08-16), at least 4 h. */
-function hourWindow(events: EventInput[], range: { start: Date; end: Date } | null) {
-  let min = 24;
-  let max = 0;
-  for (const e of events) {
-    if (e.allDay || !e.start || !range) continue;
-    const start = new Date(e.start as string);
-    const end = e.end ? new Date(e.end as string) : new Date(start.getTime() + 30 * 60_000);
-    if (end <= range.start || start >= range.end) continue;
-    min = Math.min(min, Math.floor(localHours(start)));
-    max = Math.max(max, Math.ceil(localHours(end) || 24));
-  }
-  if (min >= max) return { min: 8, max: 16 };
-  while (max - min < 4) {
-    if (min > 0) min--;
-    if (max - min < 4 && max < 24) max++;
-  }
-  return { min, max };
-}
+type Props = {
+  items: AgendaItem[];
+  onItemClick: (item: AgendaItem) => void;
+  /** Tap on an empty slot or day: new event prefilled with that time. */
+  onEmptyClick: (target: FormTarget) => void;
+};
 
-export default function Calendar({ events = [] }: Props) {
+/**
+ * Full-screen calendar (page /calendar): the four views of the old Home calendar, 24 hours scrollable in Day/Week
+ * (starts at 08:00), all-day row without label, shown only when the range has exams (author's decision 24 Nov 2026).
+ */
+export default function Calendar({ items, onItemClick, onEmptyClick }: Props) {
   const calendarRef = useRef<FullCalendar>(null);
   const [view, setView] = useState<ViewKey>('week');
   const [title, setTitle] = useState('');
-  const [preview, setPreview] = useState<Preview | null>(null);
-  const [range, setRange] = useState<{ start: Date; end: Date } | null>(null);
-  const timeGrid = view === 'day' || view === 'week';
-  const shown = timeGrid ? forTimeGrid(events) : events;
-  const hours = hourWindow(shown, range);
-
-  function handleEventClick(info: EventClickArg) {
-    info.jsEvent.preventDefault();
-    const e = info.event;
-    const x = e.extendedProps as { kind?: Preview['kind']; plainTitle?: string; course?: string; location?: string; link?: string };
-    setPreview({
-      title: x.plainTitle ?? e.title,
-      kind: x.kind ?? 'event',
-      allDay: e.allDay,
-      course: x.course ?? null,
-      location: x.location || null,
-      start: e.startStr,
-      end: e.endStr || null,
-      link: x.link ?? null,
-    });
-  }
+  const [range, setRange] = useState<{ start: number; end: number } | null>(null);
+  // The all-day row (exams) only when the visible range has an all-day item: otherwise it is an empty band
+  const hasAllDay = items.some(
+    (a) => a.isAllDay && range && Date.parse(a.startsAt) < range.end && Date.parse(a.endsAt ?? a.startsAt) + 86_400_000 > range.start,
+  );
+  const events = useMemo(() => toEvents(items), [items]);
+  const byId = useMemo(() => new Map(items.map((a) => [a.id, a])), [items]);
 
   const api = () => calendarRef.current?.getApi();
 
   function changeView(key: ViewKey) {
-    const target = VIEWS.find((v) => v.key === key)!;
     setView(key);
-    api()?.changeView(target.fcView);
+    api()?.changeView(VIEWS.find((v) => v.key === key)!.fcView);
+  }
+
+  function handleEventClick(info: EventClickArg) {
+    info.jsEvent.preventDefault();
+    const item = byId.get(info.event.id);
+    if (item) onItemClick(item);
+  }
+
+  function handleDateClick(arg: DateClickArg) {
+    const date = arg.dateStr.slice(0, 10);
+    if (arg.view.type === 'dayGridMonth') onEmptyClick({ date });
+    else if (arg.allDay) onEmptyClick({ date, allDay: true });
+    else onEmptyClick({ date, time: arg.dateStr.slice(11, 16) });
   }
 
   function handleDatesSet(arg: DatesSetArg) {
     const key = VIEWS.find((v) => v.fcView === arg.view.type)?.key ?? 'week';
     setTitle(titleFor(key, arg.start, arg.end));
-    setRange({ start: arg.start, end: arg.end });
+    setRange({ start: arg.start.getTime(), end: arg.end.getTime() });
   }
 
   return (
-    <div className="cal">
+    <div className="cal cal--full">
       <div className="cal-tabs" role="tablist" aria-label="Calendar view">
         {VIEWS.map((v) => (
           <button
@@ -215,52 +131,52 @@ export default function Calendar({ events = [] }: Props) {
         ))}
       </div>
 
-      <div className="cal-box">
-        <div className="cal-toolbar">
-          <div className="cal-toolbar__nav">
-            <button type="button" className="cal-toolbar__btn" aria-label="Previous" onClick={() => api()?.prev()}>
-              ‹
-            </button>
-            <button type="button" className="cal-toolbar__btn" aria-label="Next" onClick={() => api()?.next()}>
-              ›
-            </button>
-          </div>
-          <button type="button" className="cal-toolbar__title" onClick={() => api()?.today()} title="Go to today">
-            {title}
+      <div className="cal-toolbar">
+        <div className="cal-toolbar__nav">
+          <button type="button" className="cal-toolbar__btn" aria-label="Previous" onClick={() => api()?.prev()}>
+            ‹
+          </button>
+          <button type="button" className="cal-toolbar__btn" aria-label="Next" onClick={() => api()?.next()}>
+            ›
           </button>
         </div>
-
-        <div className="cal-grid">
-          <FullCalendar
-            ref={calendarRef}
-            plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
-            initialView="timeGridWeek"
-            headerToolbar={false}
-            height="auto"
-            firstDay={1}
-            locale="en-gb"
-            events={shown}
-            slotMinTime={pad(hours.min)}
-            slotMaxTime={pad(hours.max)}
-            slotDuration="01:00:00"
-            eventClick={handleEventClick}
-            eventClassNames={eventClassNames}
-            datesSet={handleDatesSet}
-            nowIndicator
-            allDayText="all day"
-            slotLabelFormat={{ hour: '2-digit', minute: '2-digit', hour12: false }}
-            eventTimeFormat={{ hour: '2-digit', minute: '2-digit', hour12: false }}
-            dayHeaderFormat={{ weekday: 'short' }}
-            dayMaxEvents={2}
-            noEventsContent="No upcoming events"
-            views={{
-              timeGridDay: { dayHeaders: false },
-              listWeek: { listDayFormat: { weekday: 'long', day: 'numeric', month: 'long' }, listDaySideFormat: false as const },
-            }}
-          />
-        </div>
+        <span className="cal-toolbar__title">{title}</span>
+        <button type="button" className="cal-toolbar__today" onClick={() => api()?.today()}>
+          Today
+        </button>
       </div>
-      {preview && <EventPreview preview={preview} onClose={() => setPreview(null)} />}
+
+      <div className="cal-grid">
+        <FullCalendar
+          ref={calendarRef}
+          plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+          initialView="timeGridWeek"
+          headerToolbar={false}
+          height="100%"
+          firstDay={1}
+          locale="en-gb"
+          events={events}
+          scrollTime="08:00:00"
+          slotDuration="01:00:00"
+          eventClick={handleEventClick}
+          dateClick={handleDateClick}
+          eventClassNames={eventClassNames}
+          datesSet={handleDatesSet}
+          nowIndicator
+          allDaySlot={hasAllDay}
+          allDayText=""
+          slotLabelFormat={{ hour: '2-digit', minute: '2-digit', hour12: false }}
+          eventTimeFormat={{ hour: '2-digit', minute: '2-digit', hour12: false }}
+          dayHeaderFormat={{ weekday: 'short', day: 'numeric' }}
+          dayMaxEvents={3}
+          noEventsContent="Nothing planned this week"
+          views={{
+            timeGridDay: { dayHeaders: false },
+            dayGridMonth: { dayHeaderFormat: { weekday: 'short' } },
+            listWeek: { listDayFormat: { weekday: 'long', day: 'numeric', month: 'long' }, listDaySideFormat: false as const },
+          }}
+        />
+      </div>
     </div>
   );
 }

@@ -117,16 +117,38 @@
   width: 100%;
 }
 
-/* Calendar section (the calendar component itself is unchanged) */
+/* Calendar section: week strip + buttons to the full Calendar page and to add an event */
 .home__calendar {
-  margin-top: 8px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
 }
 
-.home__calendar-title {
-  margin: 0;
-  font-size: var(--text-section);
-  font-weight: var(--font-bold);
+.home__calendar-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.home__btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--touch-target);
+  border: 1px solid var(--dtu-red);
+  border-radius: 30px;
+  background: var(--color-bg);
+  font-family: var(--font-family);
+  font-size: var(--text-body);
+  font-weight: var(--font-semibold);
+  color: var(--dtu-red);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.home__btn--primary {
+  background: var(--tabbar-red);
+  border-color: var(--tabbar-red);
+  color: var(--color-bg);
 }

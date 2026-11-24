@@ -11,6 +11,8 @@ export type AgendaItem = {
   endsAt: string | null;
   isAllDay: boolean;
   url: string | null;
+  /** Personal events only (source "personal"). */
+  notes?: string | null;
 };
 
 export type Announcement = {

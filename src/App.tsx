@@ -5,6 +5,7 @@ import Splash from './screens/Splash';
 import Login from './screens/Login';
 import Home from './screens/Home';
 import Events from './screens/Events';
+import CalendarPage from './screens/CalendarPage';
 import Announcements from './screens/Announcements';
 import Profile from './screens/Profile';
 import MyStudies from './screens/MyStudies';
@@ -43,6 +44,7 @@ export default function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/announcements" element={<Announcements />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/student" element={<MyStudies />} />
             <Route path="/grades" element={<Grades />} />

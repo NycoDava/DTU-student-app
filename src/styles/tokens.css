@@ -71,6 +71,8 @@
   --cal-today-bg: rgba(155, 3, 0, 0.07);
   --cal-activity: #d4ddd5; /* event chip, green-grey */
   --cal-deadline: #cba4c3; /* deadline chip, mauve */
+  --cal-personal: #f3d3d2; /* personal event chip, light DTU red */
+  --cal-personal-strong: #be2b31; /* its bar / dot */
 
   /* Charts (grade trend: blue grade line, orange GPA line, as in the Figma image) */
   --chart-grade: #2f6fdb;

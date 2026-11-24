@@ -44,21 +44,13 @@
   outline-offset: -2px;
 }
 
-/* ---- Calendar box (Figma image 335 x 457) ---- */
-.cal-box {
-  width: 335px;
-  max-width: 100%;
-  display: flex;
-  flex-direction: column;
-  font-family: var(--cal-font);
-  color: var(--cal-text);
-}
-
 .cal-toolbar {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0 2px 8px;
+  padding: 0 2px;
+  font-family: var(--cal-font);
+  color: var(--cal-text);
 }
 
 .cal-toolbar__nav {
@@ -99,21 +91,40 @@
 }
 
 .cal-toolbar__title {
-  border: none;
-  background: none;
-  padding: 0;
-  font-family: var(--cal-font);
-  font-size: 14px;
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 700;
   color: var(--cal-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.cal-toolbar__today {
+  min-height: var(--touch-target);
+  padding: 0 14px;
+  border: none;
+  border-radius: 30px;
+  background: none;
+  font-family: var(--font-family);
+  font-weight: var(--font-semibold);
+  font-size: 14px;
+  color: var(--dtu-red);
   cursor: pointer;
+}
+
+/* ---- Full page: the grid fills the space left above the tab bar and scrolls inside ---- */
+.cal--full {
+  height: 100%;
+  gap: 8px;
 }
 
 .cal-grid {
   flex: 1;
   min-height: 0;
+  font-family: var(--cal-font);
+  color: var(--cal-text);
 }
 
 /* ---- FullCalendar theme ---- */
@@ -126,14 +137,14 @@
   --fc-list-event-hover-bg-color: var(--cal-head-bg);
   --fc-event-border-color: transparent;
   --fc-more-link-text-color: var(--cal-text);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 /* Day names header: light grey row with a double bottom line */
 .cal-grid .fc .fc-col-header-cell {
   background: var(--cal-head-bg);
   font-weight: 700;
-  font-size: 10px;
+  font-size: 12px;
   padding: 6px 0;
 }
 
@@ -144,7 +155,7 @@
 }
 
 .cal-grid .fc .fc-scrollgrid-section-header > th,
-.cal-grid .fc .fc-timegrid .fc-scrollgrid-section-body:first-of-type td {
+.cal-grid .fc .fc-timegrid .fc-scrollgrid-section-body:first-of-type:not(:last-of-type) > td {
   border-bottom: 3px double var(--cal-border-strong);
 }
 
@@ -170,7 +181,7 @@
 
 .cal-grid .fc .fc-daygrid-day-number {
   padding: 3px 4px;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .cal-grid .fc .fc-day-today .fc-daygrid-day-number {
@@ -178,16 +189,16 @@
   font-weight: 700;
 }
 
-/* Time grid: "all day" label and hour labels */
+/* Time grid: hour labels (the all-day row has no label, author's request) */
 .cal-grid .fc .fc-timegrid-axis-cushion,
 .cal-grid .fc .fc-timegrid-slot-label-cushion {
-  font-size: 9px;
+  font-size: 11px;
   color: var(--cal-text);
   padding: 0 6px;
 }
 
 .cal-grid .fc .fc-timegrid-slot {
-  height: 30px; /* one row per hour, only the hours with events (compact) */
+  height: 48px; /* one row per hour, 24 hours, scrolls (starts at 08:00) */
 }
 
 .cal-grid .fc .fc-timegrid-slot-minor {
@@ -196,8 +207,8 @@
 
 /* Events (ready for the agenda data) */
 .cal-grid .fc .fc-event {
-  border-radius: 2px;
-  font-size: 9px;
+  border-radius: 3px;
+  font-size: 11px;
   color: var(--cal-text);
 }
 
@@ -211,6 +222,12 @@
 
 .cal-grid .fc .cal-event--deadline {
   background: var(--cal-deadline);
+}
+
+/* Personal events (added in the app): light DTU red with a red bar */
+.cal-grid .fc .cal-event--personal {
+  background: var(--cal-personal);
+  border-left: 3px solid var(--cal-personal-strong);
 }
 
 /* Exams (from the study plan + DTU exam timetable): dark chip, white text */
@@ -229,7 +246,7 @@
 
 /* List view */
 .cal-grid .fc .fc-list {
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .cal-grid .fc .fc-list-day-cushion {
@@ -251,15 +268,12 @@
   font-size: 12px;
 }
 
-/* ---- Event preview card (Figma 157:1094): white card r10, title bold, details, close ✕ ---- */
-.cal {
-  position: relative;
-}
-
+/* ---- Event preview card (Figma 157:1094): white card r10, title bold, details, close ✕ ----
+   Rendered into .app-shell (portal), so it covers the whole phone column, tab bar included. */
 .cal-preview {
   position: absolute;
   inset: 0;
-  z-index: 10;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -283,6 +297,10 @@
 
 .cal-preview__card--deadline {
   border-left-color: var(--cal-deadline);
+}
+
+.cal-preview__card--personal {
+  border-left-color: var(--cal-personal-strong);
 }
 
 .cal-preview__card--exam {
@@ -336,4 +354,155 @@
   font-weight: var(--font-bold);
   font-size: 14px;
   text-decoration: none;
+}
+
+.cal-preview__open {
+  border: none;
+  cursor: pointer;
+}
+
+.cal-preview__notes {
+  white-space: pre-wrap;
+}
+
+.cal-preview__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.cal-preview__ghost {
+  min-height: var(--touch-target);
+  margin-top: 8px;
+  padding: 0 16px;
+  border: 1px solid var(--cal-border-strong);
+  border-radius: 30px;
+  background: var(--color-bg);
+  font-family: var(--font-family);
+  font-weight: var(--font-bold);
+  font-size: 14px;
+  color: var(--dtu-red);
+  cursor: pointer;
+}
+
+/* ---- Add / edit sheet (personal events): bottom sheet over the phone column ---- */
+.ev-sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.ev-sheet__panel {
+  width: 100%;
+  max-height: 92%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 16px calc(20px + env(safe-area-inset-bottom));
+  border-radius: 16px 16px 0 0;
+  background: var(--color-bg);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ev-sheet__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.ev-sheet__title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: var(--font-bold);
+}
+
+.ev-sheet__text-btn {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  padding: 0 4px;
+  border: none;
+  background: none;
+  font-family: var(--font-family);
+  font-size: var(--text-body);
+  color: var(--dtu-red);
+  cursor: pointer;
+}
+
+.ev-sheet__text-btn--strong {
+  font-weight: var(--font-bold);
+}
+
+.ev-sheet__text-btn:disabled {
+  color: var(--color-placeholder);
+  cursor: default;
+}
+
+.ev-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-meta);
+  color: var(--color-muted);
+}
+
+.ev-field input,
+.ev-field select,
+.ev-field textarea {
+  min-height: var(--touch-target);
+  padding: 8px 12px;
+  border: 1px solid var(--cal-border-strong);
+  border-radius: 10px;
+  background: var(--color-bg);
+  font-family: var(--font-family);
+  font-size: 16px; /* 16px: iOS does not zoom into the field */
+  color: var(--color-text);
+}
+
+.ev-field input:focus,
+.ev-field select:focus,
+.ev-field textarea:focus {
+  outline: 2px solid var(--dtu-red);
+  outline-offset: -1px;
+}
+
+.ev-row {
+  display: flex;
+  gap: 12px;
+}
+
+.ev-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--touch-target);
+  font-size: var(--text-body);
+}
+
+.ev-switch input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--dtu-red);
+}
+
+.ev-error {
+  margin: -4px 0 0;
+  font-size: var(--text-meta);
+  color: var(--dtu-red);
+}
+
+.ev-hint {
+  margin: 0;
+  font-size: var(--text-meta);
+  color: var(--color-muted);
+}
+
+/* Deadlines: the due time is in the title; hide FullCalendar's time (it would show the chip start, 30 min earlier) */
+.cal-grid .fc .cal-event--deadline .fc-event-time {
+  display: none;
 }

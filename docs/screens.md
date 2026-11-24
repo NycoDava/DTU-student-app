@@ -21,26 +21,29 @@ Common rules
 - "Upcoming" (section row) → one card: next activity or deadline, the SAME AgendaCard as Upcoming events (author's
   design: red border + red glow for deadlines, dark border for exams).
   One card each on purpose (author's choice, to be revisited after testing).
-- "Calendar": unchanged (see Calendar).
+- "Calendar" (redesigned after the usability tests, 24 Nov 2026: the FullCalendar grid on Home was too small and unclear,
+  testers disliked the "all day" row): section row → `/calendar`. Week strip Mon–Sun (‹ › change week, tap the range =
+  today), colored dots per day (activity / deadline / exam / personal), today outlined red, selected day filled red.
+  Under it the items of the selected day (time or "Due 23:59" / "Exam", title, course · location); tap = preview card.
+  Buttons "Open calendar" and "+ Add event".
 - Agenda: a Learn calendar event with the same course + title as a deadline, within a day of it, is dropped (only the
   deadline stays), and manual events the Learn calendar already has (same course, start within 30 min) are dropped,
   in `appData.ts` `withoutCopies` — applies to Home, calendar and Upcoming events.
 
-## Calendar  (SPECIFIED)
-- Use FullCalendar (`@fullcalendar/react`, `daygrid`, `timegrid`, `list`, `interaction`; core is MIT). It provides all four
-  views: Day = `timeGridDay`, Week = `timeGridWeek`, Month = `dayGridMonth`, List = `listWeek`.
-- Hide FullCalendar's own toolbar. Our own segmented control calls `changeView`. Keep small prev/next arrows and a title
-  ("October 2026") like the Learn calendar screenshot in the Figma frames (visual reference only, not an image to reuse).
-- Events come from `agenda`. `kind: "event"` = neutral green-grey chip, `kind: "deadline"` = mauve chip (see Figma).
-  Deadlines are point-in-time (no end): show them as a 30-minute chip ending at the due time.
-- Phone width (393 px): the Month view cannot fit text in 7 columns. Show colored dots or very short chips (max 1 line,
-  ellipsis) and `dayMaxEvents: 2` with the "+n more" popover. Tapping an event opens the preview card of Figma 157:1094
-  (centered over the calendar, author's choice): title, course, location, date and time (deadlines: "Due …"), ✕, and
-  "Open in DTU Learn" only when the item has a `url`. The URL is NOT passed to FullCalendar (it would become a real link).
-- Day / Week views, compact (author's request 12 Nov 2026): only the hours with timed events in the visible range
-  (default 08-16, at least 4 h), one row per hour, height fits the content (no inner scroll). Deadlines go to the
-  all-day row with their time in the title ("23:59 Report …") so 23:59 does not stretch the grid. Highlight today.
-- Style with CSS variables so it matches the app (DTU red for today and buttons, system font). No FullCalendar default blue.
+## Calendar  (SPECIFIED, full page since 24 Nov 2026)
+Route `/calendar` (tab layout, back arrow), opened from Home. `src/components/calendar/Calendar.tsx`.
+- FullCalendar (`daygrid`, `timegrid`, `list`, `interaction`), our own segmented control Day / Week / Month / List (the
+  same four views, no "3 days": author's decision), ‹ › + title + "Today". The grid fills the height above the tab bar.
+- Day / Week: 24 hours, 48 px per hour, scroll inside, starts at 08:00. Deadlines = 30-min chip ending at the due time,
+  due time in the title. All-day row WITHOUT label, only when the visible range has an all-day item (exams).
+- Month: short chips, `dayMaxEvents: 3` + "+n more". List: `listWeek`.
+- Colors: activity green-grey, deadline mauve, exam black, personal event light DTU red with a red bar.
+- Tap an item → preview card (Figma 157:1094), over the whole phone column: title, course, location, when, notes;
+  "Open in DTU Learn" only with a `url`. Personal events: Edit / Delete (confirm).
+- Personal events (author's request): "+" button bottom right, or tap an empty slot/day (prefilled date and time; in Month
+  09:00). Bottom sheet: title, all day, date, start/end, location, course (active courses), notes. Saved in this
+  browser only (`localStorage`, `src/data/personalEvents.ts`), merged into the agenda (`useAgenda`): Home, Calendar
+  and Upcoming events. Learn / study-plan items are read-only.
 
 ## Upcoming events  (DRAFT)
 FIGMA: <link>  (3 variants: All / Deadlines / Activities)

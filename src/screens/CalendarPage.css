@@ -1,0 +1,35 @@
+/* Full calendar page: header, then the calendar fills the height above the tab bar (it scrolls inside). */
+.calendar-page {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px 8px;
+}
+
+.calendar-page .sub-header {
+  min-height: 72px;
+}
+
+.calendar-page__body {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Round "+" button bottom right, above the grid */
+.calendar-page__add {
+  position: absolute;
+  right: 16px;
+  bottom: 20px;
+  z-index: 5;
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background: var(--tabbar-red);
+  box-shadow: var(--shadow-card);
+  font-size: 30px;
+  line-height: 1;
+  color: var(--color-bg);
+  cursor: pointer;
+}

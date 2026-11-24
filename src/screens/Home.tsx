@@ -1,46 +1,33 @@
-import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { initials, useCurrentUser } from '../data/currentUser';
-import Calendar from '../components/calendar/Calendar';
+import WeekStrip from '../components/calendar/WeekStrip';
+import { useEventDialogs } from '../components/calendar/EventDialogs';
 import SyncBar from '../components/SyncBar';
 import AgendaCard from '../components/AgendaCard';
 import LinkRow from '../components/LinkRow';
-import { agenda, courseLabel, studyAnnouncements } from '../data/appData';
+import { courseLabel, studyAnnouncements } from '../data/appData';
+import { useAgenda } from '../data/personalEvents';
+import { dayKey } from '../data/format';
+import type { AgendaItem } from '../data/types';
 import './Home.css';
 
 /**
  * Home (Figma "homepage day/week/month/list", cleaned up on the author's request): compact profile header, section rows
- * with a chevron, the newest study announcement, the next activity/deadline, and the calendar (unchanged).
+ * with a chevron, the newest study announcement, the next activity/deadline, and a week calendar (after the usability
+ * tests, 24 Nov 2026) with a button to the full Calendar page.
  */
 /** Next agenda item (still running or upcoming); if none, the latest one, so the card is never empty. */
-function nextAgendaItem() {
+function nextAgendaItem(agenda: AgendaItem[]) {
   const now = Date.now();
   return agenda.find((a) => Date.parse(a.endsAt ?? a.startsAt) >= now) ?? agenda[agenda.length - 1];
 }
 
-/** The whole agenda as FullCalendar events (kind → chip color). */
-const calendarEvents = () =>
-  agenda.map((a) => ({
-    id: a.id,
-    title: a.courseCode && !a.title.startsWith(a.courseCode) ? `${a.courseCode} ${a.title}` : a.title,
-    start: a.startsAt,
-    end: a.endsAt ?? undefined,
-    allDay: a.isAllDay,
-    // No `url` here: FullCalendar would render a real link that a tap can follow. The preview card opens it instead.
-    extendedProps: {
-      kind: a.kind,
-      plainTitle: a.title,
-      course: courseLabel(a.courseCode) ?? a.courseCode,
-      location: a.location,
-      link: a.url ?? null,
-    },
-  }));
-
 export default function Home() {
   const { user } = useCurrentUser();
   const latest = studyAnnouncements[0];
-  const next = nextAgendaItem();
-  const events = useMemo(() => calendarEvents(), []);
+  const agenda = useAgenda();
+  const next = nextAgendaItem(agenda);
+  const { openItem, openForm, dialogs } = useEventDialogs();
 
   return (
     <div className="home">
@@ -86,9 +73,20 @@ export default function Home() {
       </section>
 
       <section className="home__calendar">
-        <h2 className="home__calendar-title">Calendar</h2>
-        <Calendar events={events} />
+        <LinkRow variant="section" to="/calendar">
+          Calendar
+        </LinkRow>
+        <WeekStrip items={agenda} onItemClick={openItem} />
+        <div className="home__calendar-actions">
+          <Link to="/calendar" className="home__btn home__btn--primary">
+            Open calendar
+          </Link>
+          <button type="button" className="home__btn" onClick={() => openForm({ date: dayKey(new Date().toISOString()) })}>
+            + Add event
+          </button>
+        </div>
       </section>
+      {dialogs}
     </div>
   );
 }

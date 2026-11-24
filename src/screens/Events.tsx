@@ -2,7 +2,8 @@ import { useState } from 'react';
 import SubHeader from '../components/SubHeader';
 import AgendaCard from '../components/AgendaCard';
 import type { AgendaItem } from '../data/types';
-import { agenda, courseLabel } from '../data/appData';
+import { courseLabel } from '../data/appData';
+import { useAgenda } from '../data/personalEvents';
 
 type Tab = 'all' | 'deadline' | 'event';
 const TABS: { key: Tab; label: string }[] = [
@@ -21,7 +22,7 @@ function upcoming(items: AgendaItem[], tab: Tab): AgendaItem[] {
 
 export default function Events() {
   const [tab, setTab] = useState<Tab>('all');
-  const items = upcoming(agenda, tab);
+  const items = upcoming(useAgenda(), tab);
 
   return (
     <div className="sub-screen">
