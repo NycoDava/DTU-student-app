@@ -32,7 +32,24 @@ export let studyAnnouncements: StudyAnnouncement[] = [];
 /** The user's upcoming exams (study plan + DTU exam timetable), soonest first. */
 export let myExams: MyExam[] = [];
 
+/** Who the data belongs to (from the sync, never from the code). */
+export type Profile = { name: string | null; studentId: string | null; programme: string | null };
+export let profile: Profile = { name: null, studentId: null, programme: null };
+
 type RawGrade = Omit<Grade, 'title'> & { title: string | LocalizedName };
+type RawPerson = { name?: string; username?: string; isMe?: boolean };
+
+/** `profile` of the file; older files have none, then the "isMe" entry of a classlist gives name and username. */
+function profileFrom(file: Record<string, unknown>): Profile {
+  const p = (file.profile ?? {}) as Partial<Profile>;
+  const lists = Object.values((file.classlists ?? {}) as Record<string, { people?: RawPerson[] }>);
+  const me = lists.flatMap((cl) => cl.people ?? []).find((person) => person.isMe);
+  return {
+    name: p.name ?? me?.name ?? null,
+    studentId: p.studentId ?? me?.username ?? null,
+    programme: p.programme ?? null,
+  };
+}
 
 export function initAppData(file: Record<string, unknown>) {
   const f = file as Partial<{
@@ -44,6 +61,7 @@ export function initAppData(file: Record<string, unknown>) {
     agenda: AgendaItem[];
     studyAnnouncements: StudyAnnouncement[];
   }>;
+  profile = profileFrom(file);
   if (f.summary) summary = { ...summary, ...f.summary };
   if (f.studyplan) studyplan = { ...studyplan, ...f.studyplan };
   // Grade titles come in both languages from CampusNet: the UI is English.

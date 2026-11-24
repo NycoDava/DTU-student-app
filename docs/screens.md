@@ -140,11 +140,11 @@ Routes: `/courses/:id` (My Course), `/courses/:id/classlist`, `/courses/:id/cont
 
 ## Study planner  (SPECIFIED)
 FIGMA: node 27:19 (see design-notes). Route `/studyplanner`. Logic in `src/lib/studyplan.ts` (`buildBoard`, `placeItems`).
-- Title = `user.programme.name` (currentUser, editable, not static). "N ECTS planned" = ECTS of everything placed in a
+- Title = `user.programme` (from `profile.programme` in the data file; "Study plan" when missing). "N ECTS planned" = ECTS of everything placed in a
   period (not the basket); updates while dragging. "Show ECTS distribution" opens the same sheet as Grades.
 - Years -> terms (semester number) -> 2 periods each: odd semester = "13 weeks autumn Y" + "January Y+1", even =
   "13 weeks spring Y+1" + "June Y+1". Period `type` 3 = 13 weeks, 4 = 3 weeks. If `studyplan.semesters` is empty,
-  the semesters come from `user.programme` (start year, number of semesters), so all periods show up empty.
+  the semesters come from `requiredEcts` (30 ECTS per semester, from this academic year), so all periods show up empty.
 - Period status from today: past (ended) -> VIEW 1 "Winter exam 2025/2026 ... Result ECTS", read only, filled with
   passed grades (`v25` -> autumn 2025, `s26` -> spring 2026) + planned items. Current / future -> VIEW 2
   "Placement Status ECTS", pill "Register/withdraw not open". Status column = check icon if the course is passed.

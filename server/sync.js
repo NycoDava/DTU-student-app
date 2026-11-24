@@ -13,7 +13,7 @@ import { randomUUID } from 'node:crypto';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SessionExpired, fetchDtuFeeds, fetchGrades, fetchLearn, fetchStudyAnnouncements, fetchStudyplan } from './dtu.js';
+import { SessionExpired, fetchDtuFeeds, fetchGrades, fetchLearn, fetchStudyAnnouncements, fetchStudyplan, publicUser } from './dtu.js';
 
 const exec = promisify(execFile);
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -123,8 +123,31 @@ function planExtrasFrom(sp) {
   return { projects, activityTypes };
 }
 
-/** For every failed source, copy its part of the app data from the previous saved file. */
+/**
+ * Degree programme name from the raw Studyplanner data, if it has one: the first top-level field whose name says
+ * programme/education, as text or { English }. null otherwise (the app then shows "Study plan").
+ */
+function programmeFrom(sp) {
+  if (!sp) return null;
+  for (const [key, value] of Object.entries(sp)) {
+    if (!/programme|program|education|uddannelse/i.test(key)) continue;
+    const text = typeof value === 'string' ? value : value?.English ?? value?.Name?.English ?? (typeof value?.Name === 'string' ? value.Name : null);
+    if (typeof text === 'string' && text.trim()) return text.trim();
+  }
+  console.log('[sync] no programme name in the Studyplanner data; top-level fields:', Object.keys(sp).join(', '));
+  return null;
+}
+
+/**
+ * For every failed source, copy its part of the app data from the previous saved file of THIS user. Only the public
+ * dtu.dk news/events may come from the demo data (`seed`): nothing personal of the author ever fills a gap.
+ */
 function keepPrevious(out, prev, failed, seed) {
+  if (failed.has('dtu')) {
+    // An empty previous list is not worth keeping: fall back to the demo data's lists (public dtu.dk content).
+    out.news = prev?.news?.length ? prev.news : seed?.news ?? [];
+    out.events = prev?.events?.length ? prev.events : seed?.events ?? [];
+  }
   if (!prev) return out;
   if (failed.has('learn')) {
     for (const k of ['courses', 'courseContent', 'deadlines', 'announcements', 'classlists', 'agenda', 'calendar']) out[k] = prev[k];
@@ -155,11 +178,7 @@ function keepPrevious(out, prev, failed, seed) {
     }
   }
   if (failed.has('study')) out.studyAnnouncements = prev.studyAnnouncements ?? [];
-  if (failed.has('dtu')) {
-    // An empty previous list is not worth keeping: fall back to the demo data's lists.
-    out.news = prev.news?.length ? prev.news : seed?.news ?? [];
-    out.events = prev.events?.length ? prev.events : seed?.events ?? [];
-  }
+  if (failed.has('studyplan') && !out.profile.programme) out.profile.programme = prev.profile?.programme ?? null;
   return out;
 }
 
@@ -205,9 +224,12 @@ async function doSync() {
   const failed = new Set(SOURCES.filter((s) => syncState.sources[s].state !== 'ok'));
   try {
     if (failed.size === SOURCES.length) throw new Error(expired ? 'session_expired' : 'all sources failed, saved data kept');
+    // Demo data: only for the public dtu.dk lists. Saved files: only if they belong to the user who is logged in.
     const seed = await readJson(DEMO_PUBLIC);
-    const prevLive = (await readJson(LIVE_FILE)) ?? seed;
-    const prevDemo = (await readJson(DEMO_FILE)) ?? seed;
+    const user = publicUser();
+    const mine = (file) => (file && (!user || !file.profile?.studentId || file.profile.studentId === user.username) ? file : null);
+    const prevLive = mine(await readJson(LIVE_FILE));
+    const prevDemo = mine(await readJson(DEMO_FILE));
     const fetchedAt = new Date().toISOString();
     const raw = {
       collectedAt: fetchedAt,
@@ -235,7 +257,14 @@ async function doSync() {
     }
     const courseInfo = courseInfoFrom(results.studyplan?.studyplan);
     const extras = planExtrasFrom(results.studyplan?.studyplan);
+    // Who the data belongs to: name + username from Learn "whoami", programme from the Studyplanner.
+    const profile = {
+      name: user?.name ?? prevLive?.profile?.name ?? null,
+      studentId: user?.username ?? prevLive?.profile?.studentId ?? null,
+      programme: programmeFrom(results.studyplan?.studyplan),
+    };
     for (const out of [live, demo]) {
+      out.profile = { ...profile };
       out.studyAnnouncements = results.study?.studyAnnouncements ?? [];
       if (out.studyplan && courseInfo) out.studyplan.courseInfo = courseInfo;
       if (out.studyplan && extras) Object.assign(out.studyplan, extras);

@@ -37,8 +37,8 @@ export default function Profile() {
   function onPictureChosen(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    // Session only: the object URL is lost on reload, then the default photo comes back.
-    setUser({ ...user, photoUrl: URL.createObjectURL(file), photoHasRing: false });
+    // Session only: the object URL is lost on reload, then the initials come back.
+    setUser({ ...user, photoUrl: URL.createObjectURL(file) });
     e.target.value = '';
   }
 
@@ -65,14 +65,14 @@ export default function Profile() {
       <SubHeader title="Edit My User Profile" />
 
       <p className="profile__name">
-        {user.name} ({user.studentId})
+        {user.name}{user.studentId && ` (${user.studentId})`}
       </p>
 
       <div className="profile__top">
         <div className="profile__photo">
           {user.photoUrl ? (
             <img
-              className={'profile__avatar' + (user.photoHasRing ? '' : ' profile__avatar--ring')}
+              className="profile__avatar profile__avatar--ring"
               src={user.photoUrl}
               alt=""
             />

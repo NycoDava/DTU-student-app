@@ -26,6 +26,9 @@ async function load(): Promise<Record<string, unknown>> {
       dataFetchedAt = saved.fetchedAt ?? saved.collectedAt ?? null;
       return saved;
     }
+    // Live mode without saved data (first run of a new user): empty screens until the first sync, never the demo
+    // file (it holds the author's data).
+    return {};
   }
   const demo = (await getJson('/data/app-data.json')) ?? {};
   dataFetchedAt = dataFetchedAt ?? demo.fetchedAt ?? demo.collectedAt ?? null;

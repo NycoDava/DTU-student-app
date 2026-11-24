@@ -65,7 +65,7 @@ The app has two modes, chosen automatically at start:
 ## Fallbacks (per source)
 - Learn: if `context.request` fails for a non-auth reason, the same URL is fetched inside the Learn page (`fetch` with credentials, like the scraper).
 - Studyplanner, Grades: if the direct GET does not contain the data, the page is opened like the scraper does.
-- Calendar: not available via API (400 above); the agenda uses Learn deadlines + `server/manual-events.json`, as before.
+- Calendar: not available via API (400 above); the agenda uses Learn deadlines + `server/manual-events.json` (optional, personal, gitignored: copy `manual-events.example.json`).
 - dtu.dk news/events: kept from the last saved data (they are public and change slowly). The manual scraper still collects them (headed browser).
 - Everything fails: the saved data stays and the app shows it with its date.
 
@@ -86,3 +86,11 @@ The app has two modes, chosen automatically at start:
 4. Tap "Refresh" again: new data in ~4 s. Stop the server and reload: the app is in demo mode (fake login, no sync bar).
 5. Session expired / logged out: "Refresh" opens the login with "Your DTU session has expired…". "Continue with saved data" skips login.
 6. Before publishing the demo: `npm run demo-data`, then `npm run build`.
+
+## Whose data (24 Nov 2026)
+- Nothing personal is in the code. The sync writes `profile` (`name`, `studentId` from Learn whoami, `programme` from the
+  Studyplanner if it has a programme field, else the app shows "Study plan"). No profile photo: initials (a photo picked on
+  Profile lasts for the session only).
+- A source that fails keeps data only from the SAME user's previous sync; the demo file only fills the public dtu.dk lists.
+- `/api/local/data` hides saved data that belongs to another student than the one logged in (shared computer).
+- Live mode with no saved data shows empty screens and the login, never the demo file.

@@ -84,7 +84,7 @@ const sum = (items: PlanItem[]) => items.reduce((total, i) => total + i.ects, 0)
 
 export default function Studyplanner() {
   const { user } = useCurrentUser();
-  const board = useMemo(() => buildBoard(studyplan, grades, user.programme), [user.programme]);
+  const board = useMemo(() => buildBoard(studyplan, grades), []);
   const [moves, setMoves] = useState(loadMoves);
   const [dragging, setDragging] = useState<PlanItem | null>(null);
   const [showDistribution, setShowDistribution] = useState(false);
@@ -135,7 +135,7 @@ export default function Studyplanner() {
   return (
     <div className="sub-screen planner">
       <SubHeader />
-      <h1 className="planner__programme">{user.programme.name}</h1>
+      <h1 className="planner__programme">{user.programme ?? 'Study plan'}</h1>
       <div className="planner__summary">
         <p className="planner__planned">{plannedEcts} ECTS planned</p>
         <button type="button" className="planner__dist-button" onClick={() => setShowDistribution(true)}>

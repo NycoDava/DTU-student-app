@@ -64,6 +64,14 @@ function readBody(req) {
   });
 }
 
+/** The saved data, unless it belongs to another student than the one logged in (shared computer). */
+async function readMine() {
+  const saved = await readSaved();
+  const user = getSession() ? publicUser() : null;
+  if (saved && user && saved.profile?.studentId && saved.profile.studentId !== user.username) return null;
+  return saved;
+}
+
 const sessionInfo = () => {
   const s = getSession();
   return { loggedIn: !!s, user: s ? publicUser() : null, since: s?.since ?? null };
@@ -82,7 +90,7 @@ async function live(res, fn) {
 
 const routes = {
   'GET /api/session': async (req, res) => {
-    const saved = await readSaved();
+    const saved = await readMine();
     send(res, 200, { server: true, ...sessionInfo(), sync: syncState, saved: saved ? { fetchedAt: saved.fetchedAt, sources: saved.sources } : null });
   },
 
@@ -130,7 +138,7 @@ const routes = {
 
   /** The saved data of the last successful sync (app format). Works without a session. */
   'GET /api/data': async (req, res) => {
-    const saved = await readSaved();
+    const saved = await readMine();
     if (!saved) return send(res, 404, { error: 'no_saved_data' });
     send(res, 200, saved);
   },
@@ -154,7 +162,7 @@ const routes = {
   'GET /api/all': (req, res) =>
     live(res, async () => {
       await startSync();
-      return readSaved();
+      return readMine();
     }),
 };
 

@@ -89,16 +89,13 @@ export type PlanBoard = {
 
 /**
  * Builds the board from the study plan + grades. When `studyplan.semesters` is empty (placeholder data),
- * the semesters come from the programme (start year + number of semesters), so every period shows up empty.
+ * the semesters come from the required ECTS (30 per semester), so every period shows up empty.
  */
-export function buildBoard(
-  plan: Studyplan,
-  grades: Grade[],
-  programme: { startYear: number; semesters: number },
-  today = new Date(),
-): PlanBoard {
-  const firstYear = plan.semesters[0]?.year ?? programme.startYear;
-  const count = plan.semesters.length || programme.semesters;
+export function buildBoard(plan: Studyplan, grades: Grade[], today = new Date()): PlanBoard {
+  // Empty plan: semesters from the required ECTS (30 per semester), starting this academic year.
+  const academicYear = today.getMonth() >= 7 ? today.getFullYear() : today.getFullYear() - 1;
+  const firstYear = plan.semesters[0]?.year ?? academicYear;
+  const count = plan.semesters.length || Math.round((plan.requiredEcts ?? 0) / 30);
   const passed = new Map(grades.filter((g) => g.passed).map((g) => [g.code, g]));
 
   const years: PlanYear[] = [];

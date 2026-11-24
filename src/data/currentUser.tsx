@@ -1,35 +1,34 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
+import { profile } from './appData';
 
 /**
- * The student who is logged in. For now the login is fake, so everyone sees the author's profile.
- * When a real login exists, call `setUser` after login (or replace DEFAULT_USER) and the whole app updates.
+ * The student whose data is shown. Nothing personal is written in the code: name, student number and programme come
+ * from the data file (`profile`, written by the sync from DTU Learn "whoami" and the Studyplanner).
  */
 export type CurrentUser = {
   name: string;
-  /** Student number, shown next to the name on the profile page. */
+  /** Student number (DTU username), shown next to the name on the profile page. */
   studentId: string;
-  /** Round profile photo. null = show initials instead. */
+  /** Round profile photo. null = initials. Only a photo picked on the Profile page (session only). */
   photoUrl: string | null;
-  /** The default PNG already has the red ring drawn in; uploaded photos get it from CSS. */
-  photoHasRing: boolean;
-  /** Degree programme, shown as the Studyplanner title. Used to draw the semesters while the study plan is empty. */
-  programme: { name: string; startYear: number; semesters: number };
+  /** Degree programme, shown as the Studyplanner title. null when the Studyplanner does not give it. */
+  programme: string | null;
 };
 
-const DEFAULT_USER: CurrentUser = {
-  name: 'Nicola Davalli',
-  studentId: 's253463',
-  photoUrl: '/images/profile-photo.png',
-  photoHasRing: true,
-  programme: { name: 'MSc in Human Centred Artificial Intelligence', startYear: 2025, semesters: 4 },
-};
+const userFromData = (): CurrentUser => ({
+  name: profile.name || 'Student',
+  studentId: profile.studentId ?? '',
+  photoUrl: null,
+  programme: profile.programme,
+});
 
 type UserContextValue = { user: CurrentUser; setUser: (user: CurrentUser) => void };
 
 const UserContext = createContext<UserContextValue | null>(null);
 
 export function UserProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<CurrentUser>(DEFAULT_USER);
+  // appData is loaded before the first render (main.tsx), so the profile is already there.
+  const [user, setUser] = useState<CurrentUser>(userFromData);
   return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 }
 

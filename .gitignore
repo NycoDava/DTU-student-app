@@ -37,3 +37,6 @@ server/cache/
 
 # Netlify CLI link to the site (local)
 .netlify/
+
+# Personal timetable entries for the local server (copy manual-events.example.json)
+server/manual-events.json
