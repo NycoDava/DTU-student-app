@@ -10,7 +10,7 @@
  * The app talks to it through the Vite proxy: /api/local/* -> http://127.0.0.1:8787/api/*
  */
 import http from 'node:http';
-import { LEARN, SessionExpired, closeSession, fetchGrades, fetchStudyplan, getCourseFile, getJson, getSession, login, publicUser, shutdown } from './dtu.js';
+import { LEARN, SessionExpired, closeSession, fetchGrades, fetchStudyplan, getCourseFile, getJson, getProfilePhoto, getSession, login, publicUser, shutdown } from './dtu.js';
 import { readSaved, startSync, syncState } from './sync.js';
 
 const PORT = Number(process.env.DTU_SERVER_PORT || 8787);
@@ -134,6 +134,19 @@ const routes = {
     const force = new URL(req.url, 'http://x').searchParams.get('force') === '1';
     startSync({ force });
     send(res, 202, { ok: true, sync: syncState });
+  },
+
+  /** The student's own Learn profile photo (memory only, no-store). 404 = none: the app shows initials. */
+  'GET /api/profile/photo': async (req, res) => {
+    let photo = null;
+    try {
+      photo = await getProfilePhoto();
+    } catch (e) {
+      if (e instanceof SessionExpired) return send(res, 401, { error: 'session_expired' });
+    }
+    if (!photo) return send(res, 404, { error: 'no_photo' });
+    res.writeHead(200, { 'content-type': photo.type, 'content-length': photo.body.length, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' });
+    res.end(photo.body);
   },
 
   /** The saved data of the last successful sync (app format). Works without a session. */

@@ -526,3 +526,28 @@ export async function getCourseFile(orgUnitId, topicId) {
   fileDownloads.set(key, download);
   return download;
 }
+
+/**
+ * The logged-in student's own Learn profile photo (null if they never uploaded one). Kept ONLY IN MEMORY, for the user
+ * it belongs to, until the server stops; works without a session once fetched (like course files). Never on disk.
+ */
+let profilePhoto = null; // { username, file: { body, type } | null }
+
+export async function getProfilePhoto() {
+  const user = session ? publicUser() : null;
+  if (profilePhoto && (!user || profilePhoto.username === user.username)) return profilePhoto.file;
+  if (!session || !user) return null;
+  const res = await session.context.request.get(`${LEARN}/d2l/api/lp/${session.lp ?? '1.64'}/profile/myProfile/image?size=200`, {
+    failOnStatusCode: false,
+    timeout: 30_000,
+  });
+  const type = (res.headers()['content-type'] || '').split(';')[0];
+  if (type === 'text/html' && /^sts\.|login\.microsoftonline/i.test(new URL(res.url()).host)) {
+    await closeSession();
+    throw new SessionExpired();
+  }
+  // 404 = no photo uploaded: remembered too, so Learn is asked once per user.
+  const file = res.ok() && type.startsWith('image/') ? { body: await res.body(), type } : null;
+  profilePhoto = { username: user.username, file };
+  return file;
+}

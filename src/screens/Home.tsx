@@ -23,7 +23,7 @@ function nextAgendaItem(agenda: AgendaItem[]) {
 }
 
 export default function Home() {
-  const { user } = useCurrentUser();
+  const { user, setUser } = useCurrentUser();
   const latest = studyAnnouncements[0];
   const agenda = useAgenda();
   const next = nextAgendaItem(agenda);
@@ -34,7 +34,7 @@ export default function Home() {
       <header className="home__header">
         <Link to="/profile" className="home__profile" aria-label="Profile">
           {user.photoUrl ? (
-            <img className="home__avatar home__avatar--ring" src={user.photoUrl} alt="" />
+            <img className="home__avatar home__avatar--ring" src={user.photoUrl} alt="" onError={() => setUser({ ...user, photoUrl: null })} />
           ) : (
             <span className="home__avatar home__avatar--initials">{initials(user.name)}</span>
           )}

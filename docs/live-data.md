@@ -89,8 +89,11 @@ The app has two modes, chosen automatically at start:
 
 ## Whose data (24 Nov 2026)
 - Nothing personal is in the code. The sync writes `profile` (`name`, `studentId` from Learn whoami, `programme` from the
-  Studyplanner if it has a programme field, else the app shows "Study plan"). No profile photo: initials (a photo picked on
-  Profile lasts for the session only).
+  Studyplanner if it has a programme field, else the app shows "Study plan").
+- Profile photo: live mode only, the student's own Learn photo (`GET /api/profile/photo` → Learn
+  `/d2l/api/lp/{lp}/profile/myProfile/image`). Kept only in the server's memory for that user, `no-store`, never on disk or
+  in the demo build. 404 (no photo on Learn, no session yet) → initials. Demo mode: initials. A photo picked on Profile
+  lasts for the session only.
 - A source that fails keeps data only from the SAME user's previous sync; the demo file only fills the public dtu.dk lists.
 - `/api/local/data` hides saved data that belongs to another student than the one logged in (shared computer).
 - Live mode with no saved data shows empty screens and the login, never the demo file.
