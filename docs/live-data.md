@@ -92,7 +92,8 @@ The app has two modes, chosen automatically at start:
   Studyplanner if it has a programme field, else the app shows "Study plan").
 - Profile photo: live mode only, the student's own Learn photo (`GET /api/profile/photo` → Learn
   `/d2l/api/lp/{lp}/profile/myProfile/image`). Kept only in the server's memory for that user, `no-store`, never on disk or
-  in the demo build. 404 (no photo on Learn, no session yet) → initials. Demo mode: initials. A photo picked on Profile
+  in the demo build. 404 (no photo on Learn, no session yet) → initials. Demo mode: initials, unless the author opts in
+  with `npm run demo-data -- --photo` (server running and logged in; writes `public/data/profile-photo.*`, gitignored). A photo picked on Profile
   lasts for the session only.
 - A source that fails keeps data only from the SAME user's previous sync; the demo file only fills the public dtu.dk lists.
 - `/api/local/data` hides saved data that belongs to another student than the one logged in (shared computer).

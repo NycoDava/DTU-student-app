@@ -11,7 +11,8 @@ export type CurrentUser = {
   /** Student number (DTU username), shown next to the name on the profile page. */
   studentId: string;
   /**
-   * Round profile photo. Live mode: the student's own Learn photo, through the local server (memory only). Demo: none.
+   * Round profile photo. Live mode: the student's own Learn photo, through the local server (memory only). Demo: the photo
+   * exported with `npm run demo-data -- --photo`, if any.
    * null = initials (also when the photo does not load: no photo on Learn, server stopped).
    */
   photoUrl: string | null;
@@ -22,7 +23,7 @@ export type CurrentUser = {
 const userFromData = (): CurrentUser => ({
   name: profile.name || 'Student',
   studentId: profile.studentId ?? '',
-  photoUrl: dataMode === 'live' ? '/api/local/profile/photo' : null,
+  photoUrl: dataMode === 'live' ? '/api/local/profile/photo' : profile.photo,
   programme: profile.programme,
 });
 
