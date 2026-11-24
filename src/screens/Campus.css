@@ -17,7 +17,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding-bottom: 22px;
+  padding: 8px 0 22px;
+  border-top: 1px solid var(--color-hairline);
 }
 
 .campus__venues {
@@ -84,8 +85,14 @@
   justify-content: center;
 }
 
-/* Map and Parking: own sections, same separator + section row as Library */
-.campus__mapsection,
+/* Map first (no separator above), Parking last: same section row as Library */
+.campus__mapsection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 22px;
+}
+
 .campus__parking {
   display: flex;
   flex-direction: column;

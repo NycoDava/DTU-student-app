@@ -8,7 +8,8 @@ import { useCarParks } from '../data/parking';
 import './Campus.css';
 
 /**
- * Tab "map" (Figma "campus page", 7:55, cleaned up): last visited venues, live library numbers, campus map preview.
+ * Tab "map" (Figma "campus page", 7:55, cleaned up): campus map preview, last visited venues, live library numbers, parking.
+ * Order (author's request after usability tests, 24 Nov 2026): map, food, library, parking.
  * Deviation (author's request): tappable section rows, library numbers as three stat tiles.
  */
 export default function Campus() {
@@ -21,6 +22,18 @@ export default function Campus() {
   return (
     <div className="campus">
       <img className="campus__logo" src="/images/dtu-logo-small.png" alt="DTU" />
+
+      <section className="campus__mapsection">
+        <LinkRow variant="section" to="/campus/map">
+          Campus map
+        </LinkRow>
+        <div className="campus__map">
+          <CampusMap mini />
+          <Link to="/campus/map" className="campus__expand" aria-label="Open the full map">
+            <img src="/icons/expand.svg" width={42} height={42} alt="" />
+          </Link>
+        </div>
+      </section>
 
       <section className="campus__food">
         <LinkRow variant="section" to="/campus/food">
@@ -51,18 +64,6 @@ export default function Campus() {
             <dd>{status.visitedToday}</dd>
           </div>
         </dl>
-      </section>
-
-      <section className="campus__mapsection">
-        <LinkRow variant="section" to="/campus/map">
-          Campus map
-        </LinkRow>
-        <div className="campus__map">
-          <CampusMap mini />
-          <Link to="/campus/map" className="campus__expand" aria-label="Open the full map">
-            <img src="/icons/expand.svg" width={42} height={42} alt="" />
-          </Link>
-        </div>
       </section>
 
       <section className="campus__parking">

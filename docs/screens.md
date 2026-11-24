@@ -173,7 +173,7 @@ FIGMA: node 163:1493. Route `/exams`.
   in Upcoming events "All").
 
 ## Campus page  (SPECIFIED)
-FIGMA: node 7:55. Route `/campus`.
+FIGMA: node 7:55. Route `/campus`. Order (author, after usability tests 24 Nov 2026): Map, Food and drinks, Library, Parking.
 - "Food and Drinks→" opens Food. Under it the 2 LAST VISITED venues (`src/data/venues.ts`, this browser only),
   topped up with the first venues of the list. A venue card does what it does on Food (only B101 is clickable).
 - "Library→" opens Library. LIVE numbers (`src/data/library.ts`): "available seats now" = free seats with a sensor,
