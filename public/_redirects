@@ -1,4 +1,6 @@
 # Netlify (published demo build, see docs/pwa.md).
+# Library seats: the DTU Smart Library API sends no CORS headers, so Netlify forwards it (like the Vite proxy).
+/api/smartlibrary  https://smartlibrary.ait.dtu.dk/api/smartlibrary  200
 # No local server online: /api/local answers 404, so the app stays in demo mode.
 /api/*  /404-not-here  404
 # Single-page app: every route (/home, /calendar, ...) serves index.html

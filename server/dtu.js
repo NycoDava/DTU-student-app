@@ -12,9 +12,21 @@ export const LEARN = 'https://learn.inside.dtu.dk';
 export const STUDYPLAN = 'https://studieplan.dtu.dk';
 export const GRADES = 'https://campusnet.dtu.dk/cnnet/Grades/Grades.aspx';
 const MYCOURSES = `${LEARN}/d2l/le/manageCourses/api/mycourses?pageSize=20&sort=current&autoPinCourses=false&orgUnitTypeId=3&promotePins=true&embedDepth=0`;
+/**
+ * Public dtu.dk lists. The site's own pages POST `Request` from the widget's `data-request` attribute to the API,
+ * so we do the same: read the attribute from the page (fresh ids if DTU changes them), fall back to the saved one.
+ */
 const DTU_FEEDS = {
-  news: 'https://www.dtu.dk/api/v1/news/newslist',
-  events: 'https://www.dtu.dk/api/v1/calendar/calendareventlist',
+  news: {
+    page: 'https://www.dtu.dk/english/news/all-news',
+    api: 'https://www.dtu.dk/api/v1/news/newslist',
+    request: { Pagination: { Number: 1, Size: 'Ten' }, ListItemId: '62dbda48-f7d7-4763-8349-0e8bb86a2f08', Language: 'en', Database: 'web', Subjects: [], DateRange: null, SearchText: '' },
+  },
+  events: {
+    page: 'https://www.dtu.dk/english/calendar',
+    api: 'https://www.dtu.dk/api/v1/calendar/calendareventlist',
+    request: { Pagination: { Number: 1, Size: 'Ten' }, ListItemId: '08560836-11a2-4df5-96db-4496bbd53681', Language: 'en', Database: 'web', Subjects: [], DateRange: null, SearchText: '', ShowHistoricalEvents: false },
+  },
 };
 
 /** Thrown when DTU answers with the login page: the session is over, the user must log in again. */
@@ -382,16 +394,31 @@ export async function fetchGrades() {
 }
 
 /**
- * Public dtu.dk news/events (no login). Direct GET answers 403 (www.dtu.dk blocks automated/headless clients),
- * so this usually fails and the sync keeps the last saved lists.
+ * Public dtu.dk news/events (no login, no session): plain POST like the site's own list widgets.
+ * (A GET answers 405, and requests from the headless browser get 403, so the browser is not used here.)
  */
+async function widgetRequest({ page, request }) {
+  try {
+    const res = await fetch(page, { signal: AbortSignal.timeout(15000) });
+    const attr = (await res.text()).match(/data-request='([^']+)'/)?.[1];
+    if (attr) return { ...JSON.parse(attr).Request, Pagination: { Number: 1, Size: 'Ten' } };
+  } catch {
+    // page unreachable or markup changed: use the saved request
+  }
+  return request;
+}
+
 export async function fetchDtuFeeds() {
   const results = {};
-  for (const [key, url] of Object.entries(DTU_FEEDS)) {
-    if (!session) throw new SessionExpired();
-    const res = await run(() => session.context.request.get(url, { failOnStatusCode: false, timeout: 15000 }));
-    if (!res.ok()) throw new Error(`HTTP ${res.status()} from www.dtu.dk${new URL(url).pathname}`);
-    results[key] = JSON.parse(await res.text()).Results || [];
+  for (const [key, feed] of Object.entries(DTU_FEEDS)) {
+    const res = await fetch(feed.api, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(await widgetRequest(feed)),
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status} from www.dtu.dk${new URL(feed.api).pathname}`);
+    results[key] = (await res.json()).Results || [];
   }
   // Same mapping as parseDtuNews / parseDtuEvents in dtu-scraper.js.
   const flat = (t) => String(t || '').replace(/\s+/g, ' ').trim();

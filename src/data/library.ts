@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 /**
  * Live DTU Library occupancy from the public API behind smartlibrary.ait.dtu.dk (`LINKS.smartLibrary`).
  * The API sends no CORS headers, so the browser calls `/api/smartlibrary` on our own server and Vite forwards it
- * (proxy in vite.config.ts, works with `npm run dev` and `npm run preview`). On a plain static host there is no
- * proxy: then the last real reading below (SNAPSHOT) is shown, marked as not live.
+ * (proxy in vite.config.ts for `npm run dev` / `npm run preview`, rewrite in public/_redirects on Netlify). Without a
+ * proxy, or when the API answers empty (204, it happens on DTU's side), the last real reading below (SNAPSHOT) is
+ * shown, marked as not live.
  */
 export type SeatCount = { free: number; occupied: number };
 

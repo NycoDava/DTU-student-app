@@ -53,11 +53,11 @@ The app has two modes, chosen automatically at start:
 | Learn | `/d2l/api/le/1.100/calendar/events/myEvents/` | API JSON | **400** `Invalid Parameters: Request has missing or invalid parameters.` (with and without `associated=true`) | – |
 | Studyplanner | `https://studieplan.dtu.dk` | parsing (`var data = {...}`) | 200, 10 exam results | 250–500 ms |
 | Grades | `https://campusnet.dtu.dk/cnnet/Grades/Grades.aspx` | parsing (Cheerio, `table.gradesList`) | 200, 10 rows | 60–230 ms |
-| dtu.dk | `/api/v1/news/newslist`, `/api/v1/calendar/calendareventlist` | API JSON | **403** (HTML error page; the headless page also loads no API calls) | – |
+| dtu.dk | `/api/v1/news/newslist`, `/api/v1/calendar/calendareventlist` | API JSON, **POST** with the page widget's `data-request` `.Request` (plain fetch, no login) | 200, 10 news + 10 events (GET = 405, headless browser = 403) | – |
 
 ## Timings (end-to-end tests through the server)
 - Login (ADFS + platform entries): 7–17 s. Wrong password detected in 1–2.5 s.
-- Refresh, all sources in parallel: ~4.1 s (Learn ~3.7 s, Studyplanner ~0.3 s, Grades ~0.06 s, dtu.dk fails fast and keeps saved data).
+- Refresh, all sources in parallel: ~4.1 s (Learn ~3.7 s, Studyplanner ~0.3 s, Grades ~0.06 s, dtu.dk via plain POST).
 - Second refresh within 60 s: ~3 ms (short cache).
 - App: Access → Home ~22 s (login + start of the refresh), new data shown ~30 s after Access.
 - For comparison the scraper takes minutes (pages one by one, 300 ms pause per call).
@@ -66,7 +66,7 @@ The app has two modes, chosen automatically at start:
 - Learn: if `context.request` fails for a non-auth reason, the same URL is fetched inside the Learn page (`fetch` with credentials, like the scraper).
 - Studyplanner, Grades: if the direct GET does not contain the data, the page is opened like the scraper does.
 - Calendar: not available via API (400 above); the agenda uses Learn deadlines + `server/manual-events.json` (optional, personal, gitignored: copy `manual-events.example.json`).
-- dtu.dk news/events: kept from the last saved data (they are public and change slowly). The manual scraper still collects them (headed browser).
+- dtu.dk news/events: if the POST fails, the last saved lists are kept.
 - Everything fails: the saved data stays and the app shows it with its date.
 
 ## Fragile points
